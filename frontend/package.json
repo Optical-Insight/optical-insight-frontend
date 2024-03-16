@@ -28,7 +28,9 @@
     "typescript": "^5"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": "eslint --fix"
+    "*.ts": "eslint --max-warnings 0 --fix",
+    "*.tsx": "eslint --max-warnings 0 --fix",
+    "*.js": "eslint --max-warnings 0 --fix"
   },
   "husky": {
     "hooks": {
