@@ -10,7 +10,7 @@ function HomePage() {
     token: { colorBgBase },
   } = theme.useToken();
 
-  const his = "hi";
+  const hisasd = "hi";
 
   return (
     <Content style={{ ...styles.container, background: colorBgBase }}>
