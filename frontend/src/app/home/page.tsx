@@ -10,8 +10,6 @@ function HomePage() {
     token: { colorBgBase },
   } = theme.useToken();
 
-  const hiasdsasd = "hi";
-
   return (
     <Content style={{ ...styles.container, background: colorBgBase }}>
       Home
