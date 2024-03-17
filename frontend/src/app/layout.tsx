@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ThemeProvider } from "./providers/ThemeProvider";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,7 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AntdRegistry>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <GoogleOAuthProvider clientId="452754564019-jvte6b9lnpo36p087trg19cs672g3m0r.apps.googleusercontent.com">
+              {children}
+            </GoogleOAuthProvider>
+          </ThemeProvider>
         </AntdRegistry>
       </body>
     </html>
