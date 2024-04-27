@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React from "react";
 
 function AdminLogin() {
@@ -13,7 +14,32 @@ function AdminLogin() {
   return (
     <div className="w-[100vw] h-[100vh] flex">
       {/* LOGO */}
-      <div className="w-[41.875vw] h-100vh bg-blueBg"></div>
+      <div className="w-[41.875vw] h-100vh bg-blueBg relative">
+        <Image
+          className="absolute inset-0"
+          alt={"Optical Insight Logo"}
+          src="/assets/images/logo-bg.png"
+          layout="fill"
+          objectFit="contain"
+        ></Image>
+        <Image
+          className=" absolute ml-[11.181vw] mt-[44.531vh]"
+          alt={"Optical Insight Logo"}
+          src="/assets/images/logo.png"
+          width={281}
+          height={111.81}
+        />
+      </div>
+
+      {/* <div className="w-[41.875vw] h-100vh bg-blueBg">
+        <Image
+          className="m-auto mt-[44.531vh]"
+          alt={"Optical Insight Logo"}
+          src="/assets/images/logo.png"
+          width={281}
+          height={111.81}
+        />
+      </div> */}
 
       {/* LOGIN FORM */}
       <div className="w-[58.125vw] h-100vh bg-lightBg">
