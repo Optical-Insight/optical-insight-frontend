@@ -1,5 +1,12 @@
-import styles from "./page.module.css";
+"use client";
+import React from "react";
+// import AdminLogin from "./auth/login/sys-admin";
+import PatientLogin from "./auth/login/patient";
 
 export default function Home() {
-  return <main className={styles.main}>Start Developing...</main>;
+  return (
+    <div>
+      <PatientLogin />
+    </div>
+  );
 }
