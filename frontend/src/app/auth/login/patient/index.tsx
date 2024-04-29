@@ -1,14 +1,17 @@
 "use client";
+import CommomBtn from "@/app/components/common/button";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 function PatientLogin() {
-  // const handleForgotPassword = () => {
-  //   console.log("Forgot password clicked");
-  // };
+  const [loginLabel, setLoginLabel] = useState("Email");
 
   const handleSubmitLogin = () => {
     console.log("Login clicked");
+  };
+
+  const handleChangeLoginMethod = () => {
+    setLoginLabel(loginLabel === "Email" ? "Phone" : "Email");
   };
 
   return (
@@ -36,24 +39,29 @@ function PatientLogin() {
           </div>
           <div className="mt-[2.768vh] ml-[5.278vw]">
             <label className="block text-[15.99px] text-labelText">
-              Email Address
+              {loginLabel === "Email" ? "Email Address" : "Phone Number"}
             </label>
             <input
-              placeholder="kamal@opticin.com"
+              placeholder={
+                loginLabel === "Email" ? "kamal@opticin.com" : "0123456789"
+              }
               className="w-[30.962vw] h-[5.563vh] mt-[0.781vh] rounded-[7px] text-[16.99px]"
             />
           </div>
           <div className="mt-[2.768vh] mx-auto w-[30.962vw] h-[5.557vh] flex justify-center">
-            <button
+            <CommomBtn
+              label="Login"
               onClick={handleSubmitLogin}
-              className="w-full h-full bg-buttonPrimary text-buttonText rounded-[7px]"
-            >
-              Login
-            </button>
+              isFullWidth={true}
+              height={5.557}
+            />
           </div>
 
-          <div className="mt-[0.781vh] mx-auto w-[30.962vw] h-[5.557vh] flex justify-center text-buttonPrimary text-[15.99px]">
-            Or Continue With Phone
+          <div
+            className="mt-[0.781vh] mx-auto w-[30.962vw] h-[5.557vh] flex justify-center text-buttonPrimary text-[15.99px] cursor-pointer"
+            onClick={handleChangeLoginMethod}
+          >
+            Or continue with {loginLabel === "Email" ? "Phone" : "Email"}
           </div>
         </div>
       </div>
