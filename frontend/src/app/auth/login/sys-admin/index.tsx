@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
+import CommomBtn from "@/app/components/common/button";
 
 function AdminLogin() {
   const handleForgotPassword = () => {
@@ -44,7 +45,7 @@ function AdminLogin() {
       {/* LOGIN FORM */}
       <div className="w-[58.125vw] h-100vh bg-lightBg">
         <div className="w-[31.023vw] h-[44.398vh] mt-[27.832vh] ml-[13.542vw]">
-          <div className="h-[7.491vh] text-[3.331vw] text-headerText ">
+          <div className="h-[7.491vh] text-[47.97px] text-headerText font-bold">
             Login
           </div>
           <form className="mt-[5vh]">
@@ -87,12 +88,12 @@ function AdminLogin() {
             </div>
 
             <div className="mt-[2.768vh]">
-              <button
+              <CommomBtn
+                label="Login"
                 onClick={handleSubmitLogin}
-                className="w-full h-[5.557vh] bg-buttonPrimary text-buttonText rounded-[7px]"
-              >
-                Login
-              </button>
+                isFullWidth={true}
+                height={5.557}
+              />
             </div>
           </form>
         </div>
