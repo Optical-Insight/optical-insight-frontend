@@ -68,6 +68,7 @@ const InstitutesPage = () => {
   };
 
   const handleBreadcrumbClick = (value: number) => {
+    if (value === activeHeading) return;
     setActiveHeading(value);
     setActiveStep(1);
   };
