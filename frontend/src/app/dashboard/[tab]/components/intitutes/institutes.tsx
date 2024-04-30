@@ -73,7 +73,6 @@ const InstitutesPage = () => {
     setActiveStep(1);
   };
 
-  // testing github rules
   return (
     <div className="bg-lightBg w-[77.222vw] h-[100vh] overflow-auto">
       <div className="ml-[3.137vw] ">
