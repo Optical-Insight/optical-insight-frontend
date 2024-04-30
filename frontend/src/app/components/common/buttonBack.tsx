@@ -2,7 +2,7 @@
 import React from "react";
 import { CommomBtnProps } from "@/utils/interfaces";
 
-const CommomBtn = ({
+const CommomBackBtn = ({
   label,
   onClick,
   isFullWidth,
@@ -14,11 +14,11 @@ const CommomBtn = ({
       onClick={onClick}
       className={`w-${
         isFullWidth ? "full" : `[${width}vw]`
-      } h-[${height}vh] bg-buttonPrimary text-buttonText text-[16px] rounded-[7px]`}
+      } h-[${height}vh] bg-buttonSecondary text-buttonText text-[16px] rounded-[7px]`}
     >
       {label}
     </button>
   );
 };
 
-export default CommomBtn;
+export default CommomBackBtn;

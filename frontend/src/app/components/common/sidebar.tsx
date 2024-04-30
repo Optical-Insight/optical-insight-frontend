@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { SidebarItemProps } from "@/utils/interfaces";
+import { useRouter } from "next/navigation";
 
-const SidebarItem = ({ iconSrc, label }: SidebarItemProps) => (
-  <div className="flex flex-row items-center w-[18.455vw] h-[4.31vh] mb-[1.374vw] cursor-pointer">
+const SidebarItem = ({
+  iconSrc,
+  iconSrcActive,
+  label,
+  isActive,
+  handleTabChange,
+}: SidebarItemProps) => (
+  <div
+    className={`flex flex-row items-center w-[18.455vw] h-[4.31vh] mb-[1.374vw] cursor-pointer rounded-[7px] ${
+      isActive ? "bg-sidebarFillBg text-sidebarText font-semibold" : " "
+    }`}
+    onClick={() => handleTabChange(label.toLowerCase())}
+  >
     <Image
-      className="mr-[0.835vw] ml-[0.835vw]"
-      src={iconSrc}
+      className="mr-[0.835vw] ml-[0.835vw] "
+      src={isActive ? iconSrcActive : iconSrc}
       width={20.06}
       height={20.06}
       alt={label}
@@ -16,23 +28,60 @@ const SidebarItem = ({ iconSrc, label }: SidebarItemProps) => (
 );
 
 const AppSidebar = ({ tab }: { tab: string }) => {
-  //   const [isContentLoaded, setIsContentLoaded] = useState(false);
-  //   const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
 
-  console.log(tab);
+  const [activeTab, setActiveTab] = useState(tab);
+
+  const getClassNameFromLabel = (label: string) => {
+    return label.toLowerCase().replace(/\s+/g, "-");
+  };
+
+  const handleTabChange = (pressedTab: string) => {
+    setActiveTab(getClassNameFromLabel(pressedTab));
+    router.push(`/dashboard/${pressedTab.replace(/\s+/g, "-")}`);
+  };
 
   const sidebarItems = [
-    { iconSrc: "/assets/icons/home-sidebar.svg", label: "Home" },
-    { iconSrc: "/assets/icons/institute-heads.svg", label: "Institutes" },
-    { iconSrc: "/assets/icons/institute-heads.svg", label: "Institute Heads" },
-    { iconSrc: "/assets/icons/institute-heads.svg", label: "Lab Technicians" },
-    { iconSrc: "/assets/icons/institute-heads.svg", label: "Doctors" },
-    { iconSrc: "/assets/icons/institute-heads.svg", label: "Patients" },
+    {
+      iconSrc: "/assets/icons/home-sidebar.svg",
+      iconSrcActive: "/assets/icons/home-sidebar-active.svg",
+      label: "Home",
+    },
+    {
+      iconSrc: "/assets/icons/institute-heads.svg",
+      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      label: "Institutes",
+    },
+    {
+      iconSrc: "/assets/icons/institute-heads.svg",
+      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      label: "Institute Heads",
+    },
+    {
+      iconSrc: "/assets/icons/institute-heads.svg",
+      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      label: "Lab Technicians",
+    },
+    {
+      iconSrc: "/assets/icons/institute-heads.svg",
+      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      label: "Doctors",
+    },
+    {
+      iconSrc: "/assets/icons/institute-heads.svg",
+      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      label: "Patients",
+    },
     {
       iconSrc: "/assets/icons/notification-sidebar.svg",
+      iconSrcActive: "/assets/icons/notification-sidebar-active.svg",
       label: "Notification",
     },
-    { iconSrc: "/assets/icons/settings-sidebar.svg", label: "Settings" },
+    {
+      iconSrc: "/assets/icons/settings-sidebar.svg",
+      iconSrcActive: "/assets/icons/settings-sidebar-active.svg",
+      label: "Settings",
+    },
   ];
 
   return (
@@ -47,7 +96,14 @@ const AppSidebar = ({ tab }: { tab: string }) => {
 
       <div className="flex flex-col items-center">
         {sidebarItems.map((item, index) => (
-          <SidebarItem key={index} iconSrc={item.iconSrc} label={item.label} />
+          <SidebarItem
+            key={index}
+            iconSrc={item.iconSrc}
+            iconSrcActive={item.iconSrcActive}
+            label={item.label}
+            isActive={activeTab === getClassNameFromLabel(item.label)}
+            handleTabChange={handleTabChange}
+          />
         ))}
       </div>
 
