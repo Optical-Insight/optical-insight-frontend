@@ -5,6 +5,8 @@ import AppSidebar from "@/app/components/common/sidebar";
 // import PageHeader from "./page-header";
 
 function PageLayout({ tab }: { tab: string }) {
+  // const [activeTab, setActiveTab] = useState(tab);
+  // console.log(tab);
   // const { replace } = useRouter();
 
   return (

@@ -5,7 +5,8 @@ export function generateStaticParams() {
   return [
     { tab: "home" },
     { tab: "institutes" },
-    { tab: "technicians" },
+    { tab: "institute-heads" },
+    { tab: "lab-technicians" },
     { tab: "doctors" },
     { tab: "patients" },
     { tab: "notification" },
