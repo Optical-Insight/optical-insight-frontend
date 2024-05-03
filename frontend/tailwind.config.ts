@@ -18,8 +18,10 @@ const config: Config = {
         //backgrounds
         lightBg: "#F6F8FF",
         blueBg: "#0E2249",
+        lightBlueBg: "#ECF1FC",
         sidebarFillBg: "#EFF6FF",
         inputBg: "#F5F8FC",
+        dashbordIconBg: "#F0F5FB",
 
         //texts
         headerText: "#262E34",
@@ -31,6 +33,7 @@ const config: Config = {
         darkText: "#262E34",
         disabledText: "#CACACA",
         inputText: "#808080",
+        lightText: "#7F7F7F",
 
         //buttons
         buttonPrimary: "#14367B",
