@@ -1,4 +1,4 @@
-import React, { MouseEvent } from "react";
+import React from "react";
 import { InstituteListAllProps } from "@/utils/interfaces";
 import CommomBtn from "@/app/components/common/button";
 import Table from "@mui/material/Table";

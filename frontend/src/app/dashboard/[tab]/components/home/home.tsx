@@ -1,6 +1,5 @@
 "use client";
 import CommomBtn from "@/app/components/common/button";
-import Image from "next/image";
 import React from "react";
 import HomeCard from "./home-card";
 
