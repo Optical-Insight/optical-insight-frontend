@@ -2,11 +2,7 @@
 import React from "react";
 
 const NotificationsPage = () => {
-  return (
-    <div>
-      <div>Notifications Page</div>
-    </div>
-  );
+  return <div className="bg-lightBg w-[77.222vw] h-[100vh]"></div>;
 };
 
 export default NotificationsPage;

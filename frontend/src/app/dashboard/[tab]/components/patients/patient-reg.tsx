@@ -1,7 +1,10 @@
 import CommomBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
-import FormField from "@/app/components/common/formCommon";
-import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
+import {
+  FormFieldProps,
+  InstituteRegistrationProps,
+  StepProps,
+} from "@/utils/interfaces";
 import React from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -30,7 +33,28 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
   );
 };
 
-const InstituteRegistration = ({
+const FormField = ({ label, placeholder }: FormFieldProps) => {
+  return (
+    <div className="flex items-center justify-between w-full mb-[0.879vh]">
+      <label
+        htmlFor={label}
+        className="block text-[16px] text-darkText font-semibold"
+      >
+        {label}
+      </label>
+
+      <input
+        type="text"
+        name={label}
+        id={label}
+        className="flex text-[14.76px] text-inputText items-center justify-between w-[35.556vw] h-[4.883vh] bg-inputBg rounded-lg"
+        placeholder={placeholder}
+      />
+    </div>
+  );
+};
+
+const PatientRegistration = ({
   activeStep,
   setActiveStep,
 }: InstituteRegistrationProps) => {
@@ -51,7 +75,7 @@ const InstituteRegistration = ({
   return (
     <div>
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-        Register an Institute
+        Register a Patient
       </div>
 
       {/* Form */}
@@ -206,4 +230,4 @@ const InstituteRegistration = ({
   );
 };
 
-export default InstituteRegistration;
+export default PatientRegistration;
