@@ -53,3 +53,15 @@ export interface HomeCardProps {
   count: number;
   percentage: number;
 }
+
+// Patients Page
+export interface PatientListAllProps {
+  setActiveHeading: (value: number) => void;
+  handleBreadcrumbClick: (value: number) => void;
+}
+
+export interface PatientNewTestDataProps {
+  activeStep: number;
+  setActiveStep: (value: number) => void;
+  handleBreadcrumbClick: (value: number) => void;
+}

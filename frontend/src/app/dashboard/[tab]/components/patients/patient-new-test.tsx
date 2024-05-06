@@ -19,7 +19,7 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
         {number}
       </span>
       <h2 className="text-[16px] font-semibold">{title}</h2>
-      {number == 1 || number == 2 ? (
+      {number == 1 ? (
         <div
           className={`w-[4.444vw] h-[0.195vh] ${
             lineActive ? "bg-blueText" : "bg-disabledText"
@@ -30,16 +30,12 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
   );
 };
 
-const InstituteRegistration = ({
+const AddNewTestPage = ({
   activeStep,
   setActiveStep,
 }: InstituteRegistrationProps) => {
-  // const [activeStep, setActiveStep] = useState(1);
-
-  console.log("activeStep", activeStep);
-
   const stepForward = () => {
-    if (activeStep === 3) return;
+    if (activeStep === 2) return;
     setActiveStep(activeStep + 1);
   };
 
@@ -51,7 +47,7 @@ const InstituteRegistration = ({
   return (
     <div>
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-        Register an Institute
+        Add New Test Data
       </div>
 
       {/* Form */}
@@ -66,14 +62,9 @@ const InstituteRegistration = ({
           />
           <Step
             number={2}
-            title="Legal & Staff Information"
+            title="Photographs & Documents"
             active={activeStep >= 2}
             lineActive={activeStep >= 3}
-          />
-          <Step
-            number={3}
-            title="Technology Information"
-            active={activeStep >= 3}
           />
         </div>
 
@@ -114,69 +105,47 @@ const InstituteRegistration = ({
         {/* Step 02 */}
         {activeStep === 2 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
+            {/* <FormField label="Upload Images" placeholder="123 4567 890" /> */}
+            <div className="flex items-center justify-between w-full mb-[0.879vh]">
+              <label
+                htmlFor="retinal-image"
+                className="block text-[16px] text-darkText font-semibold"
+              >
+                Upload Retinal Image
+              </label>
+
+              <input
+                name="retinal-image"
+                type="file"
+                placeholder="Attach a file"
+                className="flex text-[14.76px] text-inputText items-center justify-between w-[35.556vw] h-[4.883vh] bg-inputBg rounded-lg"
+              />
+            </div>
+
             <FormField
-              label="Business Registration Number"
+              label="Image Quality Assessment"
+              placeholder="Description"
+            />
+            <FormField
+              label="Previous Lab Test Results"
+              placeholder="Blood tests for specific eye-related conditions"
+            />
+            <FormField
+              label="Previous Lab Test Reports"
               placeholder="123 4567 890"
             />
-            <FormField
-              label="Tax Identification Number"
-              placeholder="123 4567 890"
-            />
-            <FormField label="PIN" placeholder="123 4567 890" />
 
-            <FormField label="Business License" placeholder="Attach files" />
-            <div className="h-[6.445vh]" />
-            <FormField label="Number of Optometrists" placeholder="10" />
-            <FormField label="Number of Opticians" placeholder="10" />
-            <FormField label="Number of Support Staff" placeholder="10" />
             <FormField
-              label="Staff Qualifications"
-              placeholder="Bsc (Hons) in Medical Sciences"
-            />
-            <FormField
-              label="Staff Contact Information"
-              placeholder="info@visioncare.lk"
-            />
-          </div>
-        )}
-
-        {/* Step 03 */}
-        {activeStep === 3 && (
-          <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
-            <FormField
-              label="List of Equipment"
-              placeholder="Diagnostic Tools, Optical Equipment, etc."
-            />
-            <FormField
-              label="Details about Facilities"
-              placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
-            />
-            <FormField
-              label="Hours of Operation"
-              placeholder="60hrs per Week"
-            />
-            <FormField
-              label="Special Services"
-              placeholder="Home Visits, Emergency Services, etc."
+              label="Patient Consent for Data Use and Analysis"
+              placeholder="LTVC0099"
             />
             <div className="h-[6.445vh]" />
+            <FormField label="Previous Lab Test Reports" placeholder="10" />
             <FormField
-              label="Electronic Health Record (EHR) System Used"
-              placeholder="Yes"
+              label="Privacy Policy Acknowledgment"
+              placeholder="Equipment used, test settings"
             />
-            <FormField
-              label="Compatibility with Our IT Infrastructure"
-              placeholder="Compatible"
-            />
-            <FormField
-              label="Data Security Measures"
-              placeholder="Lorem Ipsum"
-            />
-            <FormField
-              label="Other Relevant Information or Specializations"
-              placeholder="Lorem Ipsum"
-            />
-            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" />
+            <FormField label="Comments or Notes" placeholder="Description" />
           </div>
         )}
 
@@ -193,7 +162,7 @@ const InstituteRegistration = ({
             </div>
             <div className="w-[15.347vw]">
               <CommomBtn
-                label={activeStep === 3 ? "Submit" : "Next"}
+                label={activeStep === 2 ? "Save & Submit" : "Next"}
                 onClick={stepForward}
                 width={15.347}
                 height={4.102}
@@ -206,4 +175,4 @@ const InstituteRegistration = ({
   );
 };
 
-export default InstituteRegistration;
+export default AddNewTestPage;
