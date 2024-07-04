@@ -11,8 +11,10 @@ const SidebarItem = ({
   handleTabChange,
 }: SidebarItemProps) => (
   <div
-    className={`flex flex-row items-center w-[18.455vw] h-[4.31vh] mb-[1.374vw] cursor-pointer rounded-[7px] ${
-      isActive ? "bg-sidebarFillBg text-sidebarText font-semibold" : " "
+    className={`flex flex-row items-center w-[18.455vw] h-[4.31vh] mb-[1.374vw] cursor-pointer rounded-[7px]  ${
+      isActive
+        ? "bg-sidebarFillBg text-sidebarText font-semibold "
+        : "text-white"
     }`}
     onClick={() => handleTabChange(label.toLowerCase())}
   >
@@ -115,7 +117,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
           width={42.17}
           height={42.17}
         />
-        <div className="flex flex-col w-[10.835vw] mr-[1.172vw]">
+        <div className="flex flex-col w-[10.835vw] mr-[1.172vw] text-white">
           <div className="text-[12.65px] cursor-pointer">
             Kithmina Siriwardana
           </div>
