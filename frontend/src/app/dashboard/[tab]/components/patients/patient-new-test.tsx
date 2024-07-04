@@ -1,6 +1,6 @@
 import CommomBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
-import FormField from "@/app/components/common/formCommon";
+import FormField from "@/app/components/common/form-common";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
 import React from "react";
 

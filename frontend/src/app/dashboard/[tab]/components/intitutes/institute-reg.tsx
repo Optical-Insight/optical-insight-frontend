@@ -1,7 +1,12 @@
 import CommomBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
-import FormField from "@/app/components/common/formCommon";
-import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
+import FormField from "@/app/components/common/form-common";
+import ModalConfirm from "@/app/components/common/modal-confirm";
+import {
+  InstituteRegistrationProps,
+  StepProps,
+  ModalConfirmProps,
+} from "@/utils/interfaces";
 import React from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -36,10 +41,17 @@ const InstituteRegistration = ({
 }: InstituteRegistrationProps) => {
   // const [activeStep, setActiveStep] = useState(1);
 
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
+
   console.log("activeStep", activeStep);
 
   const stepForward = () => {
-    if (activeStep === 3) return;
+    if (activeStep === 3) {
+      // Submit the form
+      setIsConfirmModalOpen(true);
+
+      return;
+    }
     setActiveStep(activeStep + 1);
   };
 
@@ -202,6 +214,16 @@ const InstituteRegistration = ({
           </div>
         </div>
       </div>
+
+      {/* Confirm Modal */}
+      <ModalConfirm
+        title="Confirm Institute Registration"
+        message="Are you sure you want to submit the registration form?"
+        confirmLabel="Submit"
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={() => console.log("Submitted")}
+      />
     </div>
   );
 };

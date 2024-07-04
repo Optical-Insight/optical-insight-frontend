@@ -14,6 +14,16 @@ export interface SidebarItemProps {
   handleTabChange: (tab: string) => void;
 }
 
+export interface ModalConfirmProps {
+  title: string;
+  message: string;
+  confirmLabel: string;
+  canselLabel?: string;
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+
 // Institute Page
 export interface StepProps {
   number: number;

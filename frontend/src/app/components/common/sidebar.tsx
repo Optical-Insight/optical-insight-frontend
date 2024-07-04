@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { SidebarItemProps } from "@/utils/interfaces";
 import { useRouter } from "next/navigation";
+import { IoIosArrowDropleft } from "react-icons/io";
+import { MdOutlineMenu } from "react-icons/md";
 
 const SidebarItem = ({
   iconSrc,
@@ -9,30 +11,33 @@ const SidebarItem = ({
   label,
   isActive,
   handleTabChange,
-}: SidebarItemProps) => (
+  isShrunk,
+}: SidebarItemProps & { isShrunk: boolean }) => (
   <div
-    className={`flex flex-row items-center w-[18.455vw] h-[4.31vh] mb-[1.374vw] cursor-pointer rounded-[7px]  ${
+    className={` flex flex-row items-center  ${
+      isShrunk ? "w-[50px]" : "w-[230px]"
+    } h-[44px] mb-[6px] cursor-pointer rounded-[7px] ${
       isActive
-        ? "bg-sidebarFillBg text-sidebarText font-semibold "
+        ? "bg-sidebarFillBg text-sidebarText font-semibold"
         : "text-white"
     }`}
     onClick={() => handleTabChange(label.toLowerCase())}
   >
     <Image
-      className="mr-[0.835vw] ml-[0.835vw] "
+      className={`${isShrunk ? "m-auto" : "mr-[18px] ml-[18px] "}`}
       src={isActive ? iconSrcActive : iconSrc}
       width={20.06}
       height={20.06}
       alt={label}
     />
-    <div className="text-[16.05px]">{label}</div>
+    {!isShrunk && <div className="text-[16.05px]">{label}</div>}
   </div>
 );
 
 const AppSidebar = ({ tab }: { tab: string }) => {
   const router = useRouter();
-
   const [activeTab, setActiveTab] = useState(tab);
+  const [isShrunk, setIsShrunk] = useState(false);
 
   const getClassNameFromLabel = (label: string) => {
     return label.toLowerCase().replace(/\s+/g, "-");
@@ -87,16 +92,28 @@ const AppSidebar = ({ tab }: { tab: string }) => {
   ];
 
   return (
-    <div className="w-[22.778vw] h-[100vh] bg-blueBg">
-      <Image
-        className="m-auto mt-[6.25vh] mb-[9vh]"
-        alt={"Optical Insight Logo"}
-        src="/assets/images/logo.png"
-        width={172}
-        height={68}
-      />
+    <div
+      className={`bg-blueBg px-4  ${
+        isShrunk ? "w-[72px]" : "w-[300px]"
+      } flex flex-col justify-between `}
+    >
+      <div className="flex justify-between items-center h-[140px] ">
+        <Image
+          className={`m-auto ${isShrunk ? "hidden" : "block"}`}
+          alt={"Optical Insight Logo"}
+          src="/assets/images/logo.png"
+          width={172}
+          height={68}
+        />
+        <button
+          className="text-white text-xl m-auto cursor-pointer"
+          onClick={() => setIsShrunk(!isShrunk)}
+        >
+          {isShrunk ? <MdOutlineMenu /> : <IoIosArrowDropleft />}
+        </button>
+      </div>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center flex-grow ">
         {sidebarItems.map((item, index) => (
           <SidebarItem
             key={index}
@@ -105,26 +122,31 @@ const AppSidebar = ({ tab }: { tab: string }) => {
             label={item.label}
             isActive={activeTab === getClassNameFromLabel(item.label)}
             handleTabChange={handleTabChange}
+            isShrunk={isShrunk}
           />
         ))}
       </div>
 
-      <div className="flex flex-row items-center w-[18.455vw] mt-[6vh] ml-[1.684vw]">
+      <div className="flex items-center py-10">
+        {!isShrunk && (
+          <>
+            <Image
+              className="cursor-pointer mr-[15px]"
+              alt={"Optical Insight Logo"}
+              src="/assets/images/profile-photo-sample.png"
+              width={42.17}
+              height={42.17}
+            />
+            <div className="flex flex-col text-white mr-[15px]">
+              <div className="text-[12.65px] cursor-pointer">
+                Kithmina Siriwardana
+              </div>
+              <div className="text-[12.65px]">kithmina.s@opticalin.com</div>
+            </div>
+          </>
+        )}
         <Image
-          className="ml-[0.878vw] mr-[1.172vw] cursor-pointer"
-          alt={"Optical Insight Logo"}
-          src="/assets/images/profile-photo-sample.png"
-          width={42.17}
-          height={42.17}
-        />
-        <div className="flex flex-col w-[10.835vw] mr-[1.172vw] text-white">
-          <div className="text-[12.65px] cursor-pointer">
-            Kithmina Siriwardana
-          </div>
-          <div className="text-[12.65px]">kithmina.s@opticalin.com</div>
-        </div>
-        <Image
-          className="flex cursor-pointer"
+          className={`flex cursor-pointer ${isShrunk ? "mx-auto" : "ml-auto"}`}
           alt={"Optical Insight Logo"}
           src="/assets/icons/sign-out-sidebar.svg"
           width={21.08}

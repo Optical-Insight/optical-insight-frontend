@@ -4,7 +4,7 @@ import { HomeCardProps } from "@/utils/interfaces";
 const HomeCard = ({ iconSrc, title, count, percentage }: HomeCardProps) => {
   return (
     <>
-      <div className="h-[11.328vh] w-[15.556vw] bg-white rounded-lg">
+      <div className="h-[11.328vh] w-auto md:w-auto lg:w-[15.556vw] bg-white rounded-lg">
         <div className="flex items-center h-[3.125vh] ml-[0.694vw] mr-[1.039vw] mt-[0.977vh] justify-between">
           <div className="flex ">
             <div className="h-[3.125vh] w-[2.222vw]  bg-dashbordIconBg rounded-md flex justify-center items-center">
@@ -25,7 +25,7 @@ const HomeCard = ({ iconSrc, title, count, percentage }: HomeCardProps) => {
             {count < 10 ? `0${count}` : count}
           </div>
 
-          <div className="w-[3.958vw] h-[2.441vh] bg-buttonPrimary rounded-2xl flex items-center justify-center">
+          <div className="w-auto pl-1 pr-1 h-[2.441vh] bg-buttonPrimary rounded-2xl flex items-center justify-center">
             <img src="/assets/icons/up_arrow.svg" alt="up arrow icon" />
             <div className="text-[10.77px] text-white">{percentage}%</div>
           </div>

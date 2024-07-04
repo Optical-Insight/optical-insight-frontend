@@ -59,7 +59,7 @@ const LabTechniciansPage = () => {
         </div>
 
         {/* Cards */}
-        <div className="h-[14.551vh] flex justify-between bg-lightBlueBg rounded-lg pl-[1.528vw] pr-[1.528vw] pt-[1.563vh] pb-[1.563vh]">
+        <div className="h-auto grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row justify-between bg-lightBlueBg rounded-lg p-[1.563vh] gap-4 lg:gap-4">
           <HomeCard
             iconSrc="/assets/icons/dashboard_01.svg"
             title="Total Patients"
