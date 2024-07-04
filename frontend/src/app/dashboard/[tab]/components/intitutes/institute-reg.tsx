@@ -2,11 +2,7 @@ import CommomBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
-import {
-  InstituteRegistrationProps,
-  StepProps,
-  ModalConfirmProps,
-} from "@/utils/interfaces";
+import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
 import React from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
