@@ -92,11 +92,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
   ];
 
   return (
-    <div
-      className={`bg-blueBg px-4  ${
-        isShrunk ? "w-[72px]" : "w-[300px]"
-      } flex flex-col justify-between `}
-    >
+    <div className={`bg-blueBg px-8  w-fit flex flex-col justify-between `}>
       <div className="flex justify-between items-center h-[140px] ">
         <Image
           className={`m-auto ${isShrunk ? "hidden" : "block"}`}

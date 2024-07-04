@@ -18,7 +18,7 @@ const PatientsPage = () => {
   };
 
   return (
-    <div className="bg-lightBg w-[77.222vw] h-[100vh] overflow-auto">
+    <div className="overflow-auto">
       <div className="ml-[3.137vw] mr-[4.444vw]">
         {/* Breadcrumb */}
         <div className="mt-[6.301vh] mb-[1.647vh]">
