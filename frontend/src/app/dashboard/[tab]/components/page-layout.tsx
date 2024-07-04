@@ -13,7 +13,7 @@ function PageLayout({ tab }: { tab: string }) {
     <div className="flex flex-row ">
       <AppSidebar tab={tab} />
 
-      <div>
+      <div className="w-full">
         {/* <PageHeader tab={tab} /> */}
         <PageContent tab={tab} />
       </div>
