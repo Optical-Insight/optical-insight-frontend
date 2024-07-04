@@ -13,8 +13,8 @@ const CommomBtn = ({
     <button
       onClick={onClick}
       className={`w-${
-        isFullWidth ? "full" : `[${width}vw]`
-      } h-[${height}vh] bg-buttonPrimary text-buttonText text-[16px] rounded-[7px]`}
+        isFullWidth ? "full" : `[${width}px]`
+      } h-[${height}px] bg-buttonPrimary text-buttonText text-sm xl:text-[16px] rounded-[7px]`}
     >
       {label}
     </button>
