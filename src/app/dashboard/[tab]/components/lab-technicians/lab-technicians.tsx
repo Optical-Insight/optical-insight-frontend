@@ -84,12 +84,6 @@ const LabTechniciansPage = () => {
           percentage={2}
         />
       </div>
-
-      {/* Table */}
-      {/* <div className="flex justify-between pt-[1.758vh] pb-[2.246vh] pl-[1.528vw] pr-[1.528vw] mt-[0.781vh]  bg-lightBlueBg rounded-lg">
-          <div className="w-[32.431vw] h-[51.125vh] bg-white rounded-lg"></div>
-          <div className="w-[32.431vw] h-[51.125vh] bg-white rounded-lg"></div>
-        </div> */}
     </div>
   );
 };
