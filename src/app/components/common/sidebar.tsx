@@ -4,6 +4,7 @@ import { SidebarItemProps } from "@/utils/interfaces";
 import { useRouter } from "next/navigation";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { MdOutlineMenu } from "react-icons/md";
+import logo from "../../../../public/logo.png";
 
 const SidebarItem = ({
   iconSrc,
@@ -97,7 +98,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
         <Image
           className={`m-auto ${isShrunk ? "hidden" : "block"}`}
           alt={"Optical Insight Logo"}
-          src="/logo.png"
+          src={logo}
           width={172}
           height={68}
         />
