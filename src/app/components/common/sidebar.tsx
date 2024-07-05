@@ -97,6 +97,20 @@ const AppSidebar = ({ tab }: { tab: string }) => {
         <Image
           className={`m-auto ${isShrunk ? "hidden" : "block"}`}
           alt={"Optical Insight Logo"}
+          src="/public/assets/images/logo.png"
+          width={172}
+          height={68}
+        />
+        <Image
+          className={`m-auto ${isShrunk ? "hidden" : "block"}`}
+          alt={"Optical Insight Logo"}
+          src="./public/assets/images/logo.png"
+          width={172}
+          height={68}
+        />
+        <Image
+          className={`m-auto ${isShrunk ? "hidden" : "block"}`}
+          alt={"Optical Insight Logo"}
           src="/assets/images/logo.png"
           width={172}
           height={68}
