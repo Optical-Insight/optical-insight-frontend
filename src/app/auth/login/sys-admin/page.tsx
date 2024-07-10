@@ -5,11 +5,13 @@ import CommomBtn from "@/app/components/common/button";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const { replace } = useRouter();
 
   const handleForgotPassword = () => {
     console.log("Forgot password clicked");
@@ -20,13 +22,14 @@ function AdminLogin() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:5004/api/auth/login`,
+        `http://localhost:5000/api/admins/login`,
         {
           email,
           password,
         }
       );
       console.log("Login successful:", response.data);
+      replace("/dashboard/home");
     } catch (error) {
       console.error("Error logging in:", error);
     }
@@ -59,30 +62,28 @@ function AdminLogin() {
       {/* LOGIN FORM */}
       <div className="w-[58.125vw] h-full bg-lightBg">
         <div className="w-full h-full border flex justify-center items-center">
-          <div className="w-[31.023vw] ">
-            <div className="h-[7.491vh] text-[47.97px] text-headerText font-bold">
-              Login
-            </div>
-            <form className="mt-[5vh]" onSubmit={handleSubmitLogin}>
-              <div className="mt-[2.768vh]">
-                <label className="block text-[15.99px] text-labelText">
+          <div className="w-[60%]">
+            <div className="text-4xl text-headerText font-bold pb-5">Login</div>
+            <form className="mt-6" onSubmit={handleSubmitLogin}>
+              <div>
+                <label className="block text-base text-labelText">
                   Email Address
                 </label>
                 <input
                   type="email"
                   placeholder="kamal@opticin.com"
-                  className="w-full h-[5.563vh] mt-[0.781vh] rounded-[7px] text-inputText"
+                  className="text-base w-full h-12 mt-1 rounded-lg"
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
-              <div className="mt-[2.768vh]">
+              <div className="mt-6">
                 <div className="flex flex-row justify-between">
-                  <label className="block text-[15.99px] text-labelText ">
+                  <label className="block text-base text-labelText ">
                     Password
                   </label>
                   <label
-                    className="block text-[15.99px] text-lightBlueText cursor-pointer"
+                    className="block text-base text-lightBlueText cursor-pointer"
                     onClick={handleForgotPassword}
                   >
                     Forgot Password?
@@ -92,7 +93,7 @@ function AdminLogin() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="************"
-                    className="w-full h-[5.563vh] mt-[0.781vh] rounded-[7px] text-inputText"
+                    className="text-base w-full h-12 mt-1 rounded-lg "
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <div className="absolute right-2 top-2/3 transform -translate-y-2/3 text-labelText">
@@ -109,22 +110,19 @@ function AdminLogin() {
                 </div>
               </div>
 
-              <div className="mt-[2.768vh] flex items-center ">
-                <input
-                  type="checkbox"
-                  className="w-[1.389vw] h-[1.953vh] mr-[0.556vw] "
-                />
-                <label className="block text-[15.99px] text-labelText">
+              <div className="flex items-center mt-3 mb-5 ml-[1px]">
+                <input type="checkbox" className="mr-[0.556vw] " />
+                <label className="block text-base text-labelText">
                   Keep me signed in
                 </label>
               </div>
 
-              <div className="mt-[2.768vh]">
+              <div className="mx-auto flex justify-center h-12">
                 <CommomBtn
                   label="Login"
                   onClick={() => handleSubmitLogin}
                   isFullWidth={true}
-                  height={50}
+                  height={48}
                 />
               </div>
             </form>
