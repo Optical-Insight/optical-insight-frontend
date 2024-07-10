@@ -1,4 +1,4 @@
-import CommomBtn from "@/app/components/common/button";
+import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
@@ -161,7 +161,7 @@ const AddNewTestPage = ({
               />
             </div>
             <div className="w-[15.347vw]">
-              <CommomBtn
+              <CommonBtn
                 label={activeStep === 2 ? "Save & Submit" : "Next"}
                 onClick={stepForward}
                 width={15.347}

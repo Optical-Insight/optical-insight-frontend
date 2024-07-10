@@ -1,4 +1,4 @@
-import CommomBtn from "@/app/components/common/button";
+import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
@@ -200,7 +200,7 @@ const InstituteRegistration = ({
               />
             </div>
             <div className="w-[15.347vw]">
-              <CommomBtn
+              <CommonBtn
                 label={activeStep === 3 ? "Submit" : "Next"}
                 onClick={stepForward}
                 width={15.347}

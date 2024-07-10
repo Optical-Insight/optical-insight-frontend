@@ -1,6 +1,6 @@
 import React from "react";
 import { InstituteListAllProps } from "@/utils/interfaces";
-import CommomBtn from "@/app/components/common/button";
+import CommonBtn from "@/app/components/common/button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -41,7 +41,7 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
           List of all Institutes
         </div>
         <div className="flex h-[4.102vh] w-[15.347vw] ">
-          <CommomBtn
+          <CommonBtn
             label="Register new Institute"
             onClick={() => setActiveHeading && setActiveHeading(2)}
             width={15.347}

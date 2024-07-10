@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { CommomBtnProps } from "@/utils/interfaces";
+import { CommonBtnProps } from "@/utils/interfaces";
 
 const CommomBackBtn = ({
   label,
@@ -8,7 +8,7 @@ const CommomBackBtn = ({
   isFullWidth,
   width,
   height,
-}: CommomBtnProps) => {
+}: CommonBtnProps) => {
   return (
     <button
       onClick={onClick}

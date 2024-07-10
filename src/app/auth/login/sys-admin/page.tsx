@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import CommomBtn from "@/app/components/common/button";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import axios from "axios";
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -14,8 +15,21 @@ function AdminLogin() {
     console.log("Forgot password clicked");
   };
 
-  const handleSubmitLogin = () => {
-    console.log("Login clicked ", "Email:", email, " Password:", password);
+  const handleSubmitLogin = async (e: any) => {
+    console.log("Login clicked: email:", email, "password:", password);
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `http://localhost:5004/api/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
+      console.log("Login successful:", response.data);
+    } catch (error) {
+      console.error("Error logging in:", error);
+    }
   };
 
   return (
@@ -49,7 +63,7 @@ function AdminLogin() {
             <div className="h-[7.491vh] text-[47.97px] text-headerText font-bold">
               Login
             </div>
-            <form className="mt-[5vh]">
+            <form className="mt-[5vh]" onSubmit={handleSubmitLogin}>
               <div className="mt-[2.768vh]">
                 <label className="block text-[15.99px] text-labelText">
                   Email Address
@@ -108,9 +122,9 @@ function AdminLogin() {
               <div className="mt-[2.768vh]">
                 <CommomBtn
                   label="Login"
-                  onClick={handleSubmitLogin}
+                  onClick={() => handleSubmitLogin}
                   isFullWidth={true}
-                  height={5.557}
+                  height={50}
                 />
               </div>
             </form>

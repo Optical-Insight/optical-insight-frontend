@@ -1,5 +1,5 @@
 "use client";
-import CommomBtn from "@/app/components/common/button";
+import CommonBtn from "@/app/components/common/button";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -59,7 +59,7 @@ function PatientLogin() {
               />
             </div>
             <div className="mt-[2.768vh] mx-auto w-[30.962vw] h-[5.557vh] flex justify-center">
-              <CommomBtn
+              <CommonBtn
                 label="Login"
                 onClick={handleSubmitLogin}
                 isFullWidth={true}

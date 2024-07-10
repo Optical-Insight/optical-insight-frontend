@@ -1,7 +1,8 @@
 "use client";
-import CommomBtn from "@/app/components/common/button";
+import CommonBtn from "@/app/components/common/button";
 import React from "react";
 import HomeCard from "../../../../components/common/home-card";
+import Image from "next/image";
 
 const handleSubmit = () => {
   console.log("Button clicked");
@@ -12,22 +13,28 @@ const LabTechniciansPage = () => {
     <div className=" pl-[3.125vw] pr-[4.444vw] pt-[6.25vh] pb-[4.785vh]">
       {/* Top bar */}
       <div className="pt-[1.563vh] pb-[1.563vh] pl-[1.52vw] pr-[1.544vw] flex justify-between bg-lightBlueBg rounded-lg">
-        <div className="w-[28.331vw] h-[4.688vh] flex">
+        <div className="relative w-[30vw] h-[4.688vh] flex  bg-white rounded-lg">
           <input
             type="search"
             placeholder="  Search Anything here..."
-            className="w-full h-full bg-white text-sm xl:text-base rounded-lg"
+            className="w-full h-full bg-white rounded-lg text-sm xl:text-base "
           />
-          <img
-            src="/assets/icons/search.svg"
-            alt="search"
-            className="absolute justify-center items-center ml-[25.567vw] mt-[1.367vh]"
-          />
+
+          <div className="flex items-center mr-[6px]">
+            <Image
+              src="/assets/icons/search.svg"
+              alt="search"
+              height={20}
+              width={20}
+            />
+          </div>
         </div>
-        <div className="flex items-center justify-center w-[3.317vw] h-[4.688vh] bg-white  rounded-lg">
-          <img
+        <div className="relative flex items-center justify-center w-[3.317vw] h-[4.688vh] bg-white  rounded-lg">
+          <Image
             src="/assets/icons/notifications_bell.svg"
             alt="notification icon"
+            height={24}
+            width={24}
           />
         </div>
       </div>
@@ -39,7 +46,7 @@ const LabTechniciansPage = () => {
         </div>
         <div className="flex gap-[0.556vw]">
           <div className="text-headerText text-sm xl:text-[16px] w-[15.347vw] h-[4.102vh] font-medium ">
-            <CommomBtn
+            <CommonBtn
               label="Add new Patient"
               onClick={handleSubmit}
               isFullWidth={true}
@@ -47,7 +54,7 @@ const LabTechniciansPage = () => {
             />
           </div>
           <div className="text-headerText text-sm xl:text-[16px] w-[15.347vw] h-[4.102vh] font-medium ">
-            <CommomBtn
+            <CommonBtn
               label="Add new Doctor"
               onClick={handleSubmit}
               isFullWidth={true}

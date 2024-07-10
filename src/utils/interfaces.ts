@@ -1,4 +1,4 @@
-export interface CommomBtnProps {
+export interface CommonBtnProps {
   label: string;
   onClick: () => void;
   isFullWidth?: boolean;
