@@ -14,7 +14,7 @@ const CommonBtn = ({
       onClick={onClick}
       className={`w-${
         isFullWidth ? "full" : `[${width}px]`
-      } h-[${height}px] bg-buttonPrimary text-buttonText text-sm xl:text-[16px] rounded-[7px]`}
+      } h-[${height}px] bg-buttonPrimary text-buttonText text-sm md:text-base rounded-[7px]`}
     >
       {label}
     </button>

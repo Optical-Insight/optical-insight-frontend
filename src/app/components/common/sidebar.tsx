@@ -15,7 +15,7 @@ const SidebarItem = ({
 }: SidebarItemProps & { isShrunk: boolean }) => (
   <div
     className={` flex flex-row items-center  ${
-      isShrunk ? "w-[50px]" : "w-[230px]"
+      isShrunk ? "w-[40px]" : "w-[230px]"
     } h-[44px] mb-[6px] cursor-pointer rounded-[7px] ${
       isActive
         ? "bg-sidebarFillBg text-sidebarText font-semibold"
@@ -46,6 +46,10 @@ const AppSidebar = ({ tab }: { tab: string }) => {
   const handleTabChange = (pressedTab: string) => {
     setActiveTab(getClassNameFromLabel(pressedTab));
     router.push(`/dashboard/${pressedTab.replace(/\s+/g, "-")}`);
+  };
+
+  const handleLogout = () => {
+    router.push("/");
   };
 
   const sidebarItems = [
@@ -147,6 +151,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
           src="/assets/icons/sign-out-sidebar.svg"
           width={21.08}
           height={21.08}
+          onClick={() => handleLogout}
         />
       </div>
     </div>
