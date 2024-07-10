@@ -20,8 +20,14 @@ const HomeCard = ({ iconSrc, title, count, percentage }: HomeCardProps) => {
             {title}
           </div>
         </div>
-        <div>
-          <img src="/assets/icons/three_dots.svg" alt="three_dots icon" />
+        <div className="relative">
+          {/* <img src="/assets/icons/three_dots.svg" alt="three_dots icon" /> */}
+          <Image
+            src="/assets/icons/three_dots.svg"
+            alt="three_dots icon"
+            height={5}
+            width={5}
+          />
         </div>
       </div>
 
@@ -30,8 +36,14 @@ const HomeCard = ({ iconSrc, title, count, percentage }: HomeCardProps) => {
           {count < 10 ? `0${count}` : count}
         </div>
 
-        <div className="w-auto pl-1 pr-1 h-[2.441vh] bg-buttonPrimary rounded-2xl flex items-center justify-center">
-          <img src="/assets/icons/up_arrow.svg" alt="up arrow icon" />
+        <div className="relative w-auto pl-1 pr-1 h-[2.441vh] bg-buttonPrimary rounded-2xl flex items-center justify-center">
+          {/* <img src="/assets/icons/up_arrow.svg" alt="up arrow icon" /> */}
+          <Image
+            src="/assets/icons/up_arrow.svg"
+            alt="up arrow icon"
+            height={14}
+            width={14}
+          />
           <div className="text-[10.77px] text-white">{percentage}%</div>
         </div>
       </div>
