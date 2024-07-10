@@ -1,6 +1,6 @@
 import React from "react";
 import { PatientListAllProps } from "@/utils/interfaces";
-import CommomBtn from "@/app/components/common/button";
+import CommonBtn from "@/app/components/common/button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -41,7 +41,7 @@ const PatientListAll = ({ handleBreadcrumbClick }: PatientListAllProps) => {
           List of all Patients
         </div>
         <div className="flex h-[4.102vh] w-[15.347vw] ">
-          <CommomBtn
+          <CommonBtn
             label="Register new Patient"
             onClick={() => {}}
             width={15.347}
