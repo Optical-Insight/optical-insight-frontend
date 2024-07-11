@@ -6,26 +6,38 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import ModalConfirmTextInput from "@/app/components/common/modal-confirmTextInput";
 
 function AdminLogin() {
   const adminBaseUrl = process.env.NEXT_PUBLIC_ADMIN_BASE_URL;
   const loginUrl = `${adminBaseUrl}/admins/login`;
-  // const forgotPasswordUrl = `${adminBaseUrl}/admins/forgot-password`;
+  const forgotPasswordUrl = `${adminBaseUrl}/admins/forgot-password`;
+
+  const { replace } = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { replace } = useRouter();
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const handleForgotPassword = async () => {
     console.log("Forgot password clicked");
-    // try {
-    //   const response = await axios.post(forgotPasswordUrl, {
-    //     email,
-    //   });
-    //   console.log("Forgot Password Success:", response.data);
-    // } catch (error) {
-    //   console.error("Error in Forgot Password:", error);
-    // }
+    setIsCompleted(false);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmForgotPassword = async (text: string) => {
+    console.log("Confirm clicked:", text);
+    try {
+      const response = await axios.post(forgotPasswordUrl, {
+        email: text,
+      });
+      console.log("Forgot Password Success:", response.data);
+      setIsCompleted(true);
+    } catch (error) {
+      console.error("Error in Forgot Password:", error);
+    }
   };
 
   const handleSubmitLogin = async (e: any) => {
@@ -137,6 +149,22 @@ function AdminLogin() {
           </div>
         </div>
       </div>
+
+      {/* Forget Password Confirm Modal */}
+      <ModalConfirmTextInput
+        title="Did you forget your password?"
+        message="Please enter your email address to reset your password"
+        inputPlaceholder="kamal@opticin.com"
+        confirmLabel="Reset Password"
+        canselLabel="Cancel"
+        isOpen={isConfirmModalOpen}
+        isCompleted={isCompleted}
+        titleCompleted="Password Reset Link Sent"
+        messageCompleted="A password reset link has been sent to your email address"
+        confirmLabelCompleted="Close"
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleConfirmForgotPassword}
+      />
     </div>
   );
 }

@@ -24,6 +24,21 @@ export interface ModalConfirmProps {
   onConfirm: () => void;
 }
 
+export interface ModalConfirmTextInputProps {
+  title: string;
+  message: string;
+  confirmLabel: string;
+  canselLabel?: string;
+  inputPlaceholder?: string;
+  isCompleted?: boolean;
+  titleCompleted?: string;
+  messageCompleted?: string;
+  confirmLabelCompleted?: string;
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: (inputText: string) => void;
+}
+
 // Institute Page
 export interface StepProps {
   number: number;
