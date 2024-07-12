@@ -1,9 +1,9 @@
 export interface CommonBtnProps {
   label: string;
   onClick: () => void;
-  isFullWidth?: boolean;
-  width?: number;
-  height: number;
+  // isFullWidth?: boolean;
+  // width?: number;
+  // height: number;
 }
 
 export interface SidebarItemProps {

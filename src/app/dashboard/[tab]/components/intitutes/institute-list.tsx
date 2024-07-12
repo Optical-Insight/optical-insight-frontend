@@ -1,77 +1,73 @@
 import React from "react";
 import { InstituteListAllProps } from "@/utils/interfaces";
 import CommonBtn from "@/app/components/common/button";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TablePaginationActions from "./table-pagination";
-import { TableHead } from "@mui/material";
 import rows from "./table-data";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import Table from "@mui/material/Table";
+// import TableBody from "@mui/material/TableBody";
+// import TableCell from "@mui/material/TableCell";
+// import TableContainer from "@mui/material/TableContainer";
+// import TableFooter from "@mui/material/TableFooter";
+// import TablePagination from "@mui/material/TablePagination";
+// import TableRow from "@mui/material/TableRow";
+// import Paper from "@mui/material/Paper";
+// import TablePaginationActions from "./table-pagination";
+// import { TableHead } from "@mui/material";
+// import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (
+  //   event: React.MouseEvent<HTMLButtonElement> | null,
+  //   newPage: number
+  // ) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event: any) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event: any) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   return (
     <div>
-      <div className="flex justify-between mb-[2.765vh] items-center">
-        <div className="text-darkText font-bold text-[40.17px]">
+      <div className="flex justify-between mb-[25px] items-center ">
+        <div className="text-darkText font-bold text-4xl lg:text-[40px] ">
           List of all Institutes
         </div>
-        <div className="flex h-[4.102vh] w-[15.347vw] ">
+        <div className="flex h-[42px] w-[221px] ">
           <CommonBtn
             label="Register new Institute"
             onClick={() => setActiveHeading && setActiveHeading(2)}
-            width={15.347}
-            height={4.102}
           />
         </div>
       </div>
 
       {/* Filter */}
-      <div className="flex bg-lightBlueBg w-full rounded-xl pt-[1.563vh] pb-[1.953vh] pl-[1.563vw] pr-[1.563vw] mb-[1.563vh] justify-between">
+      <div className="flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between ">
         {/* Search for an Institute */}
         <div className="flex flex-col">
-          <label className="text-labelText text-[16px] mb-[0.781vh]">
+          <label className="text-labelText text-[16px] mb-[6px]">
             Search for an Institute
           </label>
           <input
             type="search"
             placeholder="Search Institute by name"
-            className="w-[35.278vw] h-[5.566vh] bg-white rounded-lg text-inputText text-[16.99px]"
+            className="flex-grow h-[40px] bg-white rounded-lg text-inputText text-[16.99px]"
           />
         </div>
 
         {/* Status */}
         <div className="flex flex-col">
-          <label className="text-labelText text-[16px] mb-[0.781vh]">
-            Status
-          </label>
+          <label className="text-labelText text-[16px] mb-[6px]">Status</label>
           <select
             name="status"
-            className="w-[14.514vw] h-[5.566vh] bg-white rounded-lg text-inputText text-[16.99px]"
+            className="h-[40px] bg-white rounded-lg text-inputText text-[16.99px]"
           >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
@@ -81,12 +77,12 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
 
         {/* Location */}
         <div className="flex flex-col">
-          <label className="text-labelText text-[16px] mb-[0.781vh]">
+          <label className="text-labelText text-[16px] mb-[6px]">
             Location
           </label>
           <select
             name="location"
-            className="w-[14.514vw] h-[5.566vh] bg-white rounded-lg text-inputText text-[16.99px]"
+            className="h-[40px] bg-white rounded-lg text-inputText text-[16.99px]"
           >
             <option value="colombo">Colombo</option>
             <option value="kandy">Kandy</option>
@@ -96,7 +92,7 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
       </div>
 
       {/* Table - MUI */}
-      <div className="mb-[4.785vh]">
+      {/* <div className="mb-[45px]">
         <TableContainer component={Paper} className="rounded-lg">
           <Table aria-label="custom pagination table">
             <TableHead>
@@ -160,7 +156,7 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
             </TableFooter>
           </Table>
         </TableContainer>
-      </div>
+      </div> */}
     </div>
   );
 };
