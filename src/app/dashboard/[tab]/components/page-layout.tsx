@@ -10,7 +10,7 @@ function PageLayout({ tab }: { tab: string }) {
   // const { replace } = useRouter();
 
   return (
-    <div className="flex flex-row bg-lightBg min-h-screen w-screen">
+    <div className="flex flex-row bg-lightBg min-h-fit min-w-full w-fit">
       <AppSidebar tab={tab} />
 
       <div className="flex-grow">

@@ -26,6 +26,7 @@ const PatientListAll = ({ handleBreadcrumbClick }: PatientListAllProps) => {
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
+    console.log("newPage", newPage);
     setPage(newPage);
   };
 
@@ -98,11 +99,21 @@ const PatientListAll = ({ handleBreadcrumbClick }: PatientListAllProps) => {
           <Table aria-label="custom pagination table">
             <TableHead>
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
-                <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">NIC</TableCell>
-                <TableCell className="font-bold">Location</TableCell>
-                <TableCell className="font-bold">Email</TableCell>
-                <TableCell className="font-bold">Action</TableCell>
+                <TableCell className="font-bold text-[0.7rem] md:text-[1rem]">
+                  Name
+                </TableCell>
+                <TableCell className="font-bold text-[0.7rem] md:text-[1rem]">
+                  NIC
+                </TableCell>
+                <TableCell className="font-bold text-[0.7rem] md:text-[1rem]">
+                  Location
+                </TableCell>
+                <TableCell className="font-bold text-[0.7rem] md:text-[1rem]">
+                  Email
+                </TableCell>
+                <TableCell className="font-bold text-[0.7rem] md:text-[1rem]">
+                  Action
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -114,12 +125,22 @@ const PatientListAll = ({ handleBreadcrumbClick }: PatientListAllProps) => {
                 : rows
               ).map((row) => (
                 <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    className="font-bold text-[0.1rem] md:text-[1rem]"
+                  >
                     {row.name}
                   </TableCell>
-                  <TableCell>{row.status}</TableCell>
-                  <TableCell>{row.location}</TableCell>
-                  <TableCell>{row.email}</TableCell>
+                  <TableCell className="font-bold text-[0.1rem] md:text-[1rem]">
+                    {row.status}
+                  </TableCell>
+                  <TableCell className="font-bold text-[0.1rem] md:text-[1rem]">
+                    {row.location}
+                  </TableCell>
+                  <TableCell className="font-bold text-[0.1rem] md:text-[1rem]">
+                    {row.email}
+                  </TableCell>
                   <TableCell
                     onClick={() => handleBreadcrumbClick(3)}
                     className="cursor-pointer"
@@ -139,7 +160,7 @@ const PatientListAll = ({ handleBreadcrumbClick }: PatientListAllProps) => {
             <TableFooter className="bg-lightBlueBg">
               <TableRow>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  rowsPerPageOptions={[5, 20, 25, { label: "All", value: -1 }]}
                   colSpan={5}
                   count={rows.length}
                   rowsPerPage={rowsPerPage}
