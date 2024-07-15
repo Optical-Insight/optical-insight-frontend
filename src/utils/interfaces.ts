@@ -1,9 +1,9 @@
 export interface CommonBtnProps {
   label: string;
   onClick: () => void;
-  isFullWidth?: boolean;
-  width?: number;
-  height: number;
+  // isFullWidth?: boolean;
+  // width?: number;
+  // height: number;
 }
 
 export interface SidebarItemProps {
@@ -37,6 +37,14 @@ export interface ModalConfirmTextInputProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (inputText: string) => void;
+}
+
+export interface SearchFilterProps {
+  labelSearch: string;
+  placeholderSearch: string;
+  labelSelectOne: string;
+  labelSelectTwo: string;
+  onSearch: (value: string) => void;
 }
 
 // Institute Page

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { SidebarItemProps } from "@/utils/interfaces";
 import { useRouter } from "next/navigation";
@@ -38,6 +38,21 @@ const AppSidebar = ({ tab }: { tab: string }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(tab);
   const [isShrunk, setIsShrunk] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setIsShrunk(true);
+      } else {
+        setIsShrunk(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const getClassNameFromLabel = (label: string) => {
     return label.toLowerCase().replace(/\s+/g, "-");
@@ -96,7 +111,9 @@ const AppSidebar = ({ tab }: { tab: string }) => {
   ];
 
   return (
-    <div className={`bg-blueBg px-8  w-fit flex flex-col justify-between `}>
+    <div
+      className={`bg-blueBg px-6 lg:px-8 w-fit flex flex-col justify-between `}
+    >
       <div className="flex justify-between items-center h-[140px] ">
         <Image
           className={`m-auto ${isShrunk ? "hidden" : "block"}`}
@@ -151,7 +168,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
           src="/assets/icons/sign-out-sidebar.svg"
           width={21.08}
           height={21.08}
-          onClick={() => handleLogout}
+          onClick={handleLogout}
         />
       </div>
     </div>

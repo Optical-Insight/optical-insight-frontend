@@ -1,6 +1,7 @@
 import React from "react";
 import { InstituteListAllProps } from "@/utils/interfaces";
 import CommonBtn from "@/app/components/common/button";
+import rows from "./table-data";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,8 +12,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePaginationActions from "./table-pagination";
 import { TableHead } from "@mui/material";
-import rows from "./table-data";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import SearchFilter from "@/app/components/common/search-filter";
 
 const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
   const [page, setPage] = React.useState(0);
@@ -36,67 +37,29 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
 
   return (
     <div>
-      <div className="flex justify-between mb-[2.765vh] items-center">
-        <div className="text-darkText font-bold text-[40.17px]">
+      <div className="flex justify-between mb-[25px] items-center ">
+        <div className="text-darkText font-bold text-4xl lg:text-[40px] ">
           List of all Institutes
         </div>
-        <div className="flex h-[4.102vh] w-[15.347vw] ">
+        <div className="flex h-[42px] w-[221px] ">
           <CommonBtn
             label="Register new Institute"
             onClick={() => setActiveHeading && setActiveHeading(2)}
-            width={15.347}
-            height={4.102}
           />
         </div>
       </div>
 
       {/* Filter */}
-      <div className="flex bg-lightBlueBg w-full rounded-xl pt-[1.563vh] pb-[1.953vh] pl-[1.563vw] pr-[1.563vw] mb-[1.563vh] justify-between">
-        {/* Search for an Institute */}
-        <div className="flex flex-col">
-          <label className="text-labelText text-[16px] mb-[0.781vh]">
-            Search for an Institute
-          </label>
-          <input
-            type="search"
-            placeholder="Search Institute by name"
-            className="w-[35.278vw] h-[5.566vh] bg-white rounded-lg text-inputText text-[16.99px]"
-          />
-        </div>
-
-        {/* Status */}
-        <div className="flex flex-col">
-          <label className="text-labelText text-[16px] mb-[0.781vh]">
-            Status
-          </label>
-          <select
-            name="status"
-            className="w-[14.514vw] h-[5.566vh] bg-white rounded-lg text-inputText text-[16.99px]"
-          >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-            <option value="pending">Pending</option>
-          </select>
-        </div>
-
-        {/* Location */}
-        <div className="flex flex-col">
-          <label className="text-labelText text-[16px] mb-[0.781vh]">
-            Location
-          </label>
-          <select
-            name="location"
-            className="w-[14.514vw] h-[5.566vh] bg-white rounded-lg text-inputText text-[16.99px]"
-          >
-            <option value="colombo">Colombo</option>
-            <option value="kandy">Kandy</option>
-            <option value="gampaha">Gampaha</option>
-          </select>
-        </div>
-      </div>
+      <SearchFilter
+        labelSearch="Search for an Institute"
+        placeholderSearch="Search Institute by name"
+        labelSelectOne="Status"
+        labelSelectTwo="Location"
+        onSearch={() => {}}
+      />
 
       {/* Table - MUI */}
-      <div className="mb-[4.785vh]">
+      {/* <div className="mb-[45px]">
         <TableContainer component={Paper} className="rounded-lg">
           <Table aria-label="custom pagination table">
             <TableHead>
@@ -160,7 +123,7 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
             </TableFooter>
           </Table>
         </TableContainer>
-      </div>
+      </div> */}
     </div>
   );
 };

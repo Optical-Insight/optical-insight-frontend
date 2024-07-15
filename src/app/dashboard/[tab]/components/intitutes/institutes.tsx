@@ -16,10 +16,10 @@ const InstitutesPage = () => {
   };
 
   return (
-    <div className=" overflow-auto">
+    <div className="overflow-auto">
       <div className="ml-[3.137vw] mr-[4.444vw]">
         {/* Breadcrumb */}
-        <div className="mt-[6.301vh] mb-[1.647vh]">
+        <div className="mt-[50px] mb-[16px]">
           <Breadcrumbs
             separator={
               <Image
@@ -39,7 +39,7 @@ const InstitutesPage = () => {
               onClick={() => handleBreadcrumbClick(1)}
             >
               <Image
-                className="mr-[0.44vw] ml-[0.732vw] "
+                className="mr-[0.44vw]"
                 src={
                   activeHeading === 1
                     ? "/assets/icons/apartment-active.svg"
