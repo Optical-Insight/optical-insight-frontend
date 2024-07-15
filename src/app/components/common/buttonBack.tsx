@@ -2,19 +2,12 @@
 import React from "react";
 import { CommonBtnProps } from "@/utils/interfaces";
 
-const CommomBackBtn = ({
-  label,
-  onClick,
-  isFullWidth,
-  width,
-  height,
-}: CommonBtnProps) => {
+const CommomBackBtn = ({ label, onClick }: CommonBtnProps) => {
   return (
     <button
       onClick={onClick}
-      className={`w-${
-        isFullWidth ? "full" : `[${width}vw]`
-      } h-[${height}vh] bg-buttonSecondary text-buttonText text-[16px] rounded-[7px]`}
+      className={`h-full bg-buttonPrimary text-buttonText text-sm md:text-base rounded-[7px] px-[15px]`}
+      // dangerouslySetInnerHTML={{ __html: label }}
     >
       {label}
     </button>

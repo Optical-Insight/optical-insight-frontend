@@ -192,19 +192,12 @@ const InstituteRegistration = ({
         <div className="flex justify-end mt-[3.125vh] ml-[3.403vw] mr-[4.722vw] h-[4.102vh] ">
           <div className="w-[32.5vw] flex justify-between ">
             <div className="w-[15.347vw]">
-              <CommomBackBtn
-                label="Back"
-                onClick={stepBackward}
-                width={15.347}
-                height={4.102}
-              />
+              <CommomBackBtn label="Back" onClick={stepBackward} />
             </div>
             <div className="w-[15.347vw]">
               <CommonBtn
                 label={activeStep === 3 ? "Submit" : "Next"}
                 onClick={stepForward}
-                width={15.347}
-                height={4.102}
               />
             </div>
           </div>

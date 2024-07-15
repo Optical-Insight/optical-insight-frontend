@@ -58,12 +58,7 @@ function PatientLogin() {
             />
           </div>
           <div className="mx-auto flex justify-center mt-5 ml-4 mr-4 h-9 md:h-12">
-            <CommonBtn
-              label="Login"
-              onClick={handleSubmitLogin}
-              isFullWidth={true}
-              height={48}
-            />
+            <CommonBtn label="Login" onClick={handleSubmitLogin} />
           </div>
           <div
             className="mt-3 mx-auto w-full flex justify-center text-buttonPrimary text-sm  cursor-pointer "
