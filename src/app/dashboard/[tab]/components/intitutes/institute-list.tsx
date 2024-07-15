@@ -1,18 +1,18 @@
 import React from "react";
 import { InstituteListAllProps } from "@/utils/interfaces";
 import CommonBtn from "@/app/components/common/button";
-import rows from "./table-data";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TablePaginationActions from "./table-pagination";
-import { TableHead } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import rows from "./table-data";
+// import Table from "@mui/material/Table";
+// import TableBody from "@mui/material/TableBody";
+// import TableCell from "@mui/material/TableCell";
+// import TableContainer from "@mui/material/TableContainer";
+// import TableFooter from "@mui/material/TableFooter";
+// import TablePagination from "@mui/material/TablePagination";
+// import TableRow from "@mui/material/TableRow";
+// import Paper from "@mui/material/Paper";
+// import TablePaginationActions from "./table-pagination";
+// import { TableHead } from "@mui/material";
+// import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SearchFilter from "@/app/components/common/search-filter";
 
 const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
@@ -20,20 +20,20 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (
+  //   event: React.MouseEvent<HTMLButtonElement> | null,
+  //   newPage: number
+  // ) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event: any) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event: any) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   return (
     <div>
@@ -41,7 +41,7 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
         <div className="text-darkText font-bold text-4xl lg:text-[40px] ">
           List of all Institutes
         </div>
-        <div className="flex h-[42px] w-[221px] ">
+        <div className="flex h-[42px]">
           <CommonBtn
             label="Register new Institute"
             onClick={() => setActiveHeading && setActiveHeading(2)}
@@ -52,9 +52,19 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
       {/* Filter */}
       <SearchFilter
         labelSearch="Search for an Institute"
-        placeholderSearch="Search Institute by name"
         labelSelectOne="Status"
         labelSelectTwo="Location"
+        placeholderSearch="Search Institute by name"
+        optionsSelectOne={[
+          { value: "active", label: "Active" },
+          { value: "inactive", label: "Inactive" },
+          { value: "pending", label: "Pending" },
+        ]}
+        optionsSelectTwo={[
+          { value: "colombo", label: "Colombo" },
+          { value: "kandy", label: "Kandy" },
+          { value: "gampaha", label: "Gampaha" },
+        ]}
         onSearch={() => {}}
       />
 

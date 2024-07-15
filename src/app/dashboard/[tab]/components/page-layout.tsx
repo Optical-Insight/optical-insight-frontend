@@ -13,7 +13,7 @@ function PageLayout({ tab }: { tab: string }) {
     <div className="flex flex-row bg-lightBg min-h-screen w-screen">
       <AppSidebar tab={tab} />
 
-      <div className="flex-grow">
+      <div className="flex-grow ml-[3.137vw] mr-[4.444vw]">
         {/* <PageHeader tab={tab} /> */}
         <PageContent tab={tab} />
       </div>

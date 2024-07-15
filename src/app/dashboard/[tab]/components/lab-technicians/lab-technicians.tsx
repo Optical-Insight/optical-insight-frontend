@@ -1,98 +1,87 @@
 "use client";
-import CommonBtn from "@/app/components/common/button";
-import React from "react";
-import HomeCard from "../../../../components/common/home-card";
+import React, { useState } from "react";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Image from "next/image";
+import InstituteRegistration from "./lab-technicians-reg";
+import InstituteListAll from "./lab-technicians-list";
 
-const handleSubmit = () => {
-  console.log("Button clicked");
-};
+const InstituteHeadsPage = () => {
+  const [activeHeading, setActiveHeading] = useState(1);
+  const [activeStep, setActiveStep] = useState(1);
 
-const LabTechniciansPage = () => {
+  const handleBreadcrumbClick = (value: number) => {
+    if (value === activeHeading) return;
+    setActiveHeading(value);
+    setActiveStep(1);
+  };
+
   return (
-    <div className=" pl-[3.125vw] pr-[4.444vw] pt-[6.25vh] pb-[4.785vh]">
-      {/* Top bar */}
-      <div className="pt-[1.563vh] pb-[1.563vh] pl-[1.52vw] pr-[1.544vw] flex justify-between bg-lightBlueBg rounded-lg">
-        <div className="relative w-[30vw] h-[4.688vh] flex  bg-white rounded-lg">
-          <input
-            type="search"
-            placeholder="  Search Anything here..."
-            className="w-full h-full bg-white rounded-lg text-sm xl:text-base "
-          />
-
-          <div className="flex items-center mr-[6px]">
+    <div className="overflow-auto">
+      {/* Breadcrumb */}
+      <div className="mt-[50px] mb-[16px]">
+        <Breadcrumbs
+          separator={
             <Image
-              src="/assets/icons/search.svg"
-              alt="search"
-              height={20}
-              width={20}
+              src="/assets/icons/arrow_forward.svg"
+              width={15.81}
+              height={15.81}
+              alt="separator"
             />
+          }
+          aria-label="breadcrumb"
+        >
+          <div
+            color="inherit"
+            className={`flex items-center cursor-pointer ${
+              activeHeading === 1 && "bg-sidebarFillBg text-blueText"
+            } rounded-md`}
+            onClick={() => handleBreadcrumbClick(1)}
+          >
+            <Image
+              className="mr-[0.44vw]"
+              src={
+                activeHeading === 1
+                  ? "/assets/icons/apartment-active.svg"
+                  : "/assets/icons/apartment.svg"
+              }
+              width={25.3}
+              height={25.3}
+              alt="separator"
+            />
+            <div className="font-semibold text-[13.7px] pr-[0.732vw] pt-[0.747vh] pb-[0.747vh] ">
+              All Technicians
+            </div>
           </div>
-        </div>
-        <div className="relative flex items-center justify-center w-[3.317vw] h-[4.688vh] bg-white  rounded-lg">
-          <Image
-            src="/assets/icons/notifications_bell.svg"
-            alt="notification icon"
-            height={24}
-            width={24}
-          />
-        </div>
+          {activeHeading >= 2 && (
+            <div
+              color="inherit"
+              className={`flex items-center cursor-pointer ${
+                activeHeading === 2 && "bg-sidebarFillBg text-blueText"
+              } rounded-md`}
+              onClick={() => handleBreadcrumbClick(2)}
+            >
+              <div className="font-semibold text-[13.7px] pl-[0.732vw] pr-[0.732vw] pt-[0.747vh] pb-[0.747vh] ">
+                Register an Institute
+              </div>
+            </div>
+          )}
+        </Breadcrumbs>
       </div>
 
-      {/* Welcome bar */}
-      <div className="mt-[2.246vh] mb-[2.344vh] bg-transparent flex justify-between items-center">
-        <div className="text-headerText text-[24px] xl:text-[32px] font-semibold">
-          Welcome back, John
-        </div>
-        <div className="flex gap-[0.556vw]">
-          <div className="text-headerText text-sm xl:text-[16px] w-[15.347vw] h-[4.102vh] font-medium ">
-            <CommonBtn
-              label="Add new Patient"
-              onClick={handleSubmit}
-              isFullWidth={true}
-              height={42}
-            />
-          </div>
-          <div className="text-headerText text-sm xl:text-[16px] w-[15.347vw] h-[4.102vh] font-medium ">
-            <CommonBtn
-              label="Add new Doctor"
-              onClick={handleSubmit}
-              isFullWidth={true}
-              height={42}
-            />
-          </div>
-        </div>
-      </div>
+      {/* All Institutes */}
+      {activeHeading === 1 && (
+        <InstituteListAll setActiveHeading={setActiveHeading} />
+      )}
 
-      {/* Cards */}
-      <div className="h-auto grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row justify-between bg-lightBlueBg rounded-lg p-[1.563vh] gap-4 lg:gap-4">
-        <HomeCard
-          iconSrc="/assets/icons/dashboard_01.svg"
-          title="Total Patients"
-          count={580}
-          percentage={12}
+      {/* Register an Institute */}
+      {activeHeading === 2 && (
+        <InstituteRegistration
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
         />
-        <HomeCard
-          iconSrc="/assets/icons/dashboard_02.svg"
-          title="Total Appoinments"
-          count={156}
-          percentage={14}
-        />
-        <HomeCard
-          iconSrc="/assets/icons/dashboard_03.svg"
-          title="Total Tests"
-          count={465}
-          percentage={21}
-        />
-        <HomeCard
-          iconSrc="/assets/icons/dashboard_04.svg"
-          title="Total Requests"
-          count={172}
-          percentage={2}
-        />
-      </div>
+      )}
     </div>
   );
 };
 
-export default LabTechniciansPage;
+export default InstituteHeadsPage;

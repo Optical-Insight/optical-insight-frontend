@@ -1,10 +1,8 @@
 import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
-import {
-  FormFieldProps,
-  InstituteRegistrationProps,
-  StepProps,
-} from "@/utils/interfaces";
+import FormField from "@/app/components/common/form-common";
+import ModalConfirm from "@/app/components/common/modal-confirm";
+import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
 import React from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -33,37 +31,23 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
   );
 };
 
-const FormField = ({ label, placeholder }: FormFieldProps) => {
-  return (
-    <div className="flex items-center justify-between w-full mb-[0.879vh]">
-      <label
-        htmlFor={label}
-        className="block text-[16px] text-darkText font-semibold"
-      >
-        {label}
-      </label>
-
-      <input
-        type="text"
-        name={label}
-        id={label}
-        className="flex text-[14.76px] text-inputText items-center justify-between w-[35.556vw] h-[4.883vh] bg-inputBg rounded-lg"
-        placeholder={placeholder}
-      />
-    </div>
-  );
-};
-
-const PatientRegistration = ({
+const PatientsRegistration = ({
   activeStep,
   setActiveStep,
 }: InstituteRegistrationProps) => {
   // const [activeStep, setActiveStep] = useState(1);
 
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
+
   console.log("activeStep", activeStep);
 
   const stepForward = () => {
-    if (activeStep === 3) return;
+    if (activeStep === 3) {
+      // Submit the form
+      setIsConfirmModalOpen(true);
+
+      return;
+    }
     setActiveStep(activeStep + 1);
   };
 
@@ -208,26 +192,29 @@ const PatientRegistration = ({
         <div className="flex justify-end mt-[3.125vh] ml-[3.403vw] mr-[4.722vw] h-[4.102vh] ">
           <div className="w-[32.5vw] flex justify-between ">
             <div className="w-[15.347vw]">
-              <CommomBackBtn
-                label="Back"
-                onClick={stepBackward}
-                width={15.347}
-                height={4.102}
-              />
+              <CommomBackBtn label="Back" onClick={stepBackward} />
             </div>
             <div className="w-[15.347vw]">
               <CommonBtn
                 label={activeStep === 3 ? "Submit" : "Next"}
                 onClick={stepForward}
-                width={15.347}
-                height={4.102}
               />
             </div>
           </div>
         </div>
       </div>
+
+      {/* Confirm Modal */}
+      <ModalConfirm
+        title="Confirm Patients Registration"
+        message="Are you sure you want to submit the registration form?"
+        confirmLabel="Submit"
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={() => console.log("Submitted")}
+      />
     </div>
   );
 };
 
-export default PatientRegistration;
+export default PatientsRegistration;
