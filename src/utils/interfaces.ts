@@ -39,6 +39,14 @@ export interface ModalConfirmTextInputProps {
   onConfirm: (inputText: string) => void;
 }
 
+export interface SearchFilterProps {
+  labelSearch: string;
+  placeholderSearch: string;
+  labelSelectOne: string;
+  labelSelectTwo: string;
+  onSearch: (value: string) => void;
+}
+
 // Institute Page
 export interface StepProps {
   number: number;
