@@ -3,12 +3,14 @@ import React from "react";
 import { SearchFilterProps } from "@/utils/interfaces";
 
 const SearchFilter = ({
-  labelSearch,
   placeholderSearch,
+  labelSearch,
   labelSelectOne,
   labelSelectTwo,
-  onSearch,
-}: SearchFilterProps) => {
+  optionsSelectOne,
+  optionsSelectTwo,
+}: // onSearch,
+SearchFilterProps) => {
   return (
     <div className="flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
       {/* Search for an Institute */}
@@ -32,9 +34,11 @@ const SearchFilter = ({
           name="status"
           className="h-[40px] bg-white rounded-lg text-inputText text-[16.99px] w-full"
         >
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-          <option value="pending">Pending</option>
+          {optionsSelectOne.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -47,9 +51,11 @@ const SearchFilter = ({
           name="location"
           className="h-[40px] bg-white rounded-lg text-inputText text-[16.99px] w-full"
         >
-          <option value="colombo">Colombo</option>
-          <option value="kandy">Kandy</option>
-          <option value="gampaha">Gampaha</option>
+          {optionsSelectTwo.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </div>
     </div>

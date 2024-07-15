@@ -3,16 +3,16 @@ import { InstituteListAllProps } from "@/utils/interfaces";
 import CommonBtn from "@/app/components/common/button";
 import SearchFilter from "@/app/components/common/search-filter";
 
-const PatientListAll = ({ setActiveHeading }: InstituteListAllProps) => {
+const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
   return (
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
         <div className="text-darkText font-bold text-4xl lg:text-[40px]">
-          List of all Patients
+          List of all Lab Technicians
         </div>
         <div className="flex h-[42px]">
           <CommonBtn
-            label="Register new Patient"
+            label="Register new Lab Technician"
             onClick={() => setActiveHeading && setActiveHeading(2)}
           />
         </div>
@@ -20,10 +20,10 @@ const PatientListAll = ({ setActiveHeading }: InstituteListAllProps) => {
 
       {/* Filter */}
       <SearchFilter
-        labelSearch="Search for a Patient"
+        labelSearch="Search for a Lab Technician"
         labelSelectOne="Status"
         labelSelectTwo="Location"
-        placeholderSearch="Search by Name"
+        placeholderSearch="Search by Name or Institute Name"
         optionsSelectOne={[
           { value: "active", label: "Active" },
           { value: "inactive", label: "Inactive" },
@@ -40,4 +40,4 @@ const PatientListAll = ({ setActiveHeading }: InstituteListAllProps) => {
   );
 };
 
-export default PatientListAll;
+export default InstituteListAll;

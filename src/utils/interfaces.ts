@@ -41,9 +41,11 @@ export interface ModalConfirmTextInputProps {
 
 export interface SearchFilterProps {
   labelSearch: string;
-  placeholderSearch: string;
   labelSelectOne: string;
   labelSelectTwo: string;
+  placeholderSearch: string;
+  optionsSelectOne: { value: string; label: string }[];
+  optionsSelectTwo: { value: string; label: string }[];
   onSearch: (value: string) => void;
 }
 

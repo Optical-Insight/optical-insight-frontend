@@ -1,6 +1,7 @@
 import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
+import ModalConfirm from "@/app/components/common/modal-confirm";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
 import React from "react";
 
@@ -19,7 +20,7 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
         {number}
       </span>
       <h2 className="text-[16px] font-semibold">{title}</h2>
-      {number == 1 ? (
+      {number == 1 || number == 2 ? (
         <div
           className={`w-[4.444vw] h-[0.195vh] ${
             lineActive ? "bg-blueText" : "bg-disabledText"
@@ -30,12 +31,23 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
   );
 };
 
-const AddNewTestPage = ({
+const DoctorRegistration = ({
   activeStep,
   setActiveStep,
 }: InstituteRegistrationProps) => {
+  // const [activeStep, setActiveStep] = useState(1);
+
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
+
+  console.log("activeStep", activeStep);
+
   const stepForward = () => {
-    if (activeStep === 2) return;
+    if (activeStep === 3) {
+      // Submit the form
+      setIsConfirmModalOpen(true);
+
+      return;
+    }
     setActiveStep(activeStep + 1);
   };
 
@@ -47,7 +59,7 @@ const AddNewTestPage = ({
   return (
     <div>
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-        Add New Test Data
+        Register a Doctor
       </div>
 
       {/* Form */}
@@ -62,9 +74,14 @@ const AddNewTestPage = ({
           />
           <Step
             number={2}
-            title="Photographs & Documents"
+            title="Legal & Staff Information"
             active={activeStep >= 2}
             lineActive={activeStep >= 3}
+          />
+          <Step
+            number={3}
+            title="Technology Information"
+            active={activeStep >= 3}
           />
         </div>
 
@@ -105,47 +122,69 @@ const AddNewTestPage = ({
         {/* Step 02 */}
         {activeStep === 2 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
-            {/* <FormField label="Upload Images" placeholder="123 4567 890" /> */}
-            <div className="flex items-center justify-between w-full mb-[0.879vh]">
-              <label
-                htmlFor="retinal-image"
-                className="block text-[16px] text-darkText font-semibold"
-              >
-                Upload Retinal Image
-              </label>
-
-              <input
-                name="retinal-image"
-                type="file"
-                placeholder="Attach a file"
-                className="flex text-[14.76px] text-inputText items-center justify-between w-[35.556vw] h-[4.883vh] bg-inputBg rounded-lg"
-              />
-            </div>
-
             <FormField
-              label="Image Quality Assessment"
-              placeholder="Description"
-            />
-            <FormField
-              label="Previous Lab Test Results"
-              placeholder="Blood tests for specific eye-related conditions"
-            />
-            <FormField
-              label="Previous Lab Test Reports"
+              label="Business Registration Number"
               placeholder="123 4567 890"
             />
-
             <FormField
-              label="Patient Consent for Data Use and Analysis"
-              placeholder="LTVC0099"
+              label="Tax Identification Number"
+              placeholder="123 4567 890"
+            />
+            <FormField label="PIN" placeholder="123 4567 890" />
+
+            <FormField label="Business License" placeholder="Attach files" />
+            <div className="h-[6.445vh]" />
+            <FormField label="Number of Optometrists" placeholder="10" />
+            <FormField label="Number of Opticians" placeholder="10" />
+            <FormField label="Number of Support Staff" placeholder="10" />
+            <FormField
+              label="Staff Qualifications"
+              placeholder="Bsc (Hons) in Medical Sciences"
+            />
+            <FormField
+              label="Staff Contact Information"
+              placeholder="info@visioncare.lk"
+            />
+          </div>
+        )}
+
+        {/* Step 03 */}
+        {activeStep === 3 && (
+          <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
+            <FormField
+              label="List of Equipment"
+              placeholder="Diagnostic Tools, Optical Equipment, etc."
+            />
+            <FormField
+              label="Details about Facilities"
+              placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
+            />
+            <FormField
+              label="Hours of Operation"
+              placeholder="60hrs per Week"
+            />
+            <FormField
+              label="Special Services"
+              placeholder="Home Visits, Emergency Services, etc."
             />
             <div className="h-[6.445vh]" />
-            <FormField label="Previous Lab Test Reports" placeholder="10" />
             <FormField
-              label="Privacy Policy Acknowledgment"
-              placeholder="Equipment used, test settings"
+              label="Electronic Health Record (EHR) System Used"
+              placeholder="Yes"
             />
-            <FormField label="Comments or Notes" placeholder="Description" />
+            <FormField
+              label="Compatibility with Our IT Infrastructure"
+              placeholder="Compatible"
+            />
+            <FormField
+              label="Data Security Measures"
+              placeholder="Lorem Ipsum"
+            />
+            <FormField
+              label="Other Relevant Information or Specializations"
+              placeholder="Lorem Ipsum"
+            />
+            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" />
           </div>
         )}
 
@@ -153,26 +192,29 @@ const AddNewTestPage = ({
         <div className="flex justify-end mt-[3.125vh] ml-[3.403vw] mr-[4.722vw] h-[4.102vh] ">
           <div className="w-[32.5vw] flex justify-between ">
             <div className="w-[15.347vw]">
-              <CommomBackBtn
-                label="Back"
-                onClick={stepBackward}
-                width={15.347}
-                height={4.102}
-              />
+              <CommomBackBtn label="Back" onClick={stepBackward} />
             </div>
             <div className="w-[15.347vw]">
               <CommonBtn
-                label={activeStep === 2 ? "Save & Submit" : "Next"}
+                label={activeStep === 3 ? "Submit" : "Next"}
                 onClick={stepForward}
-                width={15.347}
-                height={4.102}
               />
             </div>
           </div>
         </div>
       </div>
+
+      {/* Confirm Modal */}
+      <ModalConfirm
+        title="Confirm Institute Registration"
+        message="Are you sure you want to submit the registration form?"
+        confirmLabel="Submit"
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={() => console.log("Submitted")}
+      />
     </div>
   );
 };
 
-export default AddNewTestPage;
+export default DoctorRegistration;
