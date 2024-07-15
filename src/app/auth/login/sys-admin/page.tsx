@@ -138,12 +138,7 @@ function AdminLogin() {
               </div>
 
               <div className="mx-auto flex justify-center h-12">
-                <CommomBtn
-                  label="Login"
-                  onClick={() => handleSubmitLogin}
-                  isFullWidth={true}
-                  height={48}
-                />
+                <CommomBtn label="Login" onClick={() => handleSubmitLogin} />
               </div>
             </form>
           </div>
