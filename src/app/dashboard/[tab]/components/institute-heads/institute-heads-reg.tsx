@@ -59,7 +59,7 @@ const InstituteRegistration = ({
   return (
     <div>
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-        Register an Institute
+        Register an Institute Head
       </div>
 
       {/* Form */}
@@ -68,19 +68,19 @@ const InstituteRegistration = ({
         <div className="flex items-center justify-center">
           <Step
             number={1}
-            title="Basic Information"
+            title="Basic & Employeement Information"
             active={activeStep >= 1}
             lineActive={activeStep >= 2}
           />
           <Step
             number={2}
-            title="Legal & Staff Information"
+            title="Professional Information"
             active={activeStep >= 2}
             lineActive={activeStep >= 3}
           />
           <Step
             number={3}
-            title="Technology Information"
+            title="Skills and Certification"
             active={activeStep >= 3}
           />
         </div>
@@ -89,32 +89,36 @@ const InstituteRegistration = ({
         {activeStep === 1 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
-              label="Name of the Institute / Venue"
-              placeholder="Vision Care Opticals"
+              label="Full Name"
+              placeholder="Sahan Thilakaratne"
             />
             <FormField
-              label="Address"
-              placeholder="1st Floor, 907 Peradeniya Rd, Kandy"
+              label="Gender"
+              placeholder="Male"
             />
-            <FormField label="Contact Number" placeholder="081 208 5004" />
-            <FormField label="Email Address" placeholder="info@visioncare.lk" />
-            <FormField label="Website URL" placeholder="visioncare.lk" />
-            <div className="h-[6.445vh]" />
+            <FormField label="Date of Birth" placeholder="11/12/2000" />
+            <FormField label="NIC" placeholder="12345678910" />
+            <FormField label="Email" placeholder="sahanpradeeptha@gmail.com" />
+            
             <FormField
-              label="Type of Optical Services Provided"
-              placeholder="Eye Examine, Contact Lenses, Glasses, etc."
-            />
-            <FormField
-              label="Specialty Services"
-              placeholder="Pediatric Optometry, Low Vision Services, etc."
+              label="Contact No."
+              placeholder="0771965642"
             />
             <FormField
-              label="Accepted Insurances"
-              placeholder="Lucas Bennett"
+              label="Institute"
+              placeholder="Sri Lanka Institute of Information Technology"
             />
             <FormField
-              label="Certifications"
-              placeholder="Accreditation from relevant organizations"
+              label="Starting Date"
+              placeholder="20/07/2024"
+            />
+            <FormField
+              label="Supervisor's Name"
+              placeholder="Dinuka R wijendra"
+            />
+            <FormField
+              label="Employment Status"
+              placeholder="Full-Time"
             />
           </div>
         )}
@@ -123,28 +127,25 @@ const InstituteRegistration = ({
         {activeStep === 2 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
-              label="Business Registration Number"
-              placeholder="123 4567 890"
+              label="Job Title"
+              placeholder="Institute Head"
             />
             <FormField
-              label="Tax Identification Number"
+              label="Department"
               placeholder="123 4567 890"
             />
-            <FormField label="PIN" placeholder="123 4567 890" />
+            <FormField label="Years of Experience" placeholder="123 4567 890" />
 
-            <FormField label="Business License" placeholder="Attach files" />
-            <div className="h-[6.445vh]" />
-            <FormField label="Number of Optometrists" placeholder="10" />
-            <FormField label="Number of Opticians" placeholder="10" />
-            <FormField label="Number of Support Staff" placeholder="10" />
+            <FormField label="Speciality Areas" placeholder="Attach files" />
+            
+            <FormField label="Equipment Proficiency" placeholder="10" />
+            <FormField label="Safety Protocols Knowledge" placeholder="10" />
+            <FormField label="Professional Licences" placeholder="10" />
             <FormField
-              label="Staff Qualifications"
+              label="Lab Techniques"
               placeholder="Bsc (Hons) in Medical Sciences"
             />
-            <FormField
-              label="Staff Contact Information"
-              placeholder="info@visioncare.lk"
-            />
+            
           </div>
         )}
 
@@ -152,39 +153,39 @@ const InstituteRegistration = ({
         {activeStep === 3 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
-              label="List of Equipment"
+              label="Educational Qualifications"
               placeholder="Diagnostic Tools, Optical Equipment, etc."
             />
             <FormField
-              label="Details about Facilities"
+              label="Completed Training Courses"
               placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
             />
             <FormField
-              label="Hours of Operation"
+              label="On-going Courses"
               placeholder="60hrs per Week"
             />
             <FormField
-              label="Special Services"
+              label="Computer Skills"
               placeholder="Home Visits, Emergency Services, etc."
             />
-            <div className="h-[6.445vh]" />
+            
             <FormField
-              label="Electronic Health Record (EHR) System Used"
+              label="Familiarity with Laboratory Systems"
               placeholder="Yes"
             />
             <FormField
-              label="Compatibility with Our IT Infrastructure"
+              label="Any Other Relevant Information or Skills"
               placeholder="Compatible"
             />
             <FormField
-              label="Data Security Measures"
+              label="Data Analysis and Interpretation Skills"
               placeholder="Lorem Ipsum"
             />
             <FormField
               label="Other Relevant Information or Specializations"
               placeholder="Lorem Ipsum"
             />
-            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" />
+            <FormField label="Reference Contacts" placeholder="Lorem Ipsum" />
           </div>
         )}
 

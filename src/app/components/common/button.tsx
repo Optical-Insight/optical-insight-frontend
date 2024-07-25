@@ -38,6 +38,9 @@ const CommonBtn = ({ label, onClick }: CommonBtnProps) => {
       //   height: height ? `${height}px` : "auto",
       // }}
     >
+
+      
+
       {label}
     </button>
   );

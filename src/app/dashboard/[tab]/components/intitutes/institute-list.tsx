@@ -1,6 +1,6 @@
 import React from "react";
 import { InstituteListAllProps } from "@/utils/interfaces";
-import CommonBtn from "@/app/components/common/button";
+
 import rows from "./table-data";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,6 +14,7 @@ import TablePaginationActions from "./table-pagination";
 import { TableHead } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SearchFilter from "@/app/components/common/search-filter";
+import CommonRegisterBtn from "@/app/components/common/registerButton";
 
 const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
   const [page, setPage] = React.useState(0);
@@ -42,7 +43,7 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
           List of all Institutes
         </div>
         <div className="flex h-[42px]">
-          <CommonBtn
+          <CommonRegisterBtn
             label="Register new Institute"
             onClick={() => setActiveHeading && setActiveHeading(2)}
           />
