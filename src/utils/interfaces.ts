@@ -100,3 +100,15 @@ export interface PatientNewTestDataProps {
   setActiveStep: (value: number) => void;
   handleBreadcrumbClick: (value: number) => void;
 }
+
+export interface PatientProfileIconTextProps {
+  src: string;
+  alt: string;
+  text: string;
+}
+export interface PatientProfileCardTextProps {
+  src: string;
+  alt: string;
+  text: string;
+  value: string;
+}

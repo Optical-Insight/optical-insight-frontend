@@ -19,6 +19,8 @@ const config: Config = {
         lightBg: "#F6F8FF",
         blueBg: "#0E2249",
         lightBlueBg: "#ECF1FC",
+        lightBlueBgTwo: "#E8EFFB",
+        lightBlueBgThree: "#E2ECF7",
         sidebarFillBg: "#EFF6FF",
         inputBg: "#F5F8FC",
         dashbordIconBg: "#F0F5FB",
@@ -43,6 +45,7 @@ const config: Config = {
 
         //colors
         white: "#FFFFFF",
+        black: "#000000",
       },
     },
   },
