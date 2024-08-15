@@ -70,6 +70,11 @@ const AppSidebar = ({ tab }: { tab: string }) => {
     if (isAuthenticated) logout();
   };
 
+  // const handleLogout = () => {
+  //   localStorage.removeItem("authData");
+  //   router.replace("/auth/login/sys-admin");
+  // };
+
   const sidebarItems = [
     {
       iconSrc: "/assets/icons/home-sidebar.svg",

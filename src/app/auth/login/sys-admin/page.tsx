@@ -5,7 +5,6 @@ import CommomBtn from "@/app/components/common/button";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import ModalConfirmTextInput from "@/app/components/common/modal-confirmTextInput";
 import { useAuth } from "@/context/AuthContext";
 
@@ -15,8 +14,6 @@ function AdminLogin() {
   const adminBaseUrl = process.env.NEXT_PUBLIC_ADMIN_BASE_URL;
   const loginUrl = `${adminBaseUrl}/admins/login`;
   const forgotPasswordUrl = `${adminBaseUrl}/admins/forgot-password`;
-
-  const { replace } = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -52,12 +49,16 @@ function AdminLogin() {
           email,
           password,
         })
-        .then((response) => login(response.data))
+        .then((response) => {
+          console.log("Login Success:", response.data);
+          login(response.data);
+        })
         .catch((error) => {
           console.error("Error in Login:", error);
         });
     }
   };
+
   // const handleSubmitLogin = async (e: any) => {
   //   console.log("Login clicked: email:", email, "password:", password);
   //   e.preventDefault();

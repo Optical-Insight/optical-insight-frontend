@@ -1,5 +1,6 @@
+"use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { AuthContextProps, LoginResponse } from "@/utils/interfaces";
 
 // Create the context with default values
@@ -28,14 +29,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const login = (response: LoginResponse) => {
-    console.log("Login Success:", response.data);
-
     // Create an object to hold all the related data
     const authData = {
-      accessToken: response.data.accessToken,
-      refreshToken: response.data.refreshToken,
-      userType: response.data.userType,
-      userId: response.data.userId,
+      accessToken: response.accessToken,
+      refreshToken: response.refreshToken,
+      userType: response.userType,
+      userId: response.userId,
     };
     // Serialize the object to a JSON string and store it in localStorage
     localStorage.setItem("authData", JSON.stringify(authData));

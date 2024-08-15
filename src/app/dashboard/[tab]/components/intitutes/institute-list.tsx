@@ -37,14 +37,14 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
 
     if (storedAuthData) {
       const authData = JSON.parse(storedAuthData);
-      const accessToken = authData.accessToken;
+      const token = authData.accessToken;
       // const refreshToken = authData.refreshToken;
       // const userType = authData.userType;
       // const userId = authData.userId;
-      setAccessToken(accessToken);
+      setAccessToken(token);
     } else {
       console.error("No authentication data found.");
-      replace("auth/login/sys-admin");
+      replace("/auth/login/sys-admin");
     }
   }, []);
 
@@ -68,11 +68,11 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
         },
       })
       .then((response) => {
-        const rows = response.data.map(
+        const row = response.data.map(
           (institute: { id: string; name: string; location: string }) =>
             createData(institute.id, institute.name, institute.location)
         );
-        setRows(rows);
+        setRows(row);
       })
       .catch((err) => {
         console.error("Error in retriving data", err.response.data);
