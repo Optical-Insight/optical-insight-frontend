@@ -1,7 +1,10 @@
-import React from "react";
-import { InstituteListAllProps } from "@/utils/interfaces";
+import React, { useEffect, useState } from "react";
+import {
+  InstituteListAllProps,
+  InstituteAllRowProps,
+} from "@/utils/interfaces";
 
-import rows from "./table-data";
+// import rows from "./table-data";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,10 +18,60 @@ import { TableHead } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SearchFilter from "@/app/components/common/search-filter";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { replace } = useRouter();
+  const { isAuthenticated, storedAuthData } = useAuth();
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rows, setRows] = useState<InstituteAllRowProps[]>([]);
+
+  const adminBaseUrl = process.env.NEXT_PUBLIC_ADMIN_BASE_URL;
+  const getAllInstitutesUrl = `${adminBaseUrl}/clinics/`;
+
+  const createData = (
+    id: string,
+    name: string,
+    location: string,
+    status?: string,
+    email?: string,
+    action?: string
+  ): InstituteAllRowProps => {
+    return { id, name, location, status, email, action };
+  };
+
+  const fetchAllInstitutes = async () => {
+    axios
+      .get(getAllInstitutesUrl, {
+        headers: {
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        const row = response.data.map(
+          (institute: { id: string; name: string; location: string }) =>
+            createData(institute.id, institute.name, institute.location)
+        );
+        setRows(row);
+      })
+      .catch((err) => {
+        console.error("Error in retriving data", err.response.data);
+      });
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && storedAuthData) {
+      fetchAllInstitutes();
+    } else {
+      console.error("No authentication data found.");
+      replace("/auth/login/sys-admin");
+    }
+  }, [storedAuthData.accessToken]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -76,8 +129,8 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
             <TableHead>
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
                 <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">Status</TableCell>
                 <TableCell className="font-bold">Location</TableCell>
+                <TableCell className="font-bold">Status</TableCell>
                 <TableCell className="font-bold">Email</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
@@ -90,12 +143,12 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
                   )
                 : rows
               ).map((row) => (
-                <TableRow key={row.name}>
+                <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
                     {row.name}
                   </TableCell>
-                  <TableCell>{row.status}</TableCell>
                   <TableCell>{row.location}</TableCell>
+                  <TableCell>{row.status}</TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>
                     <div>

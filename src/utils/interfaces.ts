@@ -1,3 +1,18 @@
+// Define the shape of your authentication context
+export interface AuthContextProps {
+  isAuthenticated: boolean;
+  storedAuthData: AuthData;
+  login: (response: AuthData) => void;
+  logout: () => void;
+}
+
+export interface AuthData {
+  accessToken: string;
+  refreshToken: string;
+  userType: string;
+  userId: string;
+}
+
 export interface CommonBtnProps {
   label: string;
   onClick: () => void;
@@ -59,15 +74,28 @@ export interface StepProps {
 
 export interface FormFieldProps {
   label: string;
-  placeholder: string;
+  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
 }
 
 export interface InstituteRegistrationProps {
   activeStep: number;
   setActiveStep: (value: number) => void;
+  setActiveHeading: (value: number) => void;
 }
+
 export interface InstituteListAllProps {
   setActiveHeading: (value: number) => void;
+}
+
+export interface InstituteAllRowProps {
+  id: string;
+  name: string;
+  location: string;
+  status?: string;
+  email?: string;
+  action?: string;
 }
 
 export interface TablePaginationActionsProps {
@@ -81,7 +109,6 @@ export interface TablePaginationActionsProps {
 }
 
 // Dashboard Page
-
 export interface HomeCardProps {
   iconSrc: string;
   title: string;
@@ -99,4 +126,17 @@ export interface PatientNewTestDataProps {
   activeStep: number;
   setActiveStep: (value: number) => void;
   handleBreadcrumbClick: (value: number) => void;
+}
+
+export interface PatientProfileIconTextProps {
+  src: string;
+  alt: string;
+  text: string;
+}
+
+export interface PatientProfileCardTextProps {
+  src: string;
+  alt: string;
+  text: string;
+  value: string;
 }

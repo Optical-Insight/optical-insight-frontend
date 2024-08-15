@@ -4,6 +4,7 @@ import { SidebarItemProps } from "@/utils/interfaces";
 import { useRouter } from "next/navigation";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { MdOutlineMenu } from "react-icons/md";
+import { useAuth } from "@/context/AuthContext";
 
 const SidebarItem = ({
   iconSrc,
@@ -39,6 +40,8 @@ const AppSidebar = ({ tab }: { tab: string }) => {
   const [activeTab, setActiveTab] = useState(tab);
   const [isShrunk, setIsShrunk] = useState(false);
 
+  const { isAuthenticated, logout } = useAuth();
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024) {
@@ -64,8 +67,13 @@ const AppSidebar = ({ tab }: { tab: string }) => {
   };
 
   const handleLogout = () => {
-    router.push("/");
+    if (isAuthenticated) logout();
   };
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem("authData");
+  //   router.replace("/auth/login/sys-admin");
+  // };
 
   const sidebarItems = [
     {
@@ -112,7 +120,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
 
   return (
     <div
-      className={`bg-blueBg px-6 lg:px-8 w-fit flex flex-col justify-between `}
+      className={`bg-blueBg px-6 xl:px-8 w-fit flex flex-col justify-between `}
     >
       <div className="flex justify-between items-center h-[140px] ">
         <Image

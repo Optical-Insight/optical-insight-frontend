@@ -5,15 +5,11 @@ import AppSidebar from "@/app/components/common/sidebar";
 // import PageHeader from "./page-header";
 
 function PageLayout({ tab }: { tab: string }) {
-  // const [activeTab, setActiveTab] = useState(tab);
-  // console.log(tab);
-  // const { replace } = useRouter();
-
   return (
     <div className="flex flex-row bg-lightBg min-h-screen min-w-full w-fit">
       <AppSidebar tab={tab} />
 
-      <div className="flex-grow ml-[3.137vw] mr-[4.444vw] ">
+      <div className="flex-grow ml-[3vw] mr-[3vw] ">
         {/* <PageHeader tab={tab} /> */}
         <PageContent tab={tab} />
       </div>

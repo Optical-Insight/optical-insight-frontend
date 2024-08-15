@@ -31,16 +31,10 @@ const CommonBtn = ({ label, onClick }: CommonBtnProps) => {
   return (
     <button
       onClick={onClick}
-      className={`h-full bg-buttonPrimary text-buttonText text-sm md:text-base rounded-[7px] px-[15px]`}
-      // dangerouslySetInnerHTML={{ __html: label }}
-      // style={{
-      //   width: width ? `${width}px` : "auto",
-      //   height: height ? `${height}px` : "auto",
-      // }}
+      className={`h-full bg-buttonPrimary text-buttonText text-sm md:text-base rounded-[7px] px-[15px] ${
+        (label === "Next" || "Submit") && "w-[160px] xl:w-[200px]"
+      }`}
     >
-
-      
-
       {label}
     </button>
   );

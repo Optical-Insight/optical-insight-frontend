@@ -3,7 +3,8 @@ import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -34,10 +35,76 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
 const InstituteRegistration = ({
   activeStep,
   setActiveStep,
+  setActiveHeading,
 }: InstituteRegistrationProps) => {
-  // const [activeStep, setActiveStep] = useState(1);
+  const adminBaseUrl = process.env.NEXT_PUBLIC_ADMIN_BASE_URL;
+  const formSubmitUrl = `${adminBaseUrl}/clinics/`;
 
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const [formValues, setFormValues] = useState({
+    instituteName: "",
+    address: "",
+    contactNo: "",
+    email: "",
+    website: "",
+    services: "",
+    specialty: "",
+    insurances: "",
+    certifications: "",
+    regNo: "",
+    taxNo: "",
+    pin: "",
+    license: "",
+    optometrists: "",
+    opticians: "",
+    supportStaff: "",
+    qualifications: "",
+    staffContact: "",
+    equipment: "",
+    facilities: "",
+    hours: "",
+    specialServices: "",
+    ehr: "",
+    compatibility: "",
+    security: "",
+    otherInfo: "",
+    comments: "",
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormValues((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdjMzc5MTVlMTZlNjgxNjcwNDZhZWQiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNzIzNjg1Mzk4LCJleHAiOjE3MjM3MjEzOTh9.tCrFM8cXhW2JnFDpiLvR94cRbGxNSHSr9Y30x0cXRYE";
+
+  const handleSubmitForm = async () => {
+    axios
+      .post(
+        formSubmitUrl,
+        {
+          name: formValues.instituteName,
+          location: formValues.address,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        setIsConfirmModalOpen(false);
+        console.log("Form submitted successfully:", res.data);
+        setActiveHeading && setActiveHeading(1);
+        return res.data;
+      })
+      .catch((err) => {
+        err.response.data;
+        alert("Error in submitting form");
+      });
+  };
 
   console.log("activeStep", activeStep);
 
@@ -91,30 +158,57 @@ const InstituteRegistration = ({
             <FormField
               label="Name of the Institute / Venue"
               placeholder="Vision Care Opticals"
+              value={formValues.instituteName}
+              onChange={(value) => handleInputChange("instituteName", value)}
             />
             <FormField
               label="Address"
               placeholder="1st Floor, 907 Peradeniya Rd, Kandy"
+              value={formValues.address}
+              onChange={(value) => handleInputChange("address", value)}
             />
-            <FormField label="Contact Number" placeholder="081 208 5004" />
-            <FormField label="Email Address" placeholder="info@visioncare.lk" />
-            <FormField label="Website URL" placeholder="visioncare.lk" />
+            <FormField
+              label="Contact Number"
+              placeholder="081 208 5004"
+              value={formValues.contactNo}
+              onChange={(value) => handleInputChange("contactNo", value)}
+            />
+            <FormField
+              label="Email Address"
+              placeholder="info@visioncare.lk"
+              value={formValues.email}
+              onChange={(value) => handleInputChange("email", value)}
+            />
+            <FormField
+              label="Website URL"
+              placeholder="visioncare.lk"
+              value={formValues.website}
+              onChange={(value) => handleInputChange("website", value)}
+            />
             <div className="h-[6.445vh]" />
             <FormField
               label="Type of Optical Services Provided"
               placeholder="Eye Examine, Contact Lenses, Glasses, etc."
+              value={formValues.services}
+              onChange={(value) => handleInputChange("services", value)}
             />
             <FormField
               label="Specialty Services"
               placeholder="Pediatric Optometry, Low Vision Services, etc."
+              value={formValues.specialty}
+              onChange={(value) => handleInputChange("specialty", value)}
             />
             <FormField
               label="Accepted Insurances"
               placeholder="Lucas Bennett"
+              value={formValues.insurances}
+              onChange={(value) => handleInputChange("insurances", value)}
             />
             <FormField
               label="Certifications"
               placeholder="Accreditation from relevant organizations"
+              value={formValues.certifications}
+              onChange={(value) => handleInputChange("certifications", value)}
             />
           </div>
         )}
@@ -125,25 +219,58 @@ const InstituteRegistration = ({
             <FormField
               label="Business Registration Number"
               placeholder="123 4567 890"
+              value={formValues.regNo}
+              onChange={(value) => handleInputChange("regNo", value)}
             />
             <FormField
               label="Tax Identification Number"
               placeholder="123 4567 890"
+              value={formValues.taxNo}
+              onChange={(value) => handleInputChange("taxNo", value)}
             />
-            <FormField label="PIN" placeholder="123 4567 890" />
+            <FormField
+              label="PIN"
+              placeholder="123 4567 890"
+              value={formValues.pin}
+              onChange={(value) => handleInputChange("pin", value)}
+            />
 
-            <FormField label="Business License" placeholder="Attach files" />
+            <FormField
+              label="Business License"
+              placeholder="Attach files"
+              value={formValues.license}
+              onChange={(value) => handleInputChange("license", value)}
+            />
             <div className="h-[6.445vh]" />
-            <FormField label="Number of Optometrists" placeholder="10" />
-            <FormField label="Number of Opticians" placeholder="10" />
-            <FormField label="Number of Support Staff" placeholder="10" />
+            <FormField
+              label="Number of Optometrists"
+              placeholder="10"
+              value={formValues.optometrists}
+              onChange={(value) => handleInputChange("optometrists", value)}
+            />
+            <FormField
+              label="Number of Opticians"
+              placeholder="10"
+              value={formValues.opticians}
+              onChange={(value) => handleInputChange("opticians", value)}
+            />
+            <FormField
+              label="Number of Support Staff"
+              placeholder="10"
+              value={formValues.supportStaff}
+              onChange={(value) => handleInputChange("supportStaff", value)}
+            />
             <FormField
               label="Staff Qualifications"
               placeholder="Bsc (Hons) in Medical Sciences"
+              value={formValues.qualifications}
+              onChange={(value) => handleInputChange("qualifications", value)}
             />
             <FormField
               label="Staff Contact Information"
               placeholder="info@visioncare.lk"
+              value={formValues.staffContact}
+              onChange={(value) => handleInputChange("staffContact", value)}
             />
           </div>
         )}
@@ -154,37 +281,58 @@ const InstituteRegistration = ({
             <FormField
               label="List of Equipment"
               placeholder="Diagnostic Tools, Optical Equipment, etc."
+              value={formValues.equipment}
+              onChange={(value) => handleInputChange("equipment", value)}
             />
             <FormField
               label="Details about Facilities"
               placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
+              value={formValues.facilities}
+              onChange={(value) => handleInputChange("facilities", value)}
             />
             <FormField
               label="Hours of Operation"
               placeholder="60hrs per Week"
+              value={formValues.hours}
+              onChange={(value) => handleInputChange("hours", value)}
             />
             <FormField
               label="Special Services"
               placeholder="Home Visits, Emergency Services, etc."
+              value={formValues.specialServices}
+              onChange={(value) => handleInputChange("specialServices", value)}
             />
             <div className="h-[6.445vh]" />
             <FormField
               label="Electronic Health Record (EHR) System Used"
               placeholder="Yes"
+              value={formValues.ehr}
+              onChange={(value) => handleInputChange("ehr", value)}
             />
             <FormField
               label="Compatibility with Our IT Infrastructure"
               placeholder="Compatible"
+              value={formValues.compatibility}
+              onChange={(value) => handleInputChange("compatibility", value)}
             />
             <FormField
               label="Data Security Measures"
               placeholder="Lorem Ipsum"
+              value={formValues.security}
+              onChange={(value) => handleInputChange("security", value)}
             />
             <FormField
               label="Other Relevant Information or Specializations"
               placeholder="Lorem Ipsum"
+              value={formValues.otherInfo}
+              onChange={(value) => handleInputChange("otherInfo", value)}
             />
-            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" />
+            <FormField
+              label="Comments or Notes"
+              placeholder="Lorem Ipsum"
+              value={formValues.comments}
+              onChange={(value) => handleInputChange("comments", value)}
+            />
           </div>
         )}
 
@@ -211,7 +359,7 @@ const InstituteRegistration = ({
         confirmLabel="Submit"
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={() => console.log("Submitted")}
+        onConfirm={handleSubmitForm}
       />
     </div>
   );
