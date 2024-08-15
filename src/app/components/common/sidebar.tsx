@@ -4,6 +4,7 @@ import { SidebarItemProps } from "@/utils/interfaces";
 import { useRouter } from "next/navigation";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { MdOutlineMenu } from "react-icons/md";
+import { useAuth } from "@/context/AuthContext";
 
 const SidebarItem = ({
   iconSrc,
@@ -39,6 +40,8 @@ const AppSidebar = ({ tab }: { tab: string }) => {
   const [activeTab, setActiveTab] = useState(tab);
   const [isShrunk, setIsShrunk] = useState(false);
 
+  const { isAuthenticated, logout } = useAuth();
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024) {
@@ -64,7 +67,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
   };
 
   const handleLogout = () => {
-    router.push("/");
+    if (isAuthenticated) logout();
   };
 
   const sidebarItems = [

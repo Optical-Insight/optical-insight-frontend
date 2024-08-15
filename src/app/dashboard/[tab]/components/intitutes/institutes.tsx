@@ -78,6 +78,7 @@ const InstitutesPage = () => {
         <InstituteRegistration
           activeStep={activeStep}
           setActiveStep={setActiveStep}
+          setActiveHeading={setActiveHeading}
         />
       )}
     </div>

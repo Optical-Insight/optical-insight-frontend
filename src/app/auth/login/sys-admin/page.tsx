@@ -7,8 +7,11 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import ModalConfirmTextInput from "@/app/components/common/modal-confirmTextInput";
+import { useAuth } from "@/context/AuthContext";
 
 function AdminLogin() {
+  const { isAuthenticated, login } = useAuth();
+
   const adminBaseUrl = process.env.NEXT_PUBLIC_ADMIN_BASE_URL;
   const loginUrl = `${adminBaseUrl}/admins/login`;
   const forgotPasswordUrl = `${adminBaseUrl}/admins/forgot-password`;
@@ -41,19 +44,47 @@ function AdminLogin() {
   };
 
   const handleSubmitLogin = async (e: any) => {
-    console.log("Login clicked: email:", email, "password:", password);
-    e.preventDefault();
-    try {
-      const response = await axios.post(loginUrl, {
-        email,
-        password,
-      });
-      console.log("Login successful:", response.data);
-      replace("/dashboard/home");
-    } catch (error) {
-      console.error("Error logging in:", error);
+    if (!isAuthenticated) {
+      console.log("Login clicked: email:", email, "password:", password);
+      e.preventDefault();
+      axios
+        .post(loginUrl, {
+          email,
+          password,
+        })
+        .then((response) => login(response.data))
+        .catch((error) => {
+          console.error("Error in Login:", error);
+        });
     }
   };
+  // const handleSubmitLogin = async (e: any) => {
+  //   console.log("Login clicked: email:", email, "password:", password);
+  //   e.preventDefault();
+  //   axios
+  //     .post(loginUrl, {
+  //       email,
+  //       password,
+  //     })
+  //     .then((response) => {
+  //       console.log("Login Success:", response.data);
+
+  //       // Create an object to hold all the related data
+  //       const authData = {
+  //         accessToken: response.data.accessToken,
+  //         refreshToken: response.data.refreshToken,
+  //         userType: response.data.userType,
+  //         userId: response.data.userId,
+  //       };
+  //       // Serialize the object to a JSON string and store it in localStorage
+  //       localStorage.setItem("authData", JSON.stringify(authData));
+
+  //       replace("/dashboard/home");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error in Login:", error);
+  //     });
+  // };
 
   return (
     <div className="w-[100vw] h-[100vh] flex">
