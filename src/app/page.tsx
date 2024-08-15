@@ -8,6 +8,7 @@ export default function Home() {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     if (isAuthenticated) {
       console.log("User is authenticated: ", isAuthenticated);
       replace("/dashboard/home");

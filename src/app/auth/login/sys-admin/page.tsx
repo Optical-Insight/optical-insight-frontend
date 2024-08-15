@@ -41,6 +41,7 @@ function AdminLogin() {
   };
 
   const handleSubmitLogin = async (e: any) => {
+    console.log("isAuthenticated ", isAuthenticated);
     if (!isAuthenticated) {
       console.log("Login clicked: email:", email, "password:", password);
       e.preventDefault();
@@ -58,34 +59,6 @@ function AdminLogin() {
         });
     }
   };
-
-  // const handleSubmitLogin = async (e: any) => {
-  //   console.log("Login clicked: email:", email, "password:", password);
-  //   e.preventDefault();
-  //   axios
-  //     .post(loginUrl, {
-  //       email,
-  //       password,
-  //     })
-  //     .then((response) => {
-  //       console.log("Login Success:", response.data);
-
-  //       // Create an object to hold all the related data
-  //       const authData = {
-  //         accessToken: response.data.accessToken,
-  //         refreshToken: response.data.refreshToken,
-  //         userType: response.data.userType,
-  //         userId: response.data.userId,
-  //       };
-  //       // Serialize the object to a JSON string and store it in localStorage
-  //       localStorage.setItem("authData", JSON.stringify(authData));
-
-  //       replace("/dashboard/home");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error in Login:", error);
-  //     });
-  // };
 
   return (
     <div className="w-[100vw] h-[100vh] flex">

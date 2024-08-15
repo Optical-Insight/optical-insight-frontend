@@ -1,17 +1,16 @@
 // Define the shape of your authentication context
 export interface AuthContextProps {
   isAuthenticated: boolean;
-  login: (response: LoginResponse) => void;
+  storedAuthData: AuthData;
+  login: (response: AuthData) => void;
   logout: () => void;
 }
 
-export interface LoginResponse {
-  data: {
-    accessToken: string;
-    refreshToken: string;
-    userType: string;
-    userId: string;
-  };
+export interface AuthData {
+  accessToken: string;
+  refreshToken: string;
+  userType: string;
+  userId: string;
 }
 
 export interface CommonBtnProps {

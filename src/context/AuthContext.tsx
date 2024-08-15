@@ -1,7 +1,14 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { AuthContextProps, LoginResponse } from "@/utils/interfaces";
+import { AuthContextProps, AuthData } from "@/utils/interfaces";
+
+const defaultAuthData: AuthData = {
+  accessToken: "",
+  refreshToken: "",
+  userType: "",
+  userId: "",
+};
 
 // Create the context with default values
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -12,12 +19,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const router = useRouter();
+  const [storedAuthData, setStoredAuthData] =
+    useState<AuthData>(defaultAuthData);
 
   useEffect(() => {
-    const storedAuthData = localStorage.getItem("authData");
+    const storedAuth = localStorage.getItem("authData");
 
-    if (storedAuthData) {
-      const authData = JSON.parse(storedAuthData);
+    if (storedAuth) {
+      const authData = JSON.parse(storedAuth);
       const accessToken = authData.accessToken;
 
       if (accessToken) {
@@ -28,7 +37,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  const login = (response: LoginResponse) => {
+  const login = (response: AuthData) => {
+    console.log("Login Success:", response);
+
     // Create an object to hold all the related data
     const authData = {
       accessToken: response.accessToken,
@@ -36,6 +47,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       userType: response.userType,
       userId: response.userId,
     };
+
+    console.log("authData: ", authData);
+    setStoredAuthData(authData);
+
     // Serialize the object to a JSON string and store it in localStorage
     localStorage.setItem("authData", JSON.stringify(authData));
 
@@ -50,7 +65,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, storedAuthData, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

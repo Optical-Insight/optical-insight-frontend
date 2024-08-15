@@ -20,33 +20,18 @@ import SearchFilter from "@/app/components/common/search-filter";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
   const { replace } = useRouter();
+  const { isAuthenticated, storedAuthData } = useAuth();
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [accessToken, setAccessToken] = useState("");
   const [rows, setRows] = useState<InstituteAllRowProps[]>([]);
 
   const adminBaseUrl = process.env.NEXT_PUBLIC_ADMIN_BASE_URL;
   const getAllInstitutesUrl = `${adminBaseUrl}/clinics/`;
-
-  useEffect(() => {
-    const storedAuthData = localStorage.getItem("authData");
-
-    if (storedAuthData) {
-      const authData = JSON.parse(storedAuthData);
-      const token = authData.accessToken;
-      // const refreshToken = authData.refreshToken;
-      // const userType = authData.userType;
-      // const userId = authData.userId;
-      setAccessToken(token);
-    } else {
-      console.error("No authentication data found.");
-      replace("/auth/login/sys-admin");
-    }
-  }, []);
 
   const createData = (
     id: string,
@@ -63,7 +48,7 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
     axios
       .get(getAllInstitutesUrl, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
           "Content-Type": "application/json",
         },
       })
@@ -80,8 +65,13 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
   };
 
   useEffect(() => {
-    fetchAllInstitutes();
-  }, [accessToken]);
+    if (isAuthenticated && storedAuthData) {
+      fetchAllInstitutes();
+    } else {
+      console.error("No authentication data found.");
+      replace("/auth/login/sys-admin");
+    }
+  }, [storedAuthData.accessToken]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
