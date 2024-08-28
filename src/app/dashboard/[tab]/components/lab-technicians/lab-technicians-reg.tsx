@@ -91,12 +91,14 @@ const InstituteRegistration = ({
             <FormField
               label="Name of the Institute / Venue"
               placeholder="Vision Care Opticals"
+              onChange={() => {}}
             />
             <FormField
               label="Address"
               placeholder="1st Floor, 907 Peradeniya Rd, Kandy"
+              onChange={() => {}}
             />
-            <FormField label="Contact Number" placeholder="081 208 5004" />
+            {/* <FormField label="Contact Number" placeholder="081 208 5004" />
             <FormField label="Email Address" placeholder="info@visioncare.lk" />
             <FormField label="Website URL" placeholder="visioncare.lk" />
             <div className="h-[6.445vh]" />
@@ -115,7 +117,7 @@ const InstituteRegistration = ({
             <FormField
               label="Certifications"
               placeholder="Accreditation from relevant organizations"
-            />
+            /> */}
           </div>
         )}
 
@@ -125,12 +127,14 @@ const InstituteRegistration = ({
             <FormField
               label="Business Registration Number"
               placeholder="123 4567 890"
+              onChange={() => {}}
             />
             <FormField
               label="Tax Identification Number"
               placeholder="123 4567 890"
+              onChange={() => {}}
             />
-            <FormField label="PIN" placeholder="123 4567 890" />
+            {/* <FormField label="PIN" placeholder="123 4567 890" />
 
             <FormField label="Business License" placeholder="Attach files" />
             <div className="h-[6.445vh]" />
@@ -144,7 +148,7 @@ const InstituteRegistration = ({
             <FormField
               label="Staff Contact Information"
               placeholder="info@visioncare.lk"
-            />
+            /> */}
           </div>
         )}
 
@@ -154,12 +158,14 @@ const InstituteRegistration = ({
             <FormField
               label="List of Equipment"
               placeholder="Diagnostic Tools, Optical Equipment, etc."
+              onChange={() => {}}
             />
             <FormField
               label="Details about Facilities"
               placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
+              onChange={() => {}}
             />
-            <FormField
+            {/* <FormField
               label="Hours of Operation"
               placeholder="60hrs per Week"
             />
@@ -184,7 +190,7 @@ const InstituteRegistration = ({
               label="Other Relevant Information or Specializations"
               placeholder="Lorem Ipsum"
             />
-            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" />
+            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" /> */}
           </div>
         )}
 
