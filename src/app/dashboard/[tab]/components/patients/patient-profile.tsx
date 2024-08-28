@@ -115,11 +115,15 @@ const PatientProfile = ({ setActiveHeading }: InstituteListAllProps) => {
             </div>
 
             <div className="flex flex-col h-[72px] lg:h-[80px] items-center justify-end space-y-2">
-              <div className="h-[28px] flex flex-col">
+              <div className="w-24 h-8 xl:h-9 xl:w-32 flex flex-col">
                 <CommonBtn label="Edit" onClick={handleSubmitLogin} />
               </div>
-              <div className="h-[28px] flex flex-col">
-                <CommonBtn label="Delete" onClick={handleSubmitLogin} />
+              <div className="w-24 h-8 xl:h-9 xl:w-32 flex flex-col">
+                <CommonBtn
+                  label="Delete"
+                  onClick={handleSubmitLogin}
+                  type={"Delete"}
+                />
               </div>
             </div>
           </div>

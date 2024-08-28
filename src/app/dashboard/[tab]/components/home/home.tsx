@@ -3,6 +3,7 @@ import CommonBtn from "@/app/components/common/button";
 import React from "react";
 import HomeCard from "../../../../components/common/home-card";
 import Image from "next/image";
+import ReportsList from "./reports-list";
 
 const handleSubmit = () => {
   console.log("Button clicked");
@@ -81,6 +82,9 @@ const HomePage = () => {
           percentage={2}
         />
       </div>
+
+      {/* Reports */}
+      <ReportsList />
     </div>
   );
 };

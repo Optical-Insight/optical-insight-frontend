@@ -16,6 +16,7 @@ export interface AuthData {
 export interface CommonBtnProps {
   label: string;
   onClick: () => void;
+  type?: string;
   // isFullWidth?: boolean;
   // width?: number;
   // height: number;
@@ -75,7 +76,8 @@ export interface StepProps {
 export interface FormFieldProps {
   label: string;
   placeholder?: string;
-  value: string;
+  required?: boolean;
+  value?: string;
   onChange: (value: string) => void;
 }
 

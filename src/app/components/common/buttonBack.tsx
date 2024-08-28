@@ -7,7 +7,7 @@ const CommomBackBtn = ({ label, onClick }: CommonBtnProps) => {
     <button
       onClick={onClick}
       className={`h-full bg-lightBlueBg text-blueText font-semibold border border-dashed border-blueText text-sm md:text-base rounded-[7px] px-[15px] ${
-        label === "Back" && "w-[160px] xl:w-[200px]"
+        label === "Back" && "w-full"
       }`}
     >
       {label}
