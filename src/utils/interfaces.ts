@@ -84,7 +84,7 @@ export interface FormFieldProps {
 export interface InstituteRegistrationProps {
   activeStep: number;
   setActiveStep: (value: number) => void;
-  setActiveHeading: (value: number) => void;
+  setActiveHeading?: (value: number) => void;
 }
 
 export interface InstituteListAllProps {

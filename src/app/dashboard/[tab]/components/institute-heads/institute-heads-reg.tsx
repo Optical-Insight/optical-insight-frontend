@@ -91,12 +91,10 @@ const InstituteRegistration = ({
             <FormField
               label="Full Name"
               placeholder="Sahan Thilakaratne"
+              onChange={() => {}}
             />
-            <FormField
-              label="Gender"
-              placeholder="Male"
-            />
-            <FormField label="Date of Birth" placeholder="11/12/2000" />
+            <FormField label="Gender" placeholder="Male" onChange={() => {}} />
+            {/* <FormField label="Date of Birth" placeholder="11/12/2000" />
             <FormField label="NIC" placeholder="12345678910" />
             <FormField label="Email" placeholder="sahanpradeeptha@gmail.com" />
             
@@ -119,7 +117,7 @@ const InstituteRegistration = ({
             <FormField
               label="Employment Status"
               placeholder="Full-Time"
-            />
+            /> */}
           </div>
         )}
 
@@ -129,12 +127,14 @@ const InstituteRegistration = ({
             <FormField
               label="Job Title"
               placeholder="Institute Head"
+              onChange={() => {}}
             />
             <FormField
               label="Department"
               placeholder="123 4567 890"
+              onChange={() => {}}
             />
-            <FormField label="Years of Experience" placeholder="123 4567 890" />
+            {/* <FormField label="Years of Experience" placeholder="123 4567 890" />
 
             <FormField label="Speciality Areas" placeholder="Attach files" />
             
@@ -144,8 +144,7 @@ const InstituteRegistration = ({
             <FormField
               label="Lab Techniques"
               placeholder="Bsc (Hons) in Medical Sciences"
-            />
-            
+            /> */}
           </div>
         )}
 
@@ -155,12 +154,14 @@ const InstituteRegistration = ({
             <FormField
               label="Educational Qualifications"
               placeholder="Diagnostic Tools, Optical Equipment, etc."
+              onChange={() => {}}
             />
             <FormField
               label="Completed Training Courses"
               placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
+              onChange={() => {}}
             />
-            <FormField
+            {/* <FormField
               label="On-going Courses"
               placeholder="60hrs per Week"
             />
@@ -185,7 +186,7 @@ const InstituteRegistration = ({
               label="Other Relevant Information or Specializations"
               placeholder="Lorem Ipsum"
             />
-            <FormField label="Reference Contacts" placeholder="Lorem Ipsum" />
+            <FormField label="Reference Contacts" placeholder="Lorem Ipsum" /> */}
           </div>
         )}
 

@@ -85,25 +85,52 @@ const PatientRecordNew = ({
         {/* Step 01 */}
         {activeStep === 1 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
-            <FormField label="Patient ID" placeholder="VC0001" />
-            <FormField label="Contact Number" placeholder="071 234 5678" />
-            <FormField label="Date of Test" placeholder="05 / 03 / 2023" />
+            <FormField
+              label="Patient ID"
+              placeholder="VC0001"
+              onChange={() => {}}
+            />
+            <FormField
+              label="Contact Number"
+              placeholder="071 234 5678"
+              onChange={() => {}}
+            />
+            <FormField
+              label="Date of Test"
+              placeholder="05 / 03 / 2023"
+              onChange={() => {}}
+            />
             <FormField
               label="Test Duration"
               placeholder="01 Hour & 20 Minutes"
+              onChange={() => {}}
             />
-            <FormField label="Type of Test" placeholder="Test I" />
+            <FormField
+              label="Type of Test"
+              placeholder="Test I"
+              onChange={() => {}}
+            />
 
             <div className="h-[6.445vh]" />
-            <FormField label="Technician ID" placeholder="LTVC0099" />
+            <FormField
+              label="Technician ID"
+              placeholder="LTVC0099"
+              onChange={() => {}}
+            />
             <FormField
               label="Test Parameters"
               placeholder="Equipment used, test settings"
+              onChange={() => {}}
             />
-            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" />
+            <FormField
+              label="Comments or Notes"
+              placeholder="Lorem Ipsum"
+              onChange={() => {}}
+            />
             <FormField
               label="Technician's Digital Signature"
               placeholder="Attach a File"
+              onChange={() => {}}
             />
           </div>
         )}
@@ -288,13 +315,15 @@ const PatientRecordNew = ({
             <FormField
               label="Image Quality Assessment"
               placeholder="Lorem Ipsum"
+              onChange={() => {}}
             />
             <div className="h-[6.445vh]" />
             <FormField
               label="Previous Lab Test Results"
               placeholder="blood tests for specific eye-related conditions"
+              onChange={() => {}}
             />
-            <FormField
+            {/* <FormField
               label="Previous Lab Test Reports"
               placeholder="Attach a File or Drag & drop here"
             />
@@ -307,7 +336,7 @@ const PatientRecordNew = ({
               label="Privacy Policy Acknowledgment"
               placeholder="Equipment used, test settings"
             />
-            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" />
+            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" /> */}
           </div>
         )}
 
