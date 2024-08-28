@@ -1,15 +1,17 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommomBtn from "@/app/components/common/button";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import axios from "axios";
 import ModalConfirmTextInput from "@/app/components/common/modal-confirmTextInput";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 function AdminLogin() {
   const { isAuthenticated, login } = useAuth();
+  const router = useRouter();
 
   const adminBaseUrl = process.env.NEXT_PUBLIC_ADMIN_BASE_URL;
   const loginUrl = `${adminBaseUrl}/admins/login`;
@@ -20,6 +22,12 @@ function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace("/dashboard/home");
+    }
+  }, [isAuthenticated, router]);
 
   const handleForgotPassword = async () => {
     console.log("Forgot password clicked");

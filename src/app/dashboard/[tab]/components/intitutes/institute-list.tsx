@@ -19,11 +19,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SearchFilter from "@/app/components/common/search-filter";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
-  const { replace } = useRouter();
   const { isAuthenticated, storedAuthData } = useAuth();
 
   const [page, setPage] = useState(0);
@@ -69,7 +67,6 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
       fetchAllInstitutes();
     } else {
       console.error("No authentication data found.");
-      replace("/auth/login/sys-admin");
     }
   }, [storedAuthData.accessToken]);
 
