@@ -1,7 +1,4 @@
 import React from "react";
-import { InstituteListAllProps } from "@/utils/interfaces";
-
-import SearchFilter from "@/app/components/common/search-filter";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import { TableHead } from "@mui/material";
@@ -14,9 +11,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import TablePaginationActions from "./table-pagination";
-import CommonRegisterBtn from "@/app/components/common/registerButton";
+import SearchFilter from "@/app/components/common/search-filter";
 
-const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
+const ReportsList = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -38,38 +35,29 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
 
   return (
     <div>
-      <div className="flex justify-between mb-[25px] items-center ">
-        <div className="text-darkText font-bold text-4xl lg:text-[40px]">
-          List of all Institute Heads
-        </div>
-        <div className="flex h-[42px]">
-          <CommonRegisterBtn
-            label="Register new Institute Head"
-            onClick={() => setActiveHeading && setActiveHeading(2)}
-          />
-        </div>
+      {/* Cards */}
+      <div className="mt-5 h-auto grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row justify-between bg-lightBlueBg rounded-lg p-[1.563vh] gap-4 lg:gap-4">
+        {/* Filter */}
+        <SearchFilter
+          labelSearch="Search for a Patient"
+          labelSelectOne="Status"
+          labelSelectTwo="Location"
+          placeholderSearch="Search by Name or NIC"
+          optionsSelectOne={[
+            { value: "pending", label: "Pending" },
+            { value: "verified", label: "Verified" },
+            { value: "completed", label: "Completed" },
+          ]}
+          optionsSelectTwo={[
+            { value: "colombo", label: "Colombo" },
+            { value: "kandy", label: "Kandy" },
+            { value: "gampaha", label: "Gampaha" },
+          ]}
+          onSearch={() => {}}
+        />
       </div>
 
-      {/* Filter */}
-      <SearchFilter
-        labelSearch="Search for an Institute Head"
-        labelSelectOne="Employment Status"
-        labelSelectTwo="Location"
-        placeholderSearch="Search by Name"
-        optionsSelectOne={[
-          { value: "fullTime", label: "Full-Time" },
-          { value: "partTime", label: "Part-Time" },
-          { value: "inactive", label: "Inactive" },
-        ]}
-        optionsSelectTwo={[
-          { value: "colombo", label: "Colombo" },
-          { value: "kandy", label: "Kandy" },
-          { value: "gampaha", label: "Gampaha" },
-        ]}
-        onSearch={() => {}}
-      />
-
-      <div className="mb-[45px]">
+      <div className="mt-5 mb-[45px]">
         <TableContainer component={Paper} className="rounded-lg">
           <Table aria-label="custom pagination table">
             <TableHead>
@@ -138,4 +126,4 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
   );
 };
 
-export default InstituteListAll;
+export default ReportsList;

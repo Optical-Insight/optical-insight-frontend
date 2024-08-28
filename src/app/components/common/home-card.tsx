@@ -21,7 +21,6 @@ const HomeCard = ({ iconSrc, title, count, percentage }: HomeCardProps) => {
           </div>
         </div>
         <div className="relative">
-          {/* <img src="/assets/icons/three_dots.svg" alt="three_dots icon" /> */}
           <Image
             src="/assets/icons/three_dots.svg"
             alt="three_dots icon"
@@ -37,7 +36,6 @@ const HomeCard = ({ iconSrc, title, count, percentage }: HomeCardProps) => {
         </div>
 
         <div className="relative w-auto pl-1 pr-1 h-[2.441vh] bg-buttonPrimary rounded-2xl flex items-center justify-center">
-          {/* <img src="/assets/icons/up_arrow.svg" alt="up arrow icon" /> */}
           <Image
             src="/assets/icons/up_arrow.svg"
             alt="up arrow icon"
