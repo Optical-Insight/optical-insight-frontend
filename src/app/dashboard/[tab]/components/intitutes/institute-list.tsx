@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  InstituteListAllProps,
-  InstituteAllRowProps,
-} from "@/utils/interfaces";
+import { ListAllProps, InstituteAllRowProps } from "@/utils/interfaces";
 
 // import rows from "./table-data";
 import Table from "@mui/material/Table";
@@ -20,31 +17,35 @@ import SearchFilter from "@/app/components/common/search-filter";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
+import { GET_ALL_INSTITUTES_URL } from "@/constants/config";
+import ModalInfo from "@/app/components/common/modal-info";
 
-const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
+const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState<InstituteAllRowProps[]>([]);
-
-  const adminBaseUrl = process.env.NEXT_PUBLIC_ADMIN_BASE_URL;
-  const getAllInstitutesUrl = `${adminBaseUrl}/clinics/`;
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [clickedRow, setClickedRow] = useState<InstituteAllRowProps | null>(
+    null
+  );
 
   const createData = (
     id: string,
+    clinicId: string,
     name: string,
     location: string,
-    status?: string,
+    phone?: string,
     email?: string,
     action?: string
   ): InstituteAllRowProps => {
-    return { id, name, location, status, email, action };
+    return { id, clinicId, name, location, phone, email, action };
   };
 
   const fetchAllInstitutes = async () => {
     axios
-      .get(getAllInstitutesUrl, {
+      .get(GET_ALL_INSTITUTES_URL, {
         headers: {
           Authorization: `Bearer ${storedAuthData.accessToken}`,
           "Content-Type": "application/json",
@@ -52,13 +53,27 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
       })
       .then((response) => {
         const row = response.data.map(
-          (institute: { id: string; name: string; location: string }) =>
-            createData(institute.id, institute.name, institute.location)
+          (institute: {
+            _id: string; // Ensure this is the correct key for the ID
+            clinicId: string;
+            name: string;
+            location: string;
+            phone: string;
+            email: string;
+          }) =>
+            createData(
+              institute._id, // Ensure that institute.id exists in the API response
+              institute.clinicId,
+              institute.name,
+              institute.location,
+              institute.phone,
+              institute.email
+            )
         );
         setRows(row);
       })
       .catch((err) => {
-        console.error("Error in retriving data", err.response.data);
+        console.error("Error in retrieving data", err.response.data);
       });
   };
 
@@ -125,9 +140,10 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
           <Table aria-label="custom pagination table">
             <TableHead>
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
+                <TableCell className="font-bold">Institute ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
                 <TableCell className="font-bold">Location</TableCell>
-                <TableCell className="font-bold">Status</TableCell>
+                <TableCell className="font-bold">Contact Number</TableCell>
                 <TableCell className="font-bold">Email</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
@@ -140,12 +156,22 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
                   )
                 : rows
               ).map((row) => (
-                <TableRow key={row.id}>
+                <TableRow
+                  key={row.id}
+                  hover
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    console.log("Row clicked", row);
+                    setClickedRow(row);
+                    setIsInfoModalOpen(true);
+                  }}
+                >
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.clinicId}
                   </TableCell>
+                  <TableCell>{row.name}</TableCell>
                   <TableCell>{row.location}</TableCell>
-                  <TableCell>{row.status}</TableCell>
+                  <TableCell>{row.phone}</TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>
                     <div>
@@ -185,6 +211,17 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
           </Table>
         </TableContainer>
       </div>
+
+      {/* Info Modal */}
+      <ModalInfo
+        id={clickedRow?.clinicId ?? ""}
+        title="Test Info Modal"
+        confirmLabel="Edit"
+        isOpen={isInfoModalOpen}
+        onClose={() => setIsInfoModalOpen(false)}
+        onEdit={() => console.log("Edit clicked")}
+        onDelete={() => console.log("Delete clicked")}
+      />
     </div>
   );
 };

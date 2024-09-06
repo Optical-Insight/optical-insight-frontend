@@ -1,13 +1,13 @@
 import CommonBtn from "@/app/components/common/button";
 import {
-  InstituteListAllProps,
+  ListAllProps,
   PatientProfileCardTextProps,
   PatientProfileIconTextProps,
 } from "@/utils/interfaces";
 import Image from "next/image";
 import React from "react";
 
-const PatientProfile = ({ setActiveHeading }: InstituteListAllProps) => {
+const PatientProfile = ({ setActiveHeading }: ListAllProps) => {
   const handleSubmitLogin = () => {
     console.log("Login clicked");
   };

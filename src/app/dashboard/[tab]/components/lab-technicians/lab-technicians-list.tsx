@@ -1,8 +1,7 @@
-import React from "react";
-import { InstituteListAllProps } from "@/utils/interfaces";
+import React, { useEffect, useState } from "react";
+import { ListAllProps, TechniciansAllProps } from "@/utils/interfaces";
 
 import SearchFilter from "@/app/components/common/search-filter";
-import rows from "./table-data";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -16,10 +15,69 @@ import { TableHead } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import CommonRegisterBtn from "@/app/components/common/registerButton";
+import { GET_ALL_USERS_URL } from "@/constants/config";
+import { useAuth } from "@/context/AuthContext";
+import axios from "axios";
 
-const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
+const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
+  const { isAuthenticated, storedAuthData } = useAuth();
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState<TechniciansAllProps[]>([]);
+
+  const createTechnicianData = (
+    id: string,
+    name: string,
+    email: string,
+    userId: string,
+    type: string
+  ): TechniciansAllProps => {
+    return { id, name, email, userId, type };
+  };
+
+  const fetchAllTechnicians = async () => {
+    try {
+      const response = await axios.get(GET_ALL_USERS_URL, {
+        headers: {
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      // Filter technicians based on their type
+      const filteredTechnicians = response.data.filter(
+        (technician: TechniciansAllProps) => technician.type === "mlt"
+      );
+
+      // Map the filtered technicians to the desired format
+      const row = filteredTechnicians.map((technician: TechniciansAllProps) =>
+        createTechnicianData(
+          technician.id,
+          technician.name,
+          technician.email,
+          technician.userId,
+          technician.type
+        )
+      );
+
+      // Set the rows with filtered data
+      setRows(row);
+    } catch (err: any) {
+      console.error(
+        "Error in retrieving data",
+        err.response?.data || err.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && storedAuthData) {
+      fetchAllTechnicians();
+    } else {
+      console.error("No authentication data found.");
+    }
+  }, [storedAuthData.accessToken]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -75,11 +133,10 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
           <Table aria-label="custom pagination table">
             <TableHead>
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
+                <TableCell className="font-bold">Lab Technician ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">Status</TableCell>
-                <TableCell className="font-bold">Location</TableCell>
                 <TableCell className="font-bold">Email</TableCell>
-                <TableCell className="font-bold">Registered Date</TableCell>
+                <TableCell className="font-bold">None</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
             </TableHead>
@@ -91,14 +148,13 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
                   )
                 : rows
               ).map((row) => (
-                <TableRow key={row.name}>
+                <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.userId}
                   </TableCell>
-                  <TableCell>{row.status}</TableCell>
-                  <TableCell>{row.location}</TableCell>
+                  <TableCell>{row.name}</TableCell>
                   <TableCell>{row.email}</TableCell>
-                  <TableCell>{row.date}</TableCell>
+                  <TableCell></TableCell>
                   <TableCell>
                     <div>
                       <MoreVertIcon />
@@ -137,8 +193,6 @@ const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
           </Table>
         </TableContainer>
       </div>
-
-
     </div>
   );
 };
