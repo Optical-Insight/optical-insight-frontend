@@ -105,7 +105,7 @@ function AdminLogin() {
                 <input
                   type="email"
                   placeholder="kamal@opticin.com"
-                  className="text-base w-full h-12 mt-1 rounded-lg"
+                  className="pl-1 text-base w-full h-12 mt-1 rounded-lg text-black"
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
@@ -126,7 +126,7 @@ function AdminLogin() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="************"
-                    className="text-base w-full h-12 mt-1 rounded-lg "
+                    className="pl-1 text-base w-full h-12 mt-1 rounded-lg text-black"
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <div className="absolute right-2 top-2/3 transform -translate-y-2/3 text-labelText">

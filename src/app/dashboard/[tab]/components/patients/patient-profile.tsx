@@ -18,7 +18,7 @@ const PatientProfile = ({ setActiveHeading }: InstituteListAllProps) => {
     text,
   }: PatientProfileIconTextProps) => {
     return (
-      <div className="flex flex-row gap-1 items-center">
+      <div className="flex flex-row gap-1 items-center text-black">
         <div className="relative h-[12px] w-[12px]">
           <Image
             src={src}
@@ -28,7 +28,7 @@ const PatientProfile = ({ setActiveHeading }: InstituteListAllProps) => {
             objectPosition="center"
           />
         </div>
-        <div className="text-[10px] lg:text-[14px]">{text}</div>
+        <div className="text-[10px] lg:text-[14px] text-black">{text}</div>
       </div>
     );
   };
@@ -53,9 +53,9 @@ const PatientProfile = ({ setActiveHeading }: InstituteListAllProps) => {
               />
             </div>
           </div>
-          <div className="text-[10px] lg:text-[14px]">{text}</div>
+          <div className="text-[10px] lg:text-[14px] text-black">{text}</div>
         </div>
-        <div className="flex justify-end mt-[4px] text-[16px] lg:text-[22px] font-semibold">
+        <div className="flex justify-end mt-[4px] text-[16px] lg:text-[22px] font-semibold text-black">
           {value}
         </div>
       </div>
@@ -78,7 +78,7 @@ const PatientProfile = ({ setActiveHeading }: InstituteListAllProps) => {
           {/* Details */}
           <div className="flex w-full ">
             <div className="flex flex-col flex-grow mr-[30px] h-[72px] lg:h-[80px] justify-between">
-              <h3 className="font-bold lg:text-[24px]">
+              <h3 className="font-bold lg:text-[24px] text-black">
                 Mr. Shehan Gunasekara
               </h3>
               <div className="">

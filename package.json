@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.15",
     "axios": "^1.7.4",
     "cookie": "^0.6.0",
+    "frontend": "file:",
     "js-cookie": "^3.0.5",
     "next": "14.2.3",
     "nookies": "^2.5.2",
