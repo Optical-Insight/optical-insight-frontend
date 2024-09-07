@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Image from "next/image";
-import InstituteRegistration from "./patients-reg";
-import InstituteListAll from "./patient-list";
 import PatientProfile from "./patient-profile";
 import PatientRecordNew from "./patients-new-record";
+import PatientListAll from "./patient-list";
+import PatientsRegistration from "./patients-reg";
 
 const PatientsPage = () => {
-  const [activeHeading, setActiveHeading] = useState(3);
+  const [activeHeading, setActiveHeading] = useState(1);
   const [activeStep, setActiveStep] = useState(1);
 
   const handleBreadcrumbClick = (value: number) => {
@@ -124,12 +124,12 @@ const PatientsPage = () => {
 
       {/* All Patients */}
       {activeHeading === 1 && (
-        <InstituteListAll setActiveHeading={setActiveHeading} />
+        <PatientListAll setActiveHeading={setActiveHeading} />
       )}
 
       {/* Register a Patient */}
       {activeHeading === 2 && (
-        <InstituteRegistration
+        <PatientsRegistration
           activeStep={activeStep}
           setActiveStep={setActiveStep}
         />
