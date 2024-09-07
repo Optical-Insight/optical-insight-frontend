@@ -1,8 +1,7 @@
-import React from "react";
-import { InstituteListAllProps } from "@/utils/interfaces";
+import React, { useEffect, useState } from "react";
+import { DoctorsAllProps, ListAllProps } from "@/utils/interfaces";
 
 import SearchFilter from "@/app/components/common/search-filter";
-import rows from "./table-data";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,10 +14,68 @@ import TablePaginationActions from "./table-pagination";
 import { TableHead } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
+import { useAuth } from "@/context/AuthContext";
+import { GET_ALL_USERS_URL } from "@/constants/config";
+import axios from "axios";
 
-const DoctorListAll = ({ setActiveHeading }: InstituteListAllProps) => {
+const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
+  const { isAuthenticated, storedAuthData } = useAuth();
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState<DoctorsAllProps[]>([]);
+
+  const createDoctorData = (
+    id: string,
+    name: string,
+    email: string,
+    userId: string,
+    type: string
+  ): DoctorsAllProps => {
+    return { id, name, email, userId, type };
+  };
+
+  const fetchAllDoctors = async () => {
+    try {
+      const response = await axios.get(GET_ALL_USERS_URL, {
+        headers: {
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const filteredPatients = response.data.filter(
+        (doctor: DoctorsAllProps) => doctor.type === "doctor"
+      );
+
+      // Map the filtered doctors to the desired format
+      const row = filteredPatients.map((doctor: DoctorsAllProps) =>
+        createDoctorData(
+          doctor.id,
+          doctor.name,
+          doctor.email,
+          doctor.userId,
+          doctor.type
+        )
+      );
+
+      // Set the rows with filtered data
+      setRows(row);
+    } catch (err: any) {
+      console.error(
+        "Error in retrieving data",
+        err.response?.data || err.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && storedAuthData) {
+      fetchAllDoctors();
+    } else {
+      console.error("No authentication data found.");
+    }
+  }, [storedAuthData.accessToken]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -74,10 +131,10 @@ const DoctorListAll = ({ setActiveHeading }: InstituteListAllProps) => {
           <Table aria-label="custom pagination table">
             <TableHead>
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
+                <TableCell className="font-bold">Doctor ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">Status</TableCell>
-                <TableCell className="font-bold">Location</TableCell>
                 <TableCell className="font-bold">Email</TableCell>
+                <TableCell className="font-bold">None</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
             </TableHead>
@@ -89,13 +146,13 @@ const DoctorListAll = ({ setActiveHeading }: InstituteListAllProps) => {
                   )
                 : rows
               ).map((row) => (
-                <TableRow key={row.name}>
+                <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.userId}
                   </TableCell>
-                  <TableCell>{row.status}</TableCell>
-                  <TableCell>{row.location}</TableCell>
+                  <TableCell>{row.name}</TableCell>
                   <TableCell>{row.email}</TableCell>
+                  <TableCell></TableCell>
                   <TableCell>
                     <div>
                       <MoreVertIcon />

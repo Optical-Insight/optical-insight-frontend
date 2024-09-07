@@ -138,7 +138,7 @@ const PatientRecordNew = ({
         {/* Step 02 */}
         {activeStep === 2 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
-            <div className="flex items-center justify-between w-full mb-[0.879vh] ">
+            <div className="flex items-center justify-between w-full mb-3">
               <label
                 htmlFor={"Images"}
                 className="block text-[16px] text-darkText font-semibold"
@@ -147,167 +147,209 @@ const PatientRecordNew = ({
               </label>
 
               {/* Image Upload */}
-              <div className="flex w-[35.556vw] ">
+              <div className="flex w-[35.556vw] mb-4">
                 <div className="container mx-auto">
                   {!fileLeft ? (
-                    <div
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        setFileLeftEnter(true);
-                      }}
-                      onDragLeave={() => {
-                        setFileLeftEnter(false);
-                      }}
-                      onDragEnd={(e) => {
-                        e.preventDefault();
-                        setFileLeftEnter(false);
-                      }}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        setFileLeftEnter(false);
-                        if (e.dataTransfer.items) {
-                          Array.from(e.dataTransfer.items).forEach(
-                            (item, i) => {
-                              if (item.kind === "file") {
-                                const file = item.getAsFile();
-                                if (file) {
-                                  let blobUrl = URL.createObjectURL(file);
-                                  setFileLeft(blobUrl);
-                                }
-                                console.log(
-                                  `items file[${i}].name = ${file?.name}`
-                                );
-                              }
-                            }
-                          );
-                        } else {
-                          Array.from(e.dataTransfer.files).forEach(
-                            (file, i) => {
-                              console.log(`… file[${i}].name = ${file.name}`);
-                            }
-                          );
-                        }
-                      }}
-                      className={`${
-                        fileLeftEnter ? "border-4" : "border-2"
-                      } mx-auto bg-white flex flex-col w-[150px] h-[150px] border-dashed items-center justify-center`}
-                    >
+                    <>
                       <label
-                        htmlFor="file"
-                        className="h-full flex flex-col justify-center text-center"
+                        htmlFor="leftImage"
+                        className="mb-1 flex flex-col justify-center text-center font-semibold"
                       >
-                        Click to upload or Drag and drop
+                        Left Eye
                       </label>
-                      <input
-                        id="file"
-                        type="file"
-                        className="hidden"
-                        onChange={(e) => {
-                          console.log(e.target.files);
-                          let files = e.target.files;
-                          if (files && files[0]) {
-                            let blobUrl = URL.createObjectURL(files[0]);
-                            setFileLeft(blobUrl);
+                      <div
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setFileLeftEnter(true);
+                        }}
+                        onDragLeave={() => {
+                          setFileLeftEnter(false);
+                        }}
+                        onDragEnd={(e) => {
+                          e.preventDefault();
+                          setFileLeftEnter(false);
+                        }}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setFileLeftEnter(false);
+                          if (e.dataTransfer.items) {
+                            Array.from(e.dataTransfer.items).forEach(
+                              (item, i) => {
+                                if (item.kind === "file") {
+                                  const file = item.getAsFile();
+                                  if (file) {
+                                    let blobUrl = URL.createObjectURL(file);
+                                    setFileLeft(blobUrl);
+                                  }
+                                  console.log(
+                                    `items file[${i}].name = ${file?.name}`
+                                  );
+                                }
+                              }
+                            );
+                          } else {
+                            Array.from(e.dataTransfer.files).forEach(
+                              (file, i) => {
+                                console.log(`… file[${i}].name = ${file.name}`);
+                              }
+                            );
                           }
                         }}
-                      />
-                    </div>
+                        className={`${
+                          fileLeftEnter ? "border-4" : "border-2"
+                        } rounded-md mx-auto bg-white flex flex-col w-[150px] h-[150px] border-dashed items-center justify-center`}
+                      >
+                        <label
+                          htmlFor="file"
+                          className="h-full flex flex-col justify-center text-center"
+                        >
+                          Click to upload or Drag and drop
+                        </label>
+                        <input
+                          id="file"
+                          type="file"
+                          className="hidden"
+                          onChange={(e) => {
+                            console.log(e.target.files);
+                            let files = e.target.files;
+                            if (files && files[0]) {
+                              let blobUrl = URL.createObjectURL(files[0]);
+                              setFileLeft(blobUrl);
+                            }
+                          }}
+                        />
+                      </div>
+                    </>
                   ) : (
                     <div className="flex flex-col items-center">
+                      <label
+                        htmlFor="leftImage"
+                        className="mb-1 flex flex-col justify-center text-center font-semibold"
+                      >
+                        Left Eye
+                      </label>
                       <object
-                        className="rounded-md w-[150px] h-[150px]"
+                        className="rounded-md w-[150px] h-[150px] border-2 border-dashed"
                         data={fileLeft}
                         type="image/png" // Update based on the type of file
                       />
-                      <button
-                        onClick={() => setFileLeft("")}
-                        className="px-[12px] mt-3 mb-4 uppercase py-[6px] tracking-widest outline-none bg-red-600 text-white rounded"
-                      >
-                        Reset
-                      </button>
                     </div>
                   )}
+                  <div className="flex flex-col items-center ">
+                    <button
+                      disabled={!fileLeft}
+                      onClick={() => setFileLeft("")}
+                      className={`px-[12px] mt-3 py-[6px] tracking-widest outline-none rounded ${
+                        !fileLeft
+                          ? "bg-gray-400 text-gray-300 cursor-not-allowed"
+                          : "bg-red-600 text-white"
+                      }`}
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </div>
 
                 <div className="container mx-auto">
                   {!fileRight ? (
-                    <div
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        setFileRightEnter(true);
-                      }}
-                      onDragLeave={() => {
-                        setFileRightEnter(false);
-                      }}
-                      onDragEnd={(e) => {
-                        e.preventDefault();
-                        setFileRightEnter(false);
-                      }}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        setFileRightEnter(false);
-                        if (e.dataTransfer.items) {
-                          Array.from(e.dataTransfer.items).forEach(
-                            (item, i) => {
-                              if (item.kind === "file") {
-                                const file = item.getAsFile();
-                                if (file) {
-                                  let blobUrl = URL.createObjectURL(file);
-                                  setFileRight(blobUrl);
-                                }
-                                console.log(
-                                  `items file[${i}].name = ${file?.name}`
-                                );
-                              }
-                            }
-                          );
-                        } else {
-                          Array.from(e.dataTransfer.files).forEach(
-                            (file, i) => {
-                              console.log(`… file[${i}].name = ${file.name}`);
-                            }
-                          );
-                        }
-                      }}
-                      className={`${
-                        fileRightEnter ? "border-4" : "border-2"
-                      } mx-auto bg-white flex flex-col w-[150px] h-[150px] border-dashed items-center justify-center`}
-                    >
+                    <>
                       <label
-                        htmlFor="fileRight"
-                        className="h-full flex flex-col justify-center text-center"
+                        htmlFor="rightImage"
+                        className="mb-1 flex flex-col justify-center text-center font-semibold"
                       >
-                        Click to upload or Drag and drop
+                        Right Eye
                       </label>
-                      <input
-                        id="fileRight"
-                        type="file"
-                        className="hidden"
-                        onChange={(e) => {
-                          console.log(e.target.files);
-                          let files = e.target.files;
-                          if (files && files[0]) {
-                            let blobUrl = URL.createObjectURL(files[0]);
-                            setFileRight(blobUrl);
+                      <div
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setFileRightEnter(true);
+                        }}
+                        onDragLeave={() => {
+                          setFileRightEnter(false);
+                        }}
+                        onDragEnd={(e) => {
+                          e.preventDefault();
+                          setFileRightEnter(false);
+                        }}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setFileRightEnter(false);
+                          if (e.dataTransfer.items) {
+                            Array.from(e.dataTransfer.items).forEach(
+                              (item, i) => {
+                                if (item.kind === "file") {
+                                  const file = item.getAsFile();
+                                  if (file) {
+                                    let blobUrl = URL.createObjectURL(file);
+                                    setFileRight(blobUrl);
+                                  }
+                                  console.log(
+                                    `items file[${i}].name = ${file?.name}`
+                                  );
+                                }
+                              }
+                            );
+                          } else {
+                            Array.from(e.dataTransfer.files).forEach(
+                              (file, i) => {
+                                console.log(`… file[${i}].name = ${file.name}`);
+                              }
+                            );
                           }
                         }}
-                      />
-                    </div>
+                        className={`${
+                          fileRightEnter ? "border-4" : "border-2"
+                        } rounded-md mx-auto bg-white flex flex-col w-[150px] h-[150px] border-dashed items-center justify-center`}
+                      >
+                        <label
+                          htmlFor="fileRight"
+                          className="h-full flex flex-col justify-center text-center"
+                        >
+                          Click to upload or Drag and drop
+                        </label>
+                        <input
+                          id="fileRight"
+                          type="file"
+                          className="hidden"
+                          onChange={(e) => {
+                            console.log(e.target.files);
+                            let files = e.target.files;
+                            if (files && files[0]) {
+                              let blobUrl = URL.createObjectURL(files[0]);
+                              setFileRight(blobUrl);
+                            }
+                          }}
+                        />
+                      </div>
+                    </>
                   ) : (
                     <div className="flex flex-col items-center">
+                      <label
+                        htmlFor="rightImage"
+                        className="mb-1 flex flex-col justify-center text-center font-semibold"
+                      >
+                        Right Eye
+                      </label>
                       <object
                         className="rounded-md w-[150px] h-[150px]"
                         data={fileRight}
                         type="image/png" // Update based on the type of file
                       />
-                      <button
-                        onClick={() => setFileRight("")}
-                        className="px-[12px] mt-3 mb-4 uppercase py-[6px] tracking-widest outline-none bg-red-600 text-white rounded"
-                      >
-                        Reset
-                      </button>
                     </div>
                   )}
+                  <div className="flex flex-col items-center ">
+                    <button
+                      disabled={!fileRight}
+                      onClick={() => setFileRight("")}
+                      className={`px-[12px] mt-3 py-[6px] tracking-widest outline-none rounded ${
+                        !fileRight
+                          ? "bg-gray-400 text-gray-300 cursor-not-allowed"
+                          : "bg-red-600 text-white"
+                      }`}
+                    >
+                      Reset
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -317,32 +359,37 @@ const PatientRecordNew = ({
               placeholder="Lorem Ipsum"
               onChange={() => {}}
             />
-            <div className="h-[6.445vh]" />
             <FormField
               label="Previous Lab Test Results"
               placeholder="blood tests for specific eye-related conditions"
               onChange={() => {}}
             />
-            {/* <FormField
+            <FormField
               label="Previous Lab Test Reports"
               placeholder="Attach a File or Drag & drop here"
+              onChange={() => {}}
             />
-            <div className="h-[6.445vh]" />
             <FormField
               label="Patient Consent for Data Use and Analysis"
               placeholder="LTVC0099"
+              onChange={() => {}}
             />
             <FormField
               label="Privacy Policy Acknowledgment"
               placeholder="Equipment used, test settings"
+              onChange={() => {}}
             />
-            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" /> */}
+            <FormField
+              label="Comments or Notes"
+              placeholder="Lorem Ipsum"
+              onChange={() => {}}
+            />
           </div>
         )}
 
         {/* Footer */}
         <div className="flex justify-end mt-[40px] mr-[4.722vw]">
-          <div className="flex flex-row justify-end w-full h-[38px] gap-3">
+          <div className="flex flex-row justify-end w-80 lg:w-96 xl:w-[450px] h-9 xl:h-11 gap-3">
             <CommomBackBtn label="Back" onClick={stepBackward} />
             <CommonBtn
               label={activeStep === 2 ? "Submit" : "Next"}

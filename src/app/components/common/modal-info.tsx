@@ -6,17 +6,23 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { ModalConfirmProps } from "@/utils/interfaces";
+import { ModalInfoProps } from "@/utils/interfaces";
 
-const ModalConfirm = ({
+const ModalInfo = ({
   title,
-  message,
+  id,
+  // location,
+  // phone,
+  // email,
+  // website,
   confirmLabel,
   canselLabel,
   isOpen,
   onClose,
-  onConfirm,
-}: ModalConfirmProps) => {
+  onEdit,
+}: ModalInfoProps) => {
+  console.log("ModalInfoProps", id);
+
   return (
     <Dialog className="relative z-10" open={isOpen} onClose={onClose}>
       <DialogBackdrop
@@ -39,9 +45,9 @@ const ModalConfirm = ({
                   >
                     {title}
                   </DialogTitle>
-                  <div className="mt-2">
+                  {/* <div className="mt-2">
                     <p className="text-sm text-gray-500">{message}</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -49,7 +55,7 @@ const ModalConfirm = ({
               <button
                 type="button"
                 className="inline-flex w-full justify-center rounded-md bg-buttonPrimary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-buttonPrimaryHover sm:ml-3 sm:w-auto"
-                onClick={onConfirm}
+                onClick={onEdit}
               >
                 {confirmLabel}
               </button>
@@ -69,4 +75,4 @@ const ModalConfirm = ({
   );
 };
 
-export default ModalConfirm;
+export default ModalInfo;

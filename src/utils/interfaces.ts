@@ -55,6 +55,21 @@ export interface ModalConfirmTextInputProps {
   onConfirm: (inputText: string) => void;
 }
 
+export interface ModalInfoProps {
+  title: string;
+  id: string;
+  location?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  confirmLabel?: string;
+  canselLabel?: string;
+  deleteLabel?: string;
+  isOpen: boolean;
+  onClose: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+}
 export interface SearchFilterProps {
   labelSearch: string;
   labelSelectOne: string;
@@ -87,17 +102,44 @@ export interface InstituteRegistrationProps {
   setActiveHeading?: (value: number) => void;
 }
 
-export interface InstituteListAllProps {
+export interface ListAllProps {
   setActiveHeading: (value: number) => void;
 }
 
 export interface InstituteAllRowProps {
   id: string;
+  clinicId: string;
   name: string;
   location: string;
   status?: string;
+  phone?: string;
   email?: string;
+  website?: string;
   action?: string;
+}
+
+export interface PatientsAllProps {
+  id: string;
+  name: string;
+  email: string;
+  userId: string;
+  type: string;
+}
+
+export interface DoctorsAllProps {
+  id: string;
+  name: string;
+  email: string;
+  userId: string;
+  type: string;
+}
+
+export interface TechniciansAllProps {
+  id: string;
+  name: string;
+  email: string;
+  userId: string;
+  type: string;
 }
 
 export interface TablePaginationActionsProps {

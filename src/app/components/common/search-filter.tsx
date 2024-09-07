@@ -21,7 +21,7 @@ SearchFilterProps) => {
         <input
           type="search"
           placeholder={placeholderSearch}
-          className="h-[40px] bg-white rounded-lg text-inputText text-[16.99px] w-full"
+          className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
         />
       </div>
 
@@ -32,7 +32,7 @@ SearchFilterProps) => {
         </label>
         <select
           name="status"
-          className="h-[40px] bg-white rounded-lg text-inputText text-[16.99px] w-full"
+          className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
         >
           {optionsSelectOne.map((option) => (
             <option key={option.value} value={option.value}>
@@ -49,7 +49,7 @@ SearchFilterProps) => {
         </label>
         <select
           name="location"
-          className="h-[40px] bg-white rounded-lg text-inputText text-[16.99px] w-full"
+          className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
         >
           {optionsSelectTwo.map((option) => (
             <option key={option.value} value={option.value}>

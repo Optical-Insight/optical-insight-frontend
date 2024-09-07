@@ -39,6 +39,7 @@ const config: Config = {
 
         //buttons
         buttonPrimary: "#14367B",
+        buttonPrimaryHover: "#102b62",
         buttonSecondary: "#DADCDC",
         btnConfirmBg: "#16A34A",
         btnConfirmHover: "#15803D",

@@ -2,6 +2,8 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
+import { CREATE_INSTITUTES_URL } from "@/constants/config";
+import { useAuth } from "@/context/AuthContext";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
 import axios from "axios";
 import React, { useState } from "react";
@@ -37,11 +39,9 @@ const InstituteRegistration = ({
   setActiveStep,
   setActiveHeading,
 }: InstituteRegistrationProps) => {
-  const adminBaseUrl = process.env.NEXT_PUBLIC_ADMIN_BASE_URL;
-  const formSubmitUrl = `${adminBaseUrl}/clinics/`;
+  const { storedAuthData } = useAuth();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-
   const [formValues, setFormValues] = useState({
     instituteName: "",
     address: "",
@@ -76,20 +76,20 @@ const InstituteRegistration = ({
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjdjMzc5MTVlMTZlNjgxNjcwNDZhZWQiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNzIzNjg1Mzk4LCJleHAiOjE3MjM3MjEzOTh9.tCrFM8cXhW2JnFDpiLvR94cRbGxNSHSr9Y30x0cXRYE";
-
   const handleSubmitForm = async () => {
     axios
       .post(
-        formSubmitUrl,
+        CREATE_INSTITUTES_URL,
         {
           name: formValues.instituteName,
           location: formValues.address,
+          phone: formValues.contactNo,
+          email: formValues.email,
+          website: formValues.website,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${storedAuthData.accessToken}`,
             "Content-Type": "application/json",
           },
         }

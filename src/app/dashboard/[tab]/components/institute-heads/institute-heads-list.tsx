@@ -1,5 +1,5 @@
 import React from "react";
-import { InstituteListAllProps } from "@/utils/interfaces";
+import { ListAllProps } from "@/utils/interfaces";
 
 import SearchFilter from "@/app/components/common/search-filter";
 import TableContainer from "@mui/material/TableContainer";
@@ -16,7 +16,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TablePaginationActions from "./table-pagination";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 
-const InstituteListAll = ({ setActiveHeading }: InstituteListAllProps) => {
+const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 

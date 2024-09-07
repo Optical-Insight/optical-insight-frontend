@@ -1,8 +1,7 @@
-import React from "react";
-import { InstituteListAllProps } from "@/utils/interfaces";
+import React, { useEffect, useState } from "react";
+import { ListAllProps, PatientsAllProps } from "@/utils/interfaces";
 
 import SearchFilter from "@/app/components/common/search-filter";
-import rows from "./table-data";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,10 +14,69 @@ import TablePaginationActions from "./table-pagination";
 import { TableHead } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
+import { GET_ALL_USERS_URL } from "@/constants/config";
+import axios from "axios";
+import { useAuth } from "@/context/AuthContext";
 
-const PatientListAll = ({ setActiveHeading }: InstituteListAllProps) => {
+const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
+  const { isAuthenticated, storedAuthData } = useAuth();
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState<PatientsAllProps[]>([]);
+
+  const createPatientData = (
+    id: string,
+    name: string,
+    email: string,
+    userId: string,
+    type: string
+  ): PatientsAllProps => {
+    return { id, name, email, userId, type };
+  };
+
+  const fetchAllPatients = async () => {
+    try {
+      const response = await axios.get(GET_ALL_USERS_URL, {
+        headers: {
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      // Filter patients based on their type
+      const filteredPatients = response.data.filter(
+        (patient: PatientsAllProps) => patient.type === "patient"
+      );
+
+      // Map the filtered patients to the desired format
+      const row = filteredPatients.map((patient: PatientsAllProps) =>
+        createPatientData(
+          patient.id,
+          patient.name,
+          patient.email,
+          patient.userId,
+          patient.type
+        )
+      );
+
+      // Set the rows with filtered data
+      setRows(row);
+    } catch (err: any) {
+      console.error(
+        "Error in retrieving data",
+        err.response?.data || err.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && storedAuthData) {
+      fetchAllPatients();
+    } else {
+      console.error("No authentication data found.");
+    }
+  }, [storedAuthData.accessToken]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -54,7 +112,7 @@ const PatientListAll = ({ setActiveHeading }: InstituteListAllProps) => {
         labelSearch="Search for a Patient"
         labelSelectOne="Status"
         labelSelectTwo="Location"
-        placeholderSearch="Search by Name"
+        placeholderSearch="Search by Name or Patient ID"
         optionsSelectOne={[
           { value: "active", label: "Active" },
           { value: "inactive", label: "Inactive" },
@@ -74,10 +132,10 @@ const PatientListAll = ({ setActiveHeading }: InstituteListAllProps) => {
           <Table aria-label="custom pagination table">
             <TableHead>
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
+                <TableCell className="font-bold">Patient ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">Status</TableCell>
-                <TableCell className="font-bold">Location</TableCell>
                 <TableCell className="font-bold">Email</TableCell>
+                <TableCell className="font-bold">None</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
             </TableHead>
@@ -89,13 +147,13 @@ const PatientListAll = ({ setActiveHeading }: InstituteListAllProps) => {
                   )
                 : rows
               ).map((row) => (
-                <TableRow key={row.name}>
+                <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.userId}
                   </TableCell>
-                  <TableCell>{row.status}</TableCell>
-                  <TableCell>{row.location}</TableCell>
+                  <TableCell>{row.name}</TableCell>
                   <TableCell>{row.email}</TableCell>
+                  <TableCell></TableCell>
                   <TableCell>
                     <div>
                       <MoreVertIcon />
@@ -134,8 +192,6 @@ const PatientListAll = ({ setActiveHeading }: InstituteListAllProps) => {
           </Table>
         </TableContainer>
       </div>
-
-
     </div>
   );
 };
