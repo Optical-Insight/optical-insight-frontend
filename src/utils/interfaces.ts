@@ -70,6 +70,25 @@ export interface ModalInfoProps {
   onEdit: () => void;
   onDelete: () => void;
 }
+
+export interface ModalInfoPatientProps {
+  clickedRow?: PatientsAllProps;
+  title: string;
+  id: string;
+  location?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  confirmLabel?: string;
+  canselLabel?: string;
+  deleteLabel?: string;
+  isOpen: boolean;
+  onClose: () => void;
+  onEdit: () => void;
+  onAddRecord: () => void;
+  setActiveHeading: (value: number) => void;
+}
+
 export interface SearchFilterProps {
   labelSearch: string;
   labelSelectOne: string;
@@ -121,6 +140,10 @@ export interface InstituteAllRowProps {
 export interface PatientsAllProps {
   id: string;
   name: string;
+  address: string;
+  sex: string;
+  age: Number;
+  phone: string;
   email: string;
   userId: string;
   type: string;

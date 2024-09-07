@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ListAllProps, PatientsAllProps } from "@/utils/interfaces";
-
 import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,30 +13,38 @@ import TablePaginationActions from "./table-pagination";
 import { TableHead } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
-import { GET_ALL_USERS_URL } from "@/constants/config";
+import { GET_ALL_USERS_BY_TYPE_URL } from "@/constants/config";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
+import ModalInfoPatient from "@/app/components/common/modal-info-patient";
 
 const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<PatientsAllProps[]>([]);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [clickedRow, setClickedRow] = useState<PatientsAllProps | undefined>(
+      undefined
+  );
 
   const createPatientData = (
     id: string,
     name: string,
+    address: string,
+    sex: string,
+    age: Number,
+    phone: string,
     email: string,
     userId: string,
     type: string
   ): PatientsAllProps => {
-    return { id, name, email, userId, type };
+    return { id, name, address, sex, age, phone, email, userId, type };
   };
 
   const fetchAllPatients = async () => {
     try {
-      const response = await axios.get(GET_ALL_USERS_URL, {
+      const response = await axios.get(GET_ALL_USERS_BY_TYPE_URL, {
         headers: {
           Authorization: `Bearer ${storedAuthData.accessToken}`,
           "Content-Type": "application/json",
@@ -54,6 +61,10 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
         createPatientData(
           patient.id,
           patient.name,
+          patient.address,
+          patient.sex,
+          patient.age,
+          patient.phone,
           patient.email,
           patient.userId,
           patient.type
@@ -62,6 +73,7 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
 
       // Set the rows with filtered data
       setRows(row);
+      console.log("Patients data", row);
     } catch (err: any) {
       console.error(
         "Error in retrieving data",
@@ -134,8 +146,10 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
                 <TableCell className="font-bold">Patient ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">Email</TableCell>
-                <TableCell className="font-bold">None</TableCell>
+                <TableCell className="font-bold">Address</TableCell>
+                <TableCell className="font-bold">Sex</TableCell>
+                <TableCell className="font-bold">Age</TableCell>
+                <TableCell className="font-bold">Phone Number</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
             </TableHead>
@@ -147,13 +161,22 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
                   )
                 : rows
               ).map((row) => (
-                <TableRow key={row.id}>
+                <TableRow key={row.id}
+                hover
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    console.log("Row clicked", row);
+                    setClickedRow(row);
+                    setIsInfoModalOpen(true);
+                  }}>
                   <TableCell component="th" scope="row">
                     {row.userId}
                   </TableCell>
                   <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{row.address}</TableCell>
+                  <TableCell>{row.sex}</TableCell>
+                  <TableCell>{String(row.age)}</TableCell>
+                  <TableCell>{row.phone}</TableCell>
                   <TableCell>
                     <div>
                       <MoreVertIcon />
@@ -192,6 +215,20 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
           </Table>
         </TableContainer>
       </div>
+
+      {/* Info Modal */}
+      <ModalInfoPatient
+        setActiveHeading={setActiveHeading}
+        id="info-modal"
+        clickedRow={clickedRow}
+        title={clickedRow?.name ?? ""}
+        confirmLabel="Edit"
+        isOpen={isInfoModalOpen}
+        onClose={() => setIsInfoModalOpen(false)}
+        onEdit={() => console.log("Edit clicked")}
+        onAddRecord={() => console.log("Add Record clicked")}
+      />
+
     </div>
   );
 };
