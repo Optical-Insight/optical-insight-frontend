@@ -4,13 +4,17 @@ import React from "react";
 import HomeCard from "../../../../components/common/home-card";
 import Image from "next/image";
 import ReportsList from "./reports-list";
+import { useAuth } from "@/context/AuthContext";
 
 const handleSubmit = () => {
   console.log("Button clicked");
 };
 
 const HomePage = () => {
-  return (
+
+  const { userData } = useAuth();
+
+   return (
     <div className="overflow-auto">
       {/* Top bar */}
       <div className="mt-[50px] pt-[1.563vh] pb-[1.563vh] pl-[1.52vw] pr-[1.544vw] flex justify-between bg-lightBlueBg rounded-lg">
@@ -43,7 +47,7 @@ const HomePage = () => {
       {/* Welcome bar */}
       <div className="mt-[2.246vh] mb-[2.344vh] bg-transparent flex justify-between items-center">
         <div className="text-headerText  font-semibold text-4xl lg:text-[40px]">
-          Welcome back, John
+          Welcome back, {userData?.name?.split(' ')[0]}
         </div>
         <div className="flex gap-[20px] xl:gap-[40px]">
           <div className="text-headerText text-sm xl:text-[16px] h-[42px] font-medium ">
