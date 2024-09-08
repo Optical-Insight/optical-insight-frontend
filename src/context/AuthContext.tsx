@@ -29,25 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     undefined
   );
 
-  useEffect(() => {
-    // Retrieve authData from cookies
-    const storedAuth = Cookies.get("authData");
-
-    if (storedAuth) {
-      try {
-        const authData: AuthData = JSON.parse(storedAuth);
-        const { accessToken } = authData;
-
-        if (accessToken) {
-          setStoredAuthData(authData); // Update state with valid auth data
-          setIsAuthenticated(true);
-        }
-      } catch (error) {
-        console.error("Failed to parse authData from cookies:", error);
-      }
-    }
-  }, []); // Ensure this runs only on mount
-
+  // Get user data by ID
   const getUserById = async (userId: string, accessToken: string) => {
     try {
       const user: any = await axios.get(`${GET_USER_BY_ID_URL}${userId}`, {
@@ -63,6 +45,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  useEffect(() => {
+    // Retrieve authData from cookies
+    const storedAuth = Cookies.get("authData");
+
+    if (storedAuth) {
+      try {
+        const authData: AuthData = JSON.parse(storedAuth);
+        const { accessToken } = authData;
+
+        console.log("Auth Data:", authData);
+
+        if (accessToken) {
+          getUserById(authData.userId, authData.accessToken);
+          setStoredAuthData(authData); // Update state with valid auth data
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.error("Failed to parse authData from cookies:", error);
+      }
+    }
+  }, []); // Ensure this runs only on mount
+
+  //Login function
   const login = (response: AuthData) => {
     console.log("Login Success:", response);
 
@@ -83,6 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsAuthenticated(true);
   };
 
+  //Logout function
   const logout = () => {
     setIsAuthenticated(false);
     Cookies.remove("authData"); // Remove authData from cookies
@@ -97,8 +103,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     </AuthContext.Provider>
   );
 };
-
-
 
 // Custom hook to use the authentication context
 export const useAuth = () => {

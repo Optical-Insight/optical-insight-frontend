@@ -6,10 +6,16 @@ import PatientProfile from "./patient-profile";
 import PatientRecordNew from "./patients-new-record";
 import PatientListAll from "./patient-list";
 import PatientsRegistration from "./patients-reg";
+import ModalInfoPatient from "@/app/components/common/modal-info-patient";
+import { PatientsAllProps } from "@/utils/interfaces";
 
 const PatientsPage = () => {
   const [activeHeading, setActiveHeading] = useState(1);
   const [activeStep, setActiveStep] = useState(1);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [clickedRow, setClickedRow] = useState<PatientsAllProps | undefined>(
+    undefined
+  );
 
   const handleBreadcrumbClick = (value: number) => {
     if (value === activeHeading) return;
@@ -124,12 +130,17 @@ const PatientsPage = () => {
 
       {/* All Patients */}
       {activeHeading === 1 && (
-        <PatientListAll setActiveHeading={setActiveHeading} />
+        <PatientListAll
+          setActiveHeading={setActiveHeading}
+          setIsInfoModalOpen={setIsInfoModalOpen}
+          setClickedRow={setClickedRow}
+        />
       )}
 
       {/* Register a Patient */}
       {activeHeading === 2 && (
         <PatientsRegistration
+          setActiveHeading={setActiveHeading}
           activeStep={activeStep}
           setActiveStep={setActiveStep}
         />
@@ -137,7 +148,10 @@ const PatientsPage = () => {
 
       {/* Patient Profile */}
       {activeHeading === 3 && (
-        <PatientProfile setActiveHeading={setActiveHeading} />
+        <PatientProfile
+          setActiveHeading={setActiveHeading}
+          clickedRow={clickedRow}
+        />
       )}
 
       {/* New Patient Record */}
@@ -145,8 +159,22 @@ const PatientsPage = () => {
         <PatientRecordNew
           activeStep={activeStep}
           setActiveStep={setActiveStep}
+          patientData={clickedRow}
         />
       )}
+
+      {/* Info Modal */}
+      <ModalInfoPatient
+        id="patient-info-modal"
+        setActiveHeading={setActiveHeading}
+        clickedRow={clickedRow}
+        title={clickedRow?.name ?? ""}
+        confirmLabel="Edit"
+        isOpen={isInfoModalOpen}
+        onClose={() => setIsInfoModalOpen(false)}
+        onEdit={() => console.log("Edit clicked")}
+        onAddRecord={() => console.log("Add Record clicked")}
+      />
     </div>
   );
 };
