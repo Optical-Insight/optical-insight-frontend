@@ -25,7 +25,7 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
   const [rows, setRows] = useState<PatientsAllProps[]>([]);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [clickedRow, setClickedRow] = useState<PatientsAllProps | undefined>(
-      undefined
+    undefined
   );
 
   const createPatientData = (
@@ -73,7 +73,6 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
 
       // Set the rows with filtered data
       setRows(row);
-      console.log("Patients data", row);
     } catch (err: any) {
       console.error(
         "Error in retrieving data",
@@ -161,14 +160,15 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
                   )
                 : rows
               ).map((row) => (
-                <TableRow key={row.id}
-                hover
+                <TableRow
+                  key={row.userId}
+                  hover
                   style={{ cursor: "pointer" }}
                   onClick={() => {
-                    console.log("Row clicked", row);
                     setClickedRow(row);
                     setIsInfoModalOpen(true);
-                  }}>
+                  }}
+                >
                   <TableCell component="th" scope="row">
                     {row.userId}
                   </TableCell>
@@ -218,8 +218,8 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
 
       {/* Info Modal */}
       <ModalInfoPatient
+        id="patient-info-modal"
         setActiveHeading={setActiveHeading}
-        id="info-modal"
         clickedRow={clickedRow}
         title={clickedRow?.name ?? ""}
         confirmLabel="Edit"
@@ -228,7 +228,6 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
         onEdit={() => console.log("Edit clicked")}
         onAddRecord={() => console.log("Add Record clicked")}
       />
-
     </div>
   );
 };

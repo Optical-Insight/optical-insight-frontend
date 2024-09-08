@@ -1,8 +1,10 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { AuthContextProps, AuthData } from "@/utils/interfaces";
+import { AuthContextProps, AuthData, UserDataProps } from "@/utils/interfaces";
 import Cookies from "js-cookie";
+import { GET_USER_BY_ID_URL } from "@/constants/config";
+import axios from "axios";
 
 const defaultAuthData: AuthData = {
   accessToken: "",
@@ -18,10 +20,14 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const router = useRouter();
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [storedAuthData, setStoredAuthData] =
     useState<AuthData>(defaultAuthData);
-  const router = useRouter();
+  const [userData, setUserData] = useState<UserDataProps | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     // Retrieve authData from cookies
@@ -42,6 +48,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []); // Ensure this runs only on mount
 
+  const getUserById = async (userId: string, accessToken: string) => {
+    try {
+      const user: any = await axios.get(`${GET_USER_BY_ID_URL}${userId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setUserData(user.data);
+      console.log("User data", user.data);
+    } catch (error) {
+      console.error("Error in getting user data:", error);
+    }
+  };
+
   const login = (response: AuthData) => {
     console.log("Login Success:", response);
 
@@ -53,6 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     setStoredAuthData(authData);
+    getUserById(response.userId, response.accessToken);
 
     // Serialize and store the auth data in cookies
     Cookies.set("authData", JSON.stringify(authData), { expires: 7 }); // Set cookie to expire in 7 days
@@ -69,12 +91,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, storedAuthData, login, logout }}
+      value={{ isAuthenticated, storedAuthData, login, logout, userData }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
+
+
 
 // Custom hook to use the authentication context
 export const useAuth = () => {

@@ -14,7 +14,7 @@ const ModalInfoPatient = ({
   canselLabel,
   isOpen,
   onClose,
-  setActiveHeading
+  setActiveHeading,
 }: ModalInfoPatientProps) => {
   console.log("ModalInfoProps", clickedRow);
 
