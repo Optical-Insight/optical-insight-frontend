@@ -2,7 +2,7 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
-import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
+import { PatientRecordProps, StepProps } from "@/utils/interfaces";
 import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -34,16 +34,15 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
 const PatientRecordNew = ({
   activeStep,
   setActiveStep,
-}: InstituteRegistrationProps) => {
-  // const [activeStep, setActiveStep] = useState(1);
-
+  patientData,
+}: PatientRecordProps) => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [fileLeft, setFileLeft] = useState<string>();
   const [fileLeftEnter, setFileLeftEnter] = useState(false);
   const [fileRight, setFileRight] = useState<string>();
   const [fileRightEnter, setFileRightEnter] = useState(false);
 
-  console.log("activeStep", activeStep);
+  console.log("clickedRow AAAAAAAAAAAA: ", patientData);
 
   const stepForward = () => {
     if (activeStep === 2) {
@@ -88,26 +87,40 @@ const PatientRecordNew = ({
             <FormField
               label="Patient ID"
               placeholder="VC0001"
+              value={patientData?.userId}
+              readOnly={true}
+              onChange={() => {}}
+            />
+            <FormField
+              label="Name"
+              placeholder={"Saman Perera"}
+              readOnly={true}
+              value={patientData?.name}
+              onChange={() => {}}
+            />
+            <FormField
+              label="Sex"
+              placeholder={"Male"}
+              readOnly={true}
+              value={patientData?.sex}
+              onChange={() => {}}
+            />
+            <FormField
+              label="Address"
+              placeholder={"colombo"}
+              value={patientData?.address}
               onChange={() => {}}
             />
             <FormField
               label="Contact Number"
               placeholder="071 234 5678"
+              value={patientData?.phone}
               onChange={() => {}}
             />
             <FormField
-              label="Date of Test"
-              placeholder="05 / 03 / 2023"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Test Duration"
-              placeholder="01 Hour & 20 Minutes"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Type of Test"
-              placeholder="Test I"
+              label="E-mail"
+              placeholder="saman@optmail.ai"
+              value={patientData?.email}
               onChange={() => {}}
             />
 
@@ -118,8 +131,13 @@ const PatientRecordNew = ({
               onChange={() => {}}
             />
             <FormField
-              label="Test Parameters"
-              placeholder="Equipment used, test settings"
+              label="Date of Test"
+              placeholder="05 / 03 / 2023"
+              onChange={() => {}}
+            />
+            <FormField
+              label="Type of Test"
+              placeholder="Test I"
               onChange={() => {}}
             />
             <FormField
@@ -298,8 +316,8 @@ const PatientRecordNew = ({
                           }
                         }}
                         className={`${
-                          fileRightEnter ? "border-4" : "border-2"
-                        } rounded-md mx-auto bg-white flex flex-col w-[150px] h-[150px] border-dashed items-center justify-center`}
+                          fileRightEnter ? "border-2" : "border-2"
+                        } rounded-md mx-auto bg-white flex flex-col w-[150px] h-[150px] border-2 border-dashed items-center justify-center`}
                       >
                         <label
                           htmlFor="fileRight"

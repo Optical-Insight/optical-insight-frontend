@@ -8,13 +8,12 @@ export interface AuthContextProps {
 }
 
 export interface UserDataProps {
-  email: string;   
-  name: string;       
-  password: string;  
-  type: string; 
-  userId: string;     
+  email: string;
+  name: string;
+  password: string;
+  type: string;
+  userId: string;
 }
-
 
 export interface AuthData {
   accessToken: string;
@@ -122,6 +121,7 @@ export interface FormFieldProps {
   placeholder?: string;
   required?: boolean;
   value?: string;
+  readOnly?: boolean;
   onChange: (value: string) => void;
 }
 
@@ -216,4 +216,19 @@ export interface PatientProfileCardTextProps {
   alt: string;
   text: string;
   value: string;
+}
+
+export interface ListAllPatientProps {
+  setActiveHeading: (value: number) => void;
+  isInfoModalOpen?: boolean;
+  setIsInfoModalOpen?: (value: boolean) => void;
+  clickedRow?: PatientsAllProps;
+  setClickedRow?: (value: PatientsAllProps) => void;
+}
+
+export interface PatientRecordProps {
+  activeStep: number;
+  setActiveStep: (value: number) => void;
+  setActiveHeading?: (value: number) => void;
+  patientData?: PatientsAllProps;
 }

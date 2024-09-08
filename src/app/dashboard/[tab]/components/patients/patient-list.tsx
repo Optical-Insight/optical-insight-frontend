@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ListAllProps, PatientsAllProps } from "@/utils/interfaces";
+import { ListAllPatientProps, PatientsAllProps } from "@/utils/interfaces";
 import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,17 +16,22 @@ import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { GET_ALL_USERS_BY_TYPE_URL } from "@/constants/config";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-import ModalInfoPatient from "@/app/components/common/modal-info-patient";
 
-const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
+const PatientListAll = ({
+  setActiveHeading,
+  // isInfoModalOpen,
+  setIsInfoModalOpen,
+  //  clickedRow,
+  setClickedRow,
+}: ListAllPatientProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<PatientsAllProps[]>([]);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [clickedRow, setClickedRow] = useState<PatientsAllProps | undefined>(
-    undefined
-  );
+  // const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  // const [clickedRow, setClickedRow] = useState<PatientsAllProps | undefined>(
+  //   undefined
+  // );
 
   const createPatientData = (
     id: string,
@@ -165,8 +170,8 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
                   hover
                   style={{ cursor: "pointer" }}
                   onClick={() => {
-                    setClickedRow(row);
-                    setIsInfoModalOpen(true);
+                    setClickedRow && setClickedRow(row);
+                    setIsInfoModalOpen && setIsInfoModalOpen(true);
                   }}
                 >
                   <TableCell component="th" scope="row">
@@ -217,7 +222,7 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
       </div>
 
       {/* Info Modal */}
-      <ModalInfoPatient
+      {/* <ModalInfoPatient
         id="patient-info-modal"
         setActiveHeading={setActiveHeading}
         clickedRow={clickedRow}
@@ -227,7 +232,7 @@ const PatientListAll = ({ setActiveHeading }: ListAllProps) => {
         onClose={() => setIsInfoModalOpen(false)}
         onEdit={() => console.log("Edit clicked")}
         onAddRecord={() => console.log("Add Record clicked")}
-      />
+      /> */}
     </div>
   );
 };

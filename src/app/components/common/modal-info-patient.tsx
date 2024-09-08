@@ -59,7 +59,10 @@ const ModalInfoPatient = ({
                 <button
                   type="button"
                   className="inline-flex w-full justify-center rounded-md bg-buttonPrimary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-buttonPrimaryHover sm:ml-3 sm:w-auto"
-                  onClick={() => setActiveHeading && setActiveHeading(4)}
+                  onClick={() => {
+                    setActiveHeading && setActiveHeading(4);
+                    onClose();
+                  }}
                 >
                   {"Add Test Record"}
                 </button>
@@ -68,7 +71,10 @@ const ModalInfoPatient = ({
                 <button
                   type="button"
                   className="inline-flex w-full justify-center rounded-md bg-buttonPrimary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-buttonPrimaryHover sm:ml-3 sm:w-auto"
-                  onClick={() => setActiveHeading && setActiveHeading(3)}
+                  onClick={() => {
+                    setActiveHeading && setActiveHeading(3);
+                    onClose();
+                  }}
                 >
                   {"View Profile"}
                 </button>
