@@ -123,6 +123,7 @@ export interface FormFieldProps {
   value?: string;
   readOnly?: boolean;
   onChange: (value: string) => void;
+  type?: string;
 }
 
 export interface InstituteRegistrationProps {

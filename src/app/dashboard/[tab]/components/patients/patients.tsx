@@ -132,8 +132,6 @@ const PatientsPage = () => {
       {activeHeading === 1 && (
         <PatientListAll
           setActiveHeading={setActiveHeading}
-          // clickedRow={clickedRow}
-          // isInfoModalOpen={isInfoModalOpen}
           setIsInfoModalOpen={setIsInfoModalOpen}
           setClickedRow={setClickedRow}
         />
@@ -142,6 +140,7 @@ const PatientsPage = () => {
       {/* Register a Patient */}
       {activeHeading === 2 && (
         <PatientsRegistration
+          setActiveHeading={setActiveHeading}
           activeStep={activeStep}
           setActiveStep={setActiveStep}
         />

@@ -3,8 +3,11 @@ import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import FormFieldTextArea from "@/app/components/common/form-textArea";
 import ModalConfirm from "@/app/components/common/modal-confirm";
+import { CREATE_PATIENT_URL } from "@/constants/config";
+import { useAuth } from "@/context/AuthContext";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -35,10 +38,57 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
 const PatientsRegistration = ({
   activeStep,
   setActiveStep,
+  setActiveHeading,
 }: InstituteRegistrationProps) => {
-  // const [activeStep, setActiveStep] = useState(1);
+  const { storedAuthData } = useAuth();
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [formValues, setFormValues] = useState({
+    name: "",
+    address: "",
+    phone: "",
+    email: "",
+    sex: "",
+    age: "",
+  });
 
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
+  const handleInputChange = (field: string, value: string) => {
+    setFormValues((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmitPatientForm = async () => {
+    console.log("Form submitted successfully:", formValues);
+    axios
+      .post(
+        CREATE_PATIENT_URL,
+        {
+          name: formValues.name,
+          email: formValues.email,
+          phone: formValues.phone,
+          address: formValues.address,
+          sex: formValues.sex,
+          age: 23,
+          password: "udesh123",
+          type: "patient",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${storedAuthData.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        setIsConfirmModalOpen(false);
+        console.log("Form submitted successfully:", res.data);
+        console.log("Form submitted successfully:", res.data);
+        setActiveHeading && setActiveHeading(1);
+        return res.data;
+      })
+      .catch((err) => {
+        err.response.data;
+        alert("Error in submitting form");
+      });
+  };
 
   console.log("activeStep", activeStep);
 
@@ -86,35 +136,42 @@ const PatientsRegistration = ({
         {activeStep === 1 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
-              label="Patient ID"
-              placeholder="VC0001"
-              onChange={() => {}}
-            />
-            <FormField
               label="Name"
               placeholder={"Saman Perera"}
-              onChange={() => {}}
+              value={formValues.name}
+              onChange={(value) => handleInputChange("name", value)}
             />
             <FormField
               label="Date of Birth"
-              placeholder={"05 / 03 / 1990"}
+              placeholder={"02/12/2001"}
+              type="date"
               onChange={() => {}}
             />
-            <FormField label="Sex" placeholder={"Male"} onChange={() => {}} />
+
+            <FormField
+              label="Sex"
+              placeholder={"Male"}
+              value={formValues.sex}
+              onChange={(value) => handleInputChange("sex", value)}
+            />
+
             <FormField
               label="Address"
-              placeholder={"colombo"}
-              onChange={() => {}}
+              placeholder={"Colombo"}
+              value={formValues.address}
+              onChange={(value) => handleInputChange("address", value)}
             />
             <FormField
               label="Contact Number"
               placeholder="071 234 5678"
-              onChange={() => {}}
+              value={formValues.phone}
+              onChange={(value) => handleInputChange("phone", value)}
             />
             <FormField
               label="E-mail"
               placeholder="saman@optmail.ai"
-              onChange={() => {}}
+              value={formValues.email}
+              onChange={(value) => handleInputChange("email", value)}
             />
 
             <FormField
@@ -225,7 +282,7 @@ const PatientsRegistration = ({
         confirmLabel="Submit"
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={() => console.log("Submitted")}
+        onConfirm={handleSubmitPatientForm}
       />
     </div>
   );

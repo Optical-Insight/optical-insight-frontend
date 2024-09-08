@@ -8,6 +8,7 @@ const FormField = ({
   value,
   onChange,
   readOnly,
+  type,
 }: FormFieldProps) => {
   return (
     <div className="flex items-center justify-between w-full mb-2">
@@ -21,7 +22,7 @@ const FormField = ({
       <input
         disabled={readOnly}
         required={required}
-        type="text"
+        type={type ? type : "text"}
         name={label}
         id={label}
         className={`pl-2 flex text-[14.76px]  items-center justify-between w-[35.556vw] h-10 bg-inputBg rounded-lg
