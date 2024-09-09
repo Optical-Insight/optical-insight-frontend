@@ -30,9 +30,11 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     name: string,
     email: string,
     userId: string,
-    type: string
+    type: string,
+    rating: string,
+    specialization: string
   ): DoctorsAllProps => {
-    return { id, name, email, userId, type };
+    return { id, name, email, userId, type, rating, specialization };
   };
 
   const fetchAllDoctors = async () => {
@@ -55,7 +57,9 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
           doctor.name,
           doctor.email,
           doctor.userId,
-          doctor.type
+          doctor.type,
+          doctor.rating,
+          doctor.specialization
         )
       );
 
@@ -133,8 +137,8 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
                 <TableCell className="font-bold">Doctor ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">Email</TableCell>
-                <TableCell className="font-bold">None</TableCell>
+                <TableCell className="font-bold">Rating</TableCell>
+                <TableCell className="font-bold">Specialization</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
             </TableHead>
@@ -151,8 +155,10 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
                     {row.userId}
                   </TableCell>
                   <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{row.rating}</TableCell>
+                  <TableCell>
+                    {row.specialization.replace("Eye Specialist - ", "")}
+                  </TableCell>
                   <TableCell>
                     <div>
                       <MoreVertIcon />

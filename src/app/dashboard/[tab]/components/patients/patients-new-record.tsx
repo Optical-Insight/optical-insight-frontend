@@ -2,7 +2,10 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
+import { CREATE_TEST_REPORT } from "@/constants/config";
+import { useAuth } from "@/context/AuthContext";
 import { PatientRecordProps, StepProps } from "@/utils/interfaces";
+import axios from "axios";
 import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -36,13 +39,13 @@ const PatientRecordNew = ({
   setActiveStep,
   patientData,
 }: PatientRecordProps) => {
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [fileLeft, setFileLeft] = useState<string>();
-  const [fileLeftEnter, setFileLeftEnter] = useState(false);
-  const [fileRight, setFileRight] = useState<string>();
-  const [fileRightEnter, setFileRightEnter] = useState(false);
+  const { storedAuthData } = useAuth();
 
-  console.log("clickedRow AAAAAAAAAAAA: ", patientData);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [fileLeft, setFileLeft] = useState<File | null>(null);
+  const [fileLeftEnter, setFileLeftEnter] = useState(false);
+  const [fileRight, setFileRight] = useState<File | null>(null);
+  const [fileRightEnter, setFileRightEnter] = useState(false);
 
   const stepForward = () => {
     if (activeStep === 2) {
@@ -55,6 +58,38 @@ const PatientRecordNew = ({
   const stepBackward = () => {
     if (activeStep === 1) return;
     setActiveStep(activeStep - 1);
+  };
+
+  const handleSubmitTestRecord = async () => {
+    const formData = new FormData();
+
+    // Assuming 'fileLeft' and 'fileRight' are your state variables holding File objects
+    if (fileLeft) {
+      formData.append("image", fileLeft, fileLeft.name); // Append the left eye image
+    }
+    if (fileRight) {
+      formData.append("image", fileRight, fileRight.name); // Append the right eye image
+    }
+
+    // Add other form data
+    formData.append("name", "Report Name"); // Replace with actual data or state variable
+    formData.append("createdBy", "ADM404105"); // Replace with actual data or state variable
+    formData.append("patientId", "PAT808177"); // Replace with actual data or state variable
+
+    // Post request to server
+    try {
+      const response = await axios.post(CREATE_TEST_REPORT, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${storedAuthData.accessToken}`, // Use actual token
+        },
+      });
+      console.log("Form submitted successfully:", response.data);
+      alert("Test record submitted successfully");
+    } catch (error) {
+      console.error("Submit error:", error);
+      alert("Error in submitting form");
+    }
   };
 
   return (
@@ -196,8 +231,7 @@ const PatientRecordNew = ({
                                 if (item.kind === "file") {
                                   const file = item.getAsFile();
                                   if (file) {
-                                    let blobUrl = URL.createObjectURL(file);
-                                    setFileLeft(blobUrl);
+                                    setFileLeft(file);
                                   }
                                   console.log(
                                     `items file[${i}].name = ${file?.name}`
@@ -224,15 +258,11 @@ const PatientRecordNew = ({
                           Click to upload or Drag and drop
                         </label>
                         <input
-                          id="file"
                           type="file"
-                          className="hidden"
                           onChange={(e) => {
-                            console.log(e.target.files);
-                            let files = e.target.files;
+                            const files = e.target.files;
                             if (files && files[0]) {
-                              let blobUrl = URL.createObjectURL(files[0]);
-                              setFileLeft(blobUrl);
+                              setFileLeft(files[0]);
                             }
                           }}
                         />
@@ -248,7 +278,7 @@ const PatientRecordNew = ({
                       </label>
                       <object
                         className="rounded-md w-[150px] h-[150px] border-2 border-dashed"
-                        data={fileLeft}
+                        data={URL.createObjectURL(fileLeft)}
                         type="image/png" // Update based on the type of file
                       />
                     </div>
@@ -256,7 +286,7 @@ const PatientRecordNew = ({
                   <div className="flex flex-col items-center ">
                     <button
                       disabled={!fileLeft}
-                      onClick={() => setFileLeft("")}
+                      onClick={() => setFileLeft(null)}
                       className={`px-[12px] mt-3 py-[6px] tracking-widest outline-none rounded ${
                         !fileLeft
                           ? "bg-gray-400 text-gray-300 cursor-not-allowed"
@@ -298,8 +328,7 @@ const PatientRecordNew = ({
                                 if (item.kind === "file") {
                                   const file = item.getAsFile();
                                   if (file) {
-                                    let blobUrl = URL.createObjectURL(file);
-                                    setFileRight(blobUrl);
+                                    setFileRight(file);
                                   }
                                   console.log(
                                     `items file[${i}].name = ${file?.name}`
@@ -326,15 +355,11 @@ const PatientRecordNew = ({
                           Click to upload or Drag and drop
                         </label>
                         <input
-                          id="fileRight"
                           type="file"
-                          className="hidden"
                           onChange={(e) => {
-                            console.log(e.target.files);
-                            let files = e.target.files;
+                            const files = e.target.files;
                             if (files && files[0]) {
-                              let blobUrl = URL.createObjectURL(files[0]);
-                              setFileRight(blobUrl);
+                              setFileRight(files[0]);
                             }
                           }}
                         />
@@ -350,7 +375,7 @@ const PatientRecordNew = ({
                       </label>
                       <object
                         className="rounded-md w-[150px] h-[150px]"
-                        data={fileRight}
+                        data={URL.createObjectURL(fileRight)}
                         type="image/png" // Update based on the type of file
                       />
                     </div>
@@ -358,7 +383,7 @@ const PatientRecordNew = ({
                   <div className="flex flex-col items-center ">
                     <button
                       disabled={!fileRight}
-                      onClick={() => setFileRight("")}
+                      onClick={() => setFileRight(null)}
                       className={`px-[12px] mt-3 py-[6px] tracking-widest outline-none rounded ${
                         !fileRight
                           ? "bg-gray-400 text-gray-300 cursor-not-allowed"
@@ -374,7 +399,7 @@ const PatientRecordNew = ({
 
             <FormField
               label="Image Quality Assessment"
-              placeholder="Lorem Ipsum"
+              placeholder="High quality images"
               onChange={() => {}}
             />
             <FormField
@@ -399,7 +424,7 @@ const PatientRecordNew = ({
             />
             <FormField
               label="Comments or Notes"
-              placeholder="Lorem Ipsum"
+              placeholder="Additional information"
               onChange={() => {}}
             />
           </div>
@@ -424,7 +449,7 @@ const PatientRecordNew = ({
         confirmLabel="Submit"
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={() => console.log("Submitted")}
+        onConfirm={handleSubmitTestRecord}
       />
     </div>
   );

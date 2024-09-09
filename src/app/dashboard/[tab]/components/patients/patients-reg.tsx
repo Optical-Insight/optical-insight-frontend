@@ -66,8 +66,6 @@ const PatientsRegistration = ({
   });
 
   const handleSubmitPatientForm = async () => {
-    
-    console.log("Form Values:", formValues.age);
     try {
       const res = await axios.post(
         CREATE_PATIENT_URL,
@@ -97,29 +95,25 @@ const PatientsRegistration = ({
     }
   };
 
-  console.log("activeStep", activeStep);
-
   const stepForward = () => {
     if (activeStep === 3) {
-
       const { name, email, phone, sex, address } = formValues;
 
-    const newErrors = {
-      name: !name.trim(),
-      email: !email.trim(),
-      phone: !phone.trim(),
-      sex: !sex.trim(),
-      address: !address.trim(),
-    };
+      const newErrors = {
+        name: !name.trim(),
+        email: !email.trim(),
+        phone: !phone.trim(),
+        sex: !sex.trim(),
+        address: !address.trim(),
+      };
 
-    setFormErrors(newErrors);
+      setFormErrors(newErrors);
 
-    const hasErrors = Object.values(newErrors).some((error) => error);
-    if (hasErrors) {
-      setIsErrorModalOpen(true);
-      return; // Prevent moving forward
-    }
-
+      const hasErrors = Object.values(newErrors).some((error) => error);
+      if (hasErrors) {
+        setIsErrorModalOpen(true);
+        return; // Prevent moving forward
+      }
 
       // Submit the form
       setIsConfirmModalOpen(true);
@@ -169,7 +163,6 @@ const PatientsRegistration = ({
               onChange={(value) => handleInputChange("name", value)}
               required
               hasError={formErrors.name}
-              
             />
             <FormField
               label="Date of Birth"
@@ -322,16 +315,14 @@ const PatientsRegistration = ({
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleSubmitPatientForm}
       />
-      
+
       <ModalError
         title="Error"
         message="Please fill all the required fields."
         buttonLabel="OK"
         isOpen={isErrorModalOpen}
         onClose={() => setIsErrorModalOpen(false)}
-        />
-      
-
+      />
     </div>
   );
 };

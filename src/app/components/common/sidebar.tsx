@@ -106,11 +106,11 @@ const AppSidebar = ({ tab }: { tab: string }) => {
       iconSrcActive: "/assets/icons/institute-heads-active.svg",
       label: "Patients",
     },
-    {
-      iconSrc: "/assets/icons/notification-sidebar.svg",
-      iconSrcActive: "/assets/icons/notification-sidebar-active.svg",
-      label: "Notification",
-    },
+    // {
+    //   iconSrc: "/assets/icons/notification-sidebar.svg",
+    //   iconSrcActive: "/assets/icons/notification-sidebar-active.svg",
+    //   label: "Notification",
+    // },
     {
       iconSrc: "/assets/icons/settings-sidebar.svg",
       iconSrcActive: "/assets/icons/settings-sidebar-active.svg",
