@@ -49,6 +49,15 @@ export interface ModalConfirmProps {
   onConfirm: () => void;
 }
 
+export interface ModalErrorProps {
+  title: string;
+  message: string;
+  buttonLabel?: string;
+
+  isOpen: boolean;
+  onClose: () => void;
+}
+
 export interface ModalConfirmTextInputProps {
   title: string;
   message: string;
@@ -124,6 +133,7 @@ export interface FormFieldProps {
   readOnly?: boolean;
   onChange: (value: string) => void;
   type?: string;
+  hasError?: boolean;
 }
 
 export interface InstituteRegistrationProps {
@@ -166,6 +176,8 @@ export interface DoctorsAllProps {
   email: string;
   userId: string;
   type: string;
+  rating: string;
+  specialization: string;
 }
 
 export interface TechniciansAllProps {
@@ -232,4 +244,14 @@ export interface PatientRecordProps {
   setActiveStep: (value: number) => void;
   setActiveHeading?: (value: number) => void;
   patientData?: PatientsAllProps;
+}
+
+//reports
+export interface ReportListAllProps {
+  reportId: string;
+  name: string;
+  createdBy: string;
+  patientId: string;
+  leftEyeImageUrl: string;
+  rightEyeImageUrl: string;
 }

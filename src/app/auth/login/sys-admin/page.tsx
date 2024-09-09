@@ -8,6 +8,7 @@ import axios from "axios";
 import ModalConfirmTextInput from "@/app/components/common/modal-confirmTextInput";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { Toaster, toast } from "react-hot-toast";
 
 function AdminLogin() {
   const { isAuthenticated, login } = useAuth();
@@ -49,8 +50,14 @@ function AdminLogin() {
   };
 
   const handleSubmitLogin = async (e: any) => {
-    console.log("isAuthenticated ", isAuthenticated);
-    if (!isAuthenticated) {
+    e.preventDefault();
+    if (!email || !password){
+      toast.error("Please fill in all the fields.");
+      return;     
+    }
+    
+    console.log("isAuthenticated ", isAuthenticated);   
+    if  (!isAuthenticated) {
       console.log("Login clicked: email:", email, "password:", password);
       e.preventDefault();
       axios
@@ -60,16 +67,36 @@ function AdminLogin() {
         })
         .then((response) => {
           console.log("Login Success:", response.data);
+          toast.success('Login Successful');
           login(response.data);
         })
         .catch((error) => {
           console.error("Error in Login:", error);
+          toast.error("Invalid email or password. Please try again.");
         });
     }
   };
 
   return (
     <div className="w-[100vw] h-[100vh] flex">
+      <div><Toaster
+      position="top-right"
+      reverseOrder={false}
+      toastOptions={{
+        
+        success: {
+          style: {
+            background: 'rgb(219, 234, 254)'
+            
+          },
+        },
+        error: {
+          style: {
+            background: 'rgb(219, 234, 254)'
+            
+          },
+        },
+      }}/></div>
       {/* BACKGROUND IMAGE AND LOGO */}
       <div className="w-[41.875vw] h-100vh bg-blueBg relative">
         <Image

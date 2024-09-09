@@ -2,8 +2,11 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
+import { CREATE_DOCTOR_URL } from "@/constants/config";
+import { useAuth } from "@/context/AuthContext";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -15,12 +18,12 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
       <span
         className={`text-[16px] px-3 py-1 rounded-full font-semibold border ${
           active ? "border-blueText" : "border-disabledText"
-        } ${(number == 2 || number == 3) && "ml-[0.556vw]"} `}
+        } ${number === 2 && "ml-[0.556vw]"} `}
       >
         {number}
       </span>
       <h2 className="text-[16px] font-semibold">{title}</h2>
-      {number == 1 || number == 2 ? (
+      {number === 1 ? (
         <div
           className={`w-[4.444vw] h-[0.195vh] ${
             lineActive ? "bg-blueText" : "bg-disabledText"
@@ -34,18 +37,25 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
 const DoctorRegistration = ({
   activeStep,
   setActiveStep,
+  setActiveHeading,
 }: InstituteRegistrationProps) => {
-  // const [activeStep, setActiveStep] = useState(1);
-
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
-
-  console.log("activeStep", activeStep);
+  const { storedAuthData } = useAuth();
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [formValues, setFormValues] = useState({
+    name: "",
+    address: "",
+    phone: "",
+    email: "",
+    sex: "",
+    age: "",
+    specialization: "",
+    experience: "",
+    rating: "",
+  });
 
   const stepForward = () => {
-    if (activeStep === 3) {
-      // Submit the form
+    if (activeStep === 2) {
       setIsConfirmModalOpen(true);
-
       return;
     }
     setActiveStep(activeStep + 1);
@@ -55,6 +65,51 @@ const DoctorRegistration = ({
     if (activeStep === 1) return;
     setActiveStep(activeStep - 1);
   };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormValues((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmitDoctor = async () => {
+    try {
+      const res = await axios.post(
+        CREATE_DOCTOR_URL,
+        {
+          name: formValues.name,
+          email: formValues.email,
+          phone: formValues.phone,
+          sex: formValues.sex,
+          specialization: formValues.specialization,
+          experience: formValues.experience,
+          rating: formValues.rating,
+          type: "doctor",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${storedAuthData.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setIsConfirmModalOpen(false);
+      console.log("Form submitted successfully:", res.data);
+      setActiveHeading && setActiveHeading(1);
+    } catch (err) {
+      console.log("Submit error: ", err);
+      alert("Error in submitting form");
+    }
+  };
+
+  // const [formErrors, setFormErrors] = useState({
+  //   name: false,
+  //   email: false,
+  //   phone: false,
+  //   sex: false,
+  //   address: false,
+  //   // age: false,
+  //   // specialization: false,
+  //   // experience: false,
+  // });
 
   return (
     <div>
@@ -74,14 +129,9 @@ const DoctorRegistration = ({
           />
           <Step
             number={2}
-            title="Legal & Staff Information"
+            title="Specialization Information"
             active={activeStep >= 2}
             lineActive={activeStep >= 3}
-          />
-          <Step
-            number={3}
-            title="Technology Information"
-            active={activeStep >= 3}
           />
         </div>
 
@@ -89,36 +139,36 @@ const DoctorRegistration = ({
         {activeStep === 1 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
-              label="Name of the Institute / Venue"
-              placeholder="Vision Care Opticals"
-              onChange={() => {}}
+              label="Name"
+              placeholder={"Saman Perera"}
+              value={formValues.name}
+              onChange={(value) => handleInputChange("name", value)}
+              required
+              // hasError={formErrors.name}
             />
             <FormField
-              label="Address"
-              placeholder="1st Floor, 907 Peradeniya Rd, Kandy"
-              onChange={() => {}}
-            />
-            {/* <FormField label="Contact Number" placeholder="081 208 5004"
-            onChange={() => {}} />
-            <FormField label="Email Address" placeholder="info@visioncare.lk" />
-            <FormField label="Website URL" placeholder="visioncare.lk" />
-            <div className="h-[6.445vh]" />
-            <FormField
-              label="Type of Optical Services Provided"
-              placeholder="Eye Examine, Contact Lenses, Glasses, etc."
+              label="Email"
+              placeholder={"saman@gmail.com"}
+              value={formValues.email}
+              onChange={(value) => handleInputChange("email", value)}
+              required
+              // hasError={formErrors.email}
             />
             <FormField
-              label="Specialty Services"
-              placeholder="Pediatric Optometry, Low Vision Services, etc."
+              label="Phone Number"
+              placeholder={"0765689254"}
+              value={formValues.phone}
+              onChange={(value) => handleInputChange("phone", value)}
+              required
+              // hasError={formErrors.phone}
             />
             <FormField
-              label="Accepted Insurances"
-              placeholder="Lucas Bennett"
+              label="Sex"
+              placeholder={"Male"}
+              value={formValues.sex}
+              onChange={(value) => handleInputChange("sex", value)}
+              // hasError={formErrors.sex}
             />
-            <FormField
-              label="Certifications"
-              placeholder="Accreditation from relevant organizations"
-            /> */}
           </div>
         )}
 
@@ -126,99 +176,46 @@ const DoctorRegistration = ({
         {activeStep === 2 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
-              label="Business Registration Number"
-              placeholder="123 4567 890"
-              onChange={() => {}}
+              label="Specialization"
+              placeholder={"Eye Specialist - CSR"}
+              value={formValues.specialization}
+              onChange={(value) => handleInputChange("specialization", value)}
             />
             <FormField
-              label="Tax Identification Number"
-              placeholder="123 4567 890"
-              onChange={() => {}}
-            />
-            {/* <FormField label="PIN" placeholder="123 4567 890" />
-
-            <FormField label="Business License" placeholder="Attach files" />
-            <div className="h-[6.445vh]" />
-            <FormField label="Number of Optometrists" placeholder="10" />
-            <FormField label="Number of Opticians" placeholder="10" />
-            <FormField label="Number of Support Staff" placeholder="10" />
-            <FormField
-              label="Staff Qualifications"
-              placeholder="Bsc (Hons) in Medical Sciences"
+              label="Experience in years"
+              placeholder={"e.g.: 3"}
+              value={formValues.experience}
+              onChange={(value) => handleInputChange("experience", value)}
             />
             <FormField
-              label="Staff Contact Information"
-              placeholder="info@visioncare.lk"
-            /> */}
-          </div>
-        )}
-
-        {/* Step 03 */}
-        {activeStep === 3 && (
-          <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
-            <FormField
-              label="List of Equipment"
-              placeholder="Diagnostic Tools, Optical Equipment, etc."
-              onChange={() => {}}
+              label="Rating"
+              placeholder={"e.g.: 4.6"}
+              value={formValues.rating}
+              onChange={(value) => handleInputChange("rating", value)}
             />
-            <FormField
-              label="Details about Facilities"
-              placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
-              onChange={() => {}}
-            />
-            {/* <FormField
-              label="Hours of Operation"
-              placeholder="60hrs per Week"
-            />
-            <FormField
-              label="Special Services"
-              placeholder="Home Visits, Emergency Services, etc."
-            />
-            <div className="h-[6.445vh]" />
-            <FormField
-              label="Electronic Health Record (EHR) System Used"
-              placeholder="Yes"
-            />
-            <FormField
-              label="Compatibility with Our IT Infrastructure"
-              placeholder="Compatible"
-            />
-            <FormField
-              label="Data Security Measures"
-              placeholder="Lorem Ipsum"
-            />
-            <FormField
-              label="Other Relevant Information or Specializations"
-              placeholder="Lorem Ipsum"
-            />
-            <FormField label="Comments or Notes" placeholder="Lorem Ipsum" /> */}
           </div>
         )}
 
         {/* Footer */}
-        <div className="flex justify-end mt-[3.125vh] ml-[3.403vw] mr-[4.722vw] h-[4.102vh] ">
-          <div className="w-[32.5vw] flex justify-between ">
-            <div className="w-[15.347vw]">
-              <CommomBackBtn label="Back" onClick={stepBackward} />
-            </div>
-            <div className="w-[15.347vw]">
-              <CommonBtn
-                label={activeStep === 3 ? "Submit" : "Next"}
-                onClick={stepForward}
-              />
-            </div>
+        <div className="flex justify-end mt-[30px] mr-[4.722vw]">
+          <div className="flex flex-row justify-end w-80 lg:w-[96px] xl:w-[450px] h-9 xl:h-11 gap-3">
+            <CommomBackBtn label="Back" onClick={stepBackward} />
+            <CommonBtn
+              label={activeStep === 2 ? "Submit" : "Next"}
+              onClick={stepForward}
+            />
           </div>
         </div>
       </div>
 
       {/* Confirm Modal */}
       <ModalConfirm
-        title="Confirm Institute Registration"
+        title="Confirm Doctor Registration"
         message="Are you sure you want to submit the registration form?"
         confirmLabel="Submit"
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={() => console.log("Submitted")}
+        onConfirm={handleSubmitDoctor}
       />
     </div>
   );

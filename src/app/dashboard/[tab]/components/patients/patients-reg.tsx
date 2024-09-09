@@ -3,6 +3,7 @@ import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import FormFieldTextArea from "@/app/components/common/form-textArea";
 import ModalConfirm from "@/app/components/common/modal-confirm";
+import ModalError from "@/app/components/common/modal-error";
 import { CREATE_PATIENT_URL } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
@@ -42,6 +43,7 @@ const PatientsRegistration = ({
 }: InstituteRegistrationProps) => {
   const { storedAuthData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     address: "",
@@ -55,10 +57,17 @@ const PatientsRegistration = ({
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
+  const [formErrors, setFormErrors] = useState({
+    name: false,
+    email: false,
+    phone: false,
+    sex: false,
+    address: false,
+  });
+
   const handleSubmitPatientForm = async () => {
-    console.log("Form submitted successfully:", formValues);
-    axios
-      .post(
+    try {
+      const res = await axios.post(
         CREATE_PATIENT_URL,
         {
           name: formValues.name,
@@ -76,24 +85,36 @@ const PatientsRegistration = ({
             "Content-Type": "application/json",
           },
         }
-      )
-      .then((res) => {
-        setIsConfirmModalOpen(false);
-        console.log("Form submitted successfully:", res.data);
-        console.log("Form submitted successfully:", res.data);
-        setActiveHeading && setActiveHeading(1);
-        return res.data;
-      })
-      .catch((err) => {
-        err.response.data;
-        alert("Error in submitting form");
-      });
+      );
+      setIsConfirmModalOpen(false);
+      console.log("Form submitted successfully:", res.data);
+      setActiveHeading && setActiveHeading(1);
+    } catch (err) {
+      console.log("Submit error: ", err);
+      alert("Error in submitting form");
+    }
   };
-
-  console.log("activeStep", activeStep);
 
   const stepForward = () => {
     if (activeStep === 3) {
+      const { name, email, phone, sex, address } = formValues;
+
+      const newErrors = {
+        name: !name.trim(),
+        email: !email.trim(),
+        phone: !phone.trim(),
+        sex: !sex.trim(),
+        address: !address.trim(),
+      };
+
+      setFormErrors(newErrors);
+
+      const hasErrors = Object.values(newErrors).some((error) => error);
+      if (hasErrors) {
+        setIsErrorModalOpen(true);
+        return; // Prevent moving forward
+      }
+
       // Submit the form
       setIsConfirmModalOpen(true);
 
@@ -140,6 +161,8 @@ const PatientsRegistration = ({
               placeholder={"Saman Perera"}
               value={formValues.name}
               onChange={(value) => handleInputChange("name", value)}
+              required
+              hasError={formErrors.name}
             />
             <FormField
               label="Date of Birth"
@@ -153,6 +176,8 @@ const PatientsRegistration = ({
               placeholder={"Male"}
               value={formValues.sex}
               onChange={(value) => handleInputChange("sex", value)}
+              required
+              hasError={formErrors.sex}
             />
 
             <FormField
@@ -160,18 +185,24 @@ const PatientsRegistration = ({
               placeholder={"Colombo"}
               value={formValues.address}
               onChange={(value) => handleInputChange("address", value)}
+              required
+              hasError={formErrors.address}
             />
             <FormField
               label="Contact Number"
               placeholder="071 234 5678"
               value={formValues.phone}
               onChange={(value) => handleInputChange("phone", value)}
+              required
+              hasError={formErrors.phone}
             />
             <FormField
               label="E-mail"
               placeholder="saman@optmail.ai"
               value={formValues.email}
               onChange={(value) => handleInputChange("email", value)}
+              required
+              hasError={formErrors.email}
             />
 
             <FormField
@@ -283,6 +314,14 @@ const PatientsRegistration = ({
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleSubmitPatientForm}
+      />
+
+      <ModalError
+        title="Error"
+        message="Please fill all the required fields."
+        buttonLabel="OK"
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
       />
     </div>
   );

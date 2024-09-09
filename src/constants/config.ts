@@ -9,3 +9,7 @@ export const GET_ALL_USERS_BY_TYPE_URL = `${API_BASE_URL}/users/by-type?type=pat
 export const GET_USER_BY_ID_URL = `${API_BASE_URL}/users/`;
 
 export const CREATE_PATIENT_URL = `${API_BASE_URL}/users/`;
+export const CREATE_DOCTOR_URL = `${API_BASE_URL}/users/`;
+
+export const GET_ALL_REPORTS = `${API_BASE_URL}/reports/`;
+export const CREATE_TEST_REPORT = `${API_BASE_URL}/reports/`;
