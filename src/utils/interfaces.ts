@@ -49,6 +49,16 @@ export interface ModalConfirmProps {
   onConfirm: () => void;
 }
 
+export interface ModalErrorProps {
+  title: string;
+  message: string;
+  buttonLabel?: string;
+  
+  isOpen: boolean;
+  onClose: () => void;
+  
+}
+
 export interface ModalConfirmTextInputProps {
   title: string;
   message: string;
@@ -124,6 +134,8 @@ export interface FormFieldProps {
   readOnly?: boolean;
   onChange: (value: string) => void;
   type?: string;
+  hasError?: boolean;
+  
 }
 
 export interface InstituteRegistrationProps {
