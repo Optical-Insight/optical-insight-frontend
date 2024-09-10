@@ -6,7 +6,6 @@ import { CREATE_TEST_REPORT } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import { PatientRecordProps, StepProps } from "@/utils/interfaces";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -41,7 +40,6 @@ const PatientRecordNew = ({
   patientData,
 }: PatientRecordProps) => {
   const { storedAuthData } = useAuth();
-  const router = useRouter();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [fileLeft, setFileLeft] = useState<File | null>(null);
@@ -73,13 +71,10 @@ const PatientRecordNew = ({
       formData.append("image", fileRight, fileRight.name); // Append the right eye image
     }
 
-    const randomNum = Math.floor(Math.random() * 100) + 1; // Generate a random number between 1 and 1000
-    const reportName = `Report ${randomNum}`; // Concatenate 'Report' with the random number
-
     // Add other form data
-    formData.append("name", reportName); // Replace with actual data or state variable
-    formData.append("createdBy", storedAuthData?.userId ?? ""); // Replace with actual data or state variable
-    formData.append("patientId", patientData?.userId ?? ""); // Replace with actual data or state variable
+    formData.append("name", "Report Name"); // Replace with actual data or state variable
+    formData.append("createdBy", "ADM404105"); // Replace with actual data or state variable
+    formData.append("patientId", "PAT808177"); // Replace with actual data or state variable
 
     // Post request to server
     try {
@@ -91,8 +86,7 @@ const PatientRecordNew = ({
       });
       console.log("Form submitted successfully:", response.data);
       alert("Test record submitted successfully");
-      router.replace("/dashboard/home");
-    } catch (error: any) {
+    } catch (error) {
       console.error("Submit error:", error);
       alert("Error in submitting form");
     }
@@ -264,15 +258,11 @@ const PatientRecordNew = ({
                           Click to upload or Drag and drop
                         </label>
                         <input
-                          id="file"
                           type="file"
-                          className="hidden"
                           onChange={(e) => {
-                            console.log(e.target.files);
-                            let files = e.target.files;
+                            const files = e.target.files;
                             if (files && files[0]) {
                               setFileLeft(files[0]);
-                              console.log("files[0] left: ", files[0]);
                             }
                           }}
                         />
@@ -289,7 +279,7 @@ const PatientRecordNew = ({
                       <object
                         className="rounded-md w-[150px] h-[150px] border-2 border-dashed"
                         data={URL.createObjectURL(fileLeft)}
-                        type="image/png"
+                        type="image/png" // Update based on the type of file
                       />
                     </div>
                   )}
@@ -365,15 +355,11 @@ const PatientRecordNew = ({
                           Click to upload or Drag and drop
                         </label>
                         <input
-                          id="fileRight"
                           type="file"
-                          className="hidden"
                           onChange={(e) => {
-                            console.log(e.target.files);
-                            let files = e.target.files;
+                            const files = e.target.files;
                             if (files && files[0]) {
                               setFileRight(files[0]);
-                              console.log("files[0] right: ", files[0]);
                             }
                           }}
                         />
