@@ -50,6 +50,7 @@ const config: Config = {
         //colors
         white: "#FFFFFF",
         black: "#000000",
+        activeIcon: "#1B8DC2",
       },
     },
   },

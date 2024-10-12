@@ -36,6 +36,7 @@ export interface SidebarItemProps {
   iconSrcActive: string;
   label: string;
   isActive?: boolean;
+  isShrunk?: boolean;
   handleTabChange: (tab: string) => void;
 }
 
