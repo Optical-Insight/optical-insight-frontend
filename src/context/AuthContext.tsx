@@ -82,7 +82,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     getUserById(response.userId, response.accessToken);
 
     // Serialize and store the auth data in cookies
-    Cookies.set("authData", JSON.stringify(authData), { expires: 7 }); // Set cookie to expire in 7 days
+    Cookies.set("authData", JSON.stringify(authData));
 
     router.replace("/dashboard/home");
     setIsAuthenticated(true);

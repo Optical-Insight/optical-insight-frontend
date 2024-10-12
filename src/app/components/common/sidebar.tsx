@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { SidebarItemProps } from "@/utils/interfaces";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { MdOutlineMenu } from "react-icons/md";
-import { useAuth } from "@/context/AuthContext";
 
 const SidebarItem = ({
   iconSrc,
@@ -13,7 +13,7 @@ const SidebarItem = ({
   isActive,
   handleTabChange,
   isShrunk,
-}: SidebarItemProps & { isShrunk: boolean }) => (
+}: SidebarItemProps) => (
   <div
     className={` flex flex-row items-center  ${
       isShrunk ? "w-[40px]" : "w-[230px]"
@@ -82,7 +82,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
       label: "Home",
     },
     {
-      iconSrc: "/assets/icons/institute-heads.svg",
+      iconSrc: "/assets/icons/institute-sidebar.svg",
       iconSrcActive: "/assets/icons/institute-heads-active.svg",
       label: "Institutes",
     },
@@ -111,18 +111,18 @@ const AppSidebar = ({ tab }: { tab: string }) => {
     //   iconSrcActive: "/assets/icons/notification-sidebar-active.svg",
     //   label: "Notification",
     // },
-    {
-      iconSrc: "/assets/icons/settings-sidebar.svg",
-      iconSrcActive: "/assets/icons/settings-sidebar-active.svg",
-      label: "Settings",
-    },
+    // {
+    //   iconSrc: "/assets/icons/settings-sidebar.svg",
+    //   iconSrcActive: "/assets/icons/settings-sidebar-active.svg",
+    //   label: "Settings",
+    // },
   ];
 
   return (
-    <div className={` bg-blueBg px-6 xl:px-8 w-fit flex flex-col `}>
-      <div className={`h-screen`}>
+    <div className={` bg-blueBg px-6 xl:px-8 w-fit flex flex-col h-screen`}>
+      <div className={`flex flex-col h-full`}>
         {/* Logo */}
-        <div className="flex justify-between items-center h-[140px] ">
+        <div className="flex justify-between items-center h-[140px]">
           <Image
             className={`m-auto ${isShrunk ? "hidden" : "block"}`}
             alt={"Optical Insight Logo"}
@@ -139,7 +139,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
         </div>
 
         {/* Sidebar Items */}
-        <div className="flex flex-col items-center mt-4">
+        <div className="flex flex-col flex-grow items-center mt-8 gap-4">
           {sidebarItems.map((item, index) => (
             <SidebarItem
               key={index}
@@ -154,8 +154,8 @@ const AppSidebar = ({ tab }: { tab: string }) => {
         </div>
 
         {/* User Info */}
-        {userData ? (
-          <div className="flex items-center justify-start mt-16">
+        {userData && (
+          <div className="flex items-center justify-start mt-auto mb-12">
             {!isShrunk && (
               <>
                 <Image
@@ -184,8 +184,6 @@ const AppSidebar = ({ tab }: { tab: string }) => {
               onClick={handleLogout}
             />
           </div>
-        ) : (
-          <div></div>
         )}
       </div>
     </div>
