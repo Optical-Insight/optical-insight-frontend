@@ -11,7 +11,7 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
-  const { storedAuthData } = useAuth();
+  // const { storedAuthData } = useAuth();
 
   return (
     <div
