@@ -46,6 +46,7 @@ const config: Config = {
         btnConfirmBg: "#16A34A",
         btnConfirmHover: "#15803D",
         btnDanger: "#E33737",
+        btnDisabled: "#445d96",
 
         //colors
         white: "#FFFFFF",

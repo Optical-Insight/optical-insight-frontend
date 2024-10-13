@@ -187,12 +187,12 @@ const DoctorRegistration = ({
               value={formValues.experience}
               onChange={(value) => handleInputChange("experience", value)}
             />
-            <FormField
+            {/* <FormField
               label="Rating"
               placeholder={"e.g.: 4.6"}
               value={formValues.rating}
               onChange={(value) => handleInputChange("rating", value)}
-            />
+            /> */}
           </div>
         )}
 

@@ -1,17 +1,34 @@
 "use client";
 import React from "react";
 import { CommonBtnProps } from "@/utils/interfaces";
+import { Flex, Spin } from "antd";
 
-const CommonBtn = ({ label, onClick, type }: CommonBtnProps) => {
+const CommonBtn = ({ label, onClick, type, isLoading }: CommonBtnProps) => {
+  console.log("CommonBtnProps:", isLoading);
   return (
     <button
+      disabled={isLoading}
       onClick={onClick}
       className={`h-full text-buttonText text-sm md:text-base rounded-[7px] px-[15px]
-        ${type === "Delete" ? "bg-btnDanger" : "bg-buttonPrimary"}  
+        ${
+          type === "Delete"
+            ? "bg-btnDanger"
+            : isLoading
+            ? "bg-btnDisabled"
+            : "bg-buttonPrimary"
+        }  
         ${(label === "Next" || "Submit") && "w-full"}
         `}
     >
-      {label}
+      {isLoading ? (
+        <div className="w-full flex justify-center">
+          <Flex align="center" gap="middle">
+            <Spin />
+          </Flex>
+        </div>
+      ) : (
+        label
+      )}
     </button>
   );
 };

@@ -26,6 +26,7 @@ export interface CommonBtnProps {
   label: string;
   onClick: () => void;
   type?: string;
+  isLoading?: boolean;
   // isFullWidth?: boolean;
   // width?: number;
   // height: number;

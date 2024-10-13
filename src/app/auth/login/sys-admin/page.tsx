@@ -23,6 +23,7 @@ function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -50,15 +51,16 @@ function AdminLogin() {
   };
 
   const handleSubmitLogin = async (e: any) => {
+    setIsLoading(true);
     e.preventDefault();
-    if (!email || !password){
-      toast.error("Please fill in all the fields.");
-      return;     
+    if (!email || !password) {
+      toast.error("Please fill all the fields");
+      setIsLoading(false);
+      return;
     }
-    
-    console.log("isAuthenticated ", isAuthenticated);   
-    if  (!isAuthenticated) {
-      console.log("Login clicked: email:", email, "password:", password);
+
+    console.log("isAuthenticated ", isAuthenticated);
+    if (!isAuthenticated) {
       e.preventDefault();
       axios
         .post(loginUrl, {
@@ -66,37 +68,43 @@ function AdminLogin() {
           password,
         })
         .then((response) => {
-          console.log("Login Success:", response.data);
-          toast.success('Login Successful');
+          toast.success("Login Successful");
+          setIsLoading(false);
           login(response.data);
         })
         .catch((error) => {
           console.error("Error in Login:", error);
           toast.error("Invalid email or password. Please try again.");
+          setIsLoading(false);
         });
     }
   };
 
   return (
     <div className="w-[100vw] h-[100vh] flex">
-      <div><Toaster
-      position="top-right"
-      reverseOrder={false}
-      toastOptions={{
-        
-        success: {
-          style: {
-            background: 'rgb(219, 234, 254)'
-            
-          },
-        },
-        error: {
-          style: {
-            background: 'rgb(219, 234, 254)'
-            
-          },
-        },
-      }}/></div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       {/* BACKGROUND IMAGE AND LOGO */}
       <div className="w-[41.875vw] h-100vh bg-blueBg relative">
         <Image
@@ -178,7 +186,11 @@ function AdminLogin() {
               </div>
 
               <div className="mx-auto flex justify-center h-12">
-                <CommomBtn label="Login" onClick={() => handleSubmitLogin} />
+                <CommomBtn
+                  label="Login"
+                  onClick={() => handleSubmitLogin}
+                  isLoading={isLoading}
+                />
               </div>
             </form>
           </div>
