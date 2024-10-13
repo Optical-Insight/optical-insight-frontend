@@ -15,12 +15,12 @@ import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { GET_ALL_REPORTS } from "@/constants/config";
 import { ReportListAllProps } from "@/utils/interfaces";
-
+import { Spin } from "antd";
 const ReportsList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState<ReportListAllProps[]>([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -59,6 +59,7 @@ const ReportsList = () => {
 
   const fetchAllReports = async () => {
     try {
+      setIsLoading(true);
       await axios
         .get(GET_ALL_REPORTS, {
           headers: {
@@ -79,6 +80,7 @@ const ReportsList = () => {
             )
           );
           setRows(row);
+          setIsLoading(false);
         })
         .catch((err) => console.log(err));
       // const row = response.data.map((report: ReportListAllProps) =>
@@ -146,31 +148,56 @@ const ReportsList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : rows
-              ).map((row) => (
-                <TableRow key={row.reportId}>
-                  <TableCell component="th" scope="row">
-                    {row.reportId}
-                  </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.patientId}</TableCell>
-                  <TableCell>{row.createdBy}</TableCell>
-                  <TableCell>
-                    <div>
-                      <MoreVertIcon />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
+              {isLoading ? (
+                <>
+                  <TableRow className="h-[10vw]">
+                    <TableCell
+                      colSpan={5}
+                      align="center"
+                      style={{ textAlign: "center", verticalAlign: "middle" }}
+                    >
+                      <Spin size="large" />
+                    </TableCell>
+                  </TableRow>
+                </>
+              ) : (
+                <>
+                  {(rowsPerPage > 0
+                    ? rows.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : rows
+                  ).map((row) => (
+                    <TableRow key={row.reportId}>
+                      <TableCell component="th" scope="row">
+                        {row.reportId}
+                      </TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.patientId}</TableCell>
+                      <TableCell>{row.createdBy}</TableCell>
+                      <TableCell>
+                        <div>
+                          <MoreVertIcon />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {emptyRows > 0 && (
+                    <TableRow className="h-[10vw]">
+                      <TableCell
+                        colSpan={5}
+                        align="center"
+                        style={{ textAlign: "center", verticalAlign: "middle" }}
+                      >
+                        <p className="text-xl text-gray-600 font-semibold">
+                          {" "}
+                          No Doctors Found
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  )}{" "}
+                </>
               )}
             </TableBody>
             <TableFooter className="bg-lightBlueBg">

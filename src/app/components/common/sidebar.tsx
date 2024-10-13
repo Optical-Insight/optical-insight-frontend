@@ -202,6 +202,12 @@ const AppSidebar = ({
         }   mr-[3vw] `}
       >
         {children}
+
+        <footer className="bg-transparent text-gray-700 py-4 text-center mt-10">
+          <p className="text-sm">
+            &copy; {new Date().getFullYear()} Axcer. All rights reserved.
+          </p>
+        </footer>
       </div>
     </div>
   );

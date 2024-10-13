@@ -16,6 +16,7 @@ import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { GET_ALL_USERS_BY_TYPE_URL } from "@/constants/config";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
+import { Spin } from "antd";
 
 const PatientListAll = ({
   setActiveHeading,
@@ -28,6 +29,7 @@ const PatientListAll = ({
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<PatientsAllProps[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   // const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   // const [clickedRow, setClickedRow] = useState<PatientsAllProps | undefined>(
   //   undefined
@@ -49,6 +51,7 @@ const PatientListAll = ({
 
   const fetchAllPatients = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(GET_ALL_USERS_BY_TYPE_URL, {
         headers: {
           Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -78,6 +81,7 @@ const PatientListAll = ({
 
       // Set the rows with filtered data
       setRows(row);
+      setIsLoading(false);
     } catch (err: any) {
       console.error(
         "Error in retrieving data",
@@ -158,48 +162,74 @@ const PatientListAll = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : rows
-              ).map((row) => (
-                <TableRow
-                  key={row.userId}
-                  hover
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    setClickedRow && setClickedRow(row);
-                    setIsInfoModalOpen && setIsInfoModalOpen(true);
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.userId}
-                  </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.address}</TableCell>
-                  <TableCell>{row.sex}</TableCell>
-                  <TableCell>{String(row.age)}</TableCell>
-                  <TableCell>{row.phone}</TableCell>
-                  <TableCell>
-                    <div>
-                      <MoreVertIcon />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
+              {isLoading ? (
+                <>
+                  <TableRow className="h-[20vw]">
+                    <TableCell
+                      colSpan={7}
+                      align="center"
+                      style={{ textAlign: "center", verticalAlign: "middle" }}
+                    >
+                      <Spin size="large" />
+                    </TableCell>
+                  </TableRow>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  {(rowsPerPage > 0
+                    ? rows.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : rows
+                  ).map((row) => (
+                    <TableRow
+                      key={row.userId}
+                      hover
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setClickedRow && setClickedRow(row);
+                        setIsInfoModalOpen && setIsInfoModalOpen(true);
+                      }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.userId}
+                      </TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.address}</TableCell>
+                      <TableCell>{row.sex}</TableCell>
+                      <TableCell>{String(row.age)}</TableCell>
+                      <TableCell>{row.phone}</TableCell>
+                      <TableCell>
+                        <div>
+                          <MoreVertIcon />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {emptyRows > 0 && (
+                    <TableRow className="h-[20vw]">
+                      <TableCell
+                        colSpan={7}
+                        align="center"
+                        style={{ textAlign: "center", verticalAlign: "middle" }}
+                      >
+                        <p className="text-xl text-gray-600 font-semibold">
+                          {" "}
+                          No Patients Found
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               )}
             </TableBody>
             <TableFooter className="bg-lightBlueBg">
               <TableRow>
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                  colSpan={5}
+                  colSpan={7}
                   count={rows.length}
                   rowsPerPage={rowsPerPage}
                   page={page}

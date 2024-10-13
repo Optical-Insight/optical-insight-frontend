@@ -19,6 +19,7 @@ import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { GET_ALL_INSTITUTES_URL } from "@/constants/config";
 import ModalInfo from "@/app/components/common/modal-info";
+import { Spin } from "antd";
 
 const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -27,6 +28,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState<InstituteAllRowProps[]>([]);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [clickedRow, setClickedRow] = useState<InstituteAllRowProps | null>(
     null
   );
@@ -44,7 +46,8 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   };
 
   const fetchAllInstitutes = async () => {
-    axios
+    setIsLoading(true);
+    await axios
       .get(GET_ALL_INSTITUTES_URL, {
         headers: {
           Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -70,7 +73,9 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
               institute.email
             )
         );
+
         setRows(row);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.error("Error in retrieving data", err.response.data);
@@ -149,48 +154,74 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : rows
-              ).map((row) => (
-                <TableRow
-                  key={row.id}
-                  hover
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    console.log("Row clicked", row);
-                    setClickedRow(row);
-                    setIsInfoModalOpen(true);
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.clinicId}
-                  </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.location}</TableCell>
-                  <TableCell>{row.phone}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>
-                    <div>
-                      <MoreVertIcon />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
+              {isLoading ? (
+                <>
+                  <TableRow className="h-[20vw]">
+                    <TableCell
+                      colSpan={6}
+                      align="center"
+                      style={{ textAlign: "center", verticalAlign: "middle" }}
+                    >
+                      <Spin size="large" />
+                    </TableCell>
+                  </TableRow>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  {(rowsPerPage > 0
+                    ? rows.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : rows
+                  ).map((row) => (
+                    <TableRow
+                      key={row.id}
+                      hover
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        console.log("Row clicked", row);
+                        setClickedRow(row);
+                        setIsInfoModalOpen(true);
+                      }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.clinicId}
+                      </TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.location}</TableCell>
+                      <TableCell>{row.phone}</TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>
+                        <div>
+                          <MoreVertIcon />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {emptyRows > 0 && (
+                    <TableRow className="h-[20vw]">
+                      <TableCell
+                        colSpan={6}
+                        align="center"
+                        style={{ textAlign: "center", verticalAlign: "middle" }}
+                      >
+                        <p className="text-xl text-gray-600 font-semibold">
+                          {" "}
+                          No Insititues Found
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               )}
             </TableBody>
             <TableFooter className="bg-lightBlueBg">
               <TableRow>
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                  colSpan={5}
+                  colSpan={6}
                   count={rows.length}
                   rowsPerPage={rowsPerPage}
                   page={page}

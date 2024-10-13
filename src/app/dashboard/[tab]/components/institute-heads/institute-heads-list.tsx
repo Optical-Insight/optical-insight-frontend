@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ListAllProps } from "@/utils/interfaces";
 
 import SearchFilter from "@/app/components/common/search-filter";
@@ -15,10 +15,12 @@ import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import TablePaginationActions from "./table-pagination";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
+import { Spin } from "antd";
 
 const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -29,6 +31,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
     newPage: number
   ) => {
     setPage(newPage);
+    setIsLoading(false); // need to remove
   };
 
   const handleChangeRowsPerPage = (event: any) => {
@@ -82,31 +85,56 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : rows
-              ).map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell>{row.status}</TableCell>
-                  <TableCell>{row.location}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>
-                    <div>
-                      <MoreVertIcon />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
+              {isLoading ? (
+                <>
+                  <TableRow className="h-[20vw]">
+                    <TableCell
+                      colSpan={4}
+                      align="center"
+                      style={{ textAlign: "center", verticalAlign: "middle" }}
+                    >
+                      <Spin size="large" />
+                    </TableCell>
+                  </TableRow>
+                </>
+              ) : (
+                <>
+                  {(rowsPerPage > 0
+                    ? rows.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : rows
+                  ).map((row) => (
+                    <TableRow key={row.name}>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell>{row.status}</TableCell>
+                      <TableCell>{row.location}</TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>
+                        <div>
+                          <MoreVertIcon />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {emptyRows > 0 && (
+                    <TableRow className="h-[20vw]">
+                      <TableCell
+                        colSpan={4}
+                        align="center"
+                        style={{ textAlign: "center", verticalAlign: "middle" }}
+                      >
+                        <p className="text-xl text-gray-600 font-semibold">
+                          {" "}
+                          No Institute Heads Found
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               )}
             </TableBody>
             <TableFooter className="bg-lightBlueBg">

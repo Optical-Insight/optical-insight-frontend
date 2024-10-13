@@ -17,6 +17,7 @@ import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { useAuth } from "@/context/AuthContext";
 import { GET_ALL_USERS_URL } from "@/constants/config";
 import axios from "axios";
+import { Spin } from "antd";
 
 const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -24,6 +25,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<DoctorsAllProps[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const createDoctorData = (
     id: string,
@@ -39,6 +41,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
 
   const fetchAllDoctors = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(GET_ALL_USERS_URL, {
         headers: {
           Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -65,6 +68,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
 
       // Set the rows with filtered data
       setRows(row);
+      setIsLoading(false);
     } catch (err: any) {
       console.error(
         "Error in retrieving data",
@@ -142,32 +146,58 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : rows
-              ).map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    {row.userId}
-                  </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>
-                    {row.specialization.replace("Eye Specialist - ", "")}
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <MoreVertIcon />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
+              {isLoading ? (
+                <>
+                  <TableRow className="h-[20vw]">
+                    <TableCell
+                      colSpan={4}
+                      align="center"
+                      style={{ textAlign: "center", verticalAlign: "middle" }}
+                    >
+                      <Spin size="large" />
+                    </TableCell>
+                  </TableRow>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  {(rowsPerPage > 0
+                    ? rows.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : rows
+                  ).map((row) => (
+                    <TableRow key={row.id}>
+                      <TableCell component="th" scope="row">
+                        {row.userId}
+                      </TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>
+                        {row.specialization.replace("Eye Specialist - ", "")}
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <MoreVertIcon />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {emptyRows > 0 && (
+                    <TableRow className="h-[20vw]">
+                      <TableCell
+                        colSpan={4}
+                        align="center"
+                        style={{ textAlign: "center", verticalAlign: "middle" }}
+                      >
+                        <p className="text-xl text-gray-600 font-semibold">
+                          {" "}
+                          No Doctors Found
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               )}
             </TableBody>
             <TableFooter className="bg-lightBlueBg">
