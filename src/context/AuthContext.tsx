@@ -86,6 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     router.replace("/dashboard/home");
     setIsAuthenticated(true);
+    console.log("Login Success:", isAuthenticated);
   };
 
   //Logout function

@@ -47,6 +47,7 @@ export interface ModalConfirmProps {
   confirmLabel: string;
   canselLabel?: string;
   isOpen: boolean;
+  isLoading?: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }

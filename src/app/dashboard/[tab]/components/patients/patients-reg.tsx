@@ -300,7 +300,11 @@ const PatientsRegistration = ({
         {/* Footer */}
         <div className="flex justify-end mt-[30px] mr-[4.722vw]">
           <div className="flex flex-row justify-end w-80 lg:w-[96px] xl:w-[450px] h-9 xl:h-11 gap-3">
-            <CommomBackBtn label="Back" onClick={stepBackward} />
+            <div className="w-full">
+              {activeStep !== 1 && (
+                <CommomBackBtn label="Back" onClick={stepBackward} />
+              )}
+            </div>
             <CommonBtn
               label={activeStep === 2 ? "Submit" : "Next"}
               onClick={stepForward}

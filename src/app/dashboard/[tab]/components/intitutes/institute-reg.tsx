@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
 import axios from "axios";
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -42,6 +43,7 @@ const InstituteRegistration = ({
   const { storedAuthData } = useAuth();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     instituteName: "",
     address: "",
@@ -77,6 +79,7 @@ const InstituteRegistration = ({
   };
 
   const handleSubmitForm = async () => {
+    setIsLoading(true);
     axios
       .post(
         CREATE_INSTITUTES_URL,
@@ -95,14 +98,18 @@ const InstituteRegistration = ({
         }
       )
       .then((res) => {
+        setIsLoading(false);
         setIsConfirmModalOpen(false);
         console.log("Form submitted successfully:", res.data);
+        toast.success("Form Submission Successful");
         setActiveHeading && setActiveHeading(1);
         return res.data;
       })
       .catch((err) => {
-        err.response.data;
-        alert("Error in submitting form");
+        setIsLoading(false);
+        setIsConfirmModalOpen(false);
+        console.error("Error:", err.message);
+        toast.error("Form Submission Failed. Try again.");
       });
   };
 
@@ -110,9 +117,17 @@ const InstituteRegistration = ({
 
   const stepForward = () => {
     if (activeStep === 3) {
-      // Submit the form
+      if (
+        formValues.instituteName === "" ||
+        formValues.address === "" ||
+        formValues.contactNo === "" ||
+        formValues.email === "" ||
+        formValues.website === ""
+      ) {
+        toast.error("Please fill all the required fields.");
+        return;
+      }
       setIsConfirmModalOpen(true);
-
       return;
     }
     setActiveStep(activeStep + 1);
@@ -125,6 +140,25 @@ const InstituteRegistration = ({
 
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
         Register an Institute
       </div>
@@ -347,8 +381,11 @@ const InstituteRegistration = ({
         <div className="flex justify-end mt-8 ml-[3.403vw] mr-[4.722vw] h-9 lg:h-11">
           <div className="w-80 lg:w-96 xl:w-[450px] flex justify-between gap-5 xl:gap-8">
             <div className="w-full">
-              <CommomBackBtn label="Back" onClick={stepBackward} />
+              {activeStep !== 1 && (
+                <CommomBackBtn label="Back" onClick={stepBackward} />
+              )}
             </div>
+
             <div className="w-full">
               <CommonBtn
                 label={activeStep === 3 ? "Submit" : "Next"}
@@ -361,6 +398,7 @@ const InstituteRegistration = ({
 
       {/* Confirm Modal */}
       <ModalConfirm
+        isLoading={isLoading}
         title="Confirm Institute Registration"
         message="Are you sure you want to submit the registration form?"
         confirmLabel="Submit"
