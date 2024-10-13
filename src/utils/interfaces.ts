@@ -26,6 +26,7 @@ export interface CommonBtnProps {
   label: string;
   onClick: () => void;
   type?: string;
+  isLoading?: boolean;
   // isFullWidth?: boolean;
   // width?: number;
   // height: number;
@@ -46,6 +47,7 @@ export interface ModalConfirmProps {
   confirmLabel: string;
   canselLabel?: string;
   isOpen: boolean;
+  isLoading?: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }

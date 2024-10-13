@@ -15,7 +15,7 @@ const FormFieldTextArea = ({
         htmlFor={label}
         className="block text-[16px] text-darkText font-semibold"
       >
-        {label}
+        {label} {required && <span className="text-red-500">*</span>}
       </label>
 
       <textarea

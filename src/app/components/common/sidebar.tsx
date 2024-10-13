@@ -83,7 +83,7 @@ const AppSidebar = ({ tab }: { tab: string }) => {
     },
     {
       iconSrc: "/assets/icons/institute-sidebar.svg",
-      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
       label: "Institutes",
     },
     {
@@ -92,18 +92,18 @@ const AppSidebar = ({ tab }: { tab: string }) => {
       label: "Institute Heads",
     },
     {
-      iconSrc: "/assets/icons/institute-heads.svg",
-      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      iconSrc: "/assets/icons/labtech-sidebar.svg",
+      iconSrcActive: "/assets/icons/labtech-sidebar-active.svg",
       label: "Lab Technicians",
     },
     {
-      iconSrc: "/assets/icons/institute-heads.svg",
-      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      iconSrc: "/assets/icons/doc-sidebar.svg",
+      iconSrcActive: "/assets/icons/doc-sidebar-active.svg",
       label: "Doctors",
     },
     {
-      iconSrc: "/assets/icons/institute-heads.svg",
-      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      iconSrc: "/assets/icons/patient-sidebar.svg",
+      iconSrcActive: "/assets/icons/patient-sidebar-active.svg",
       label: "Patients",
     },
     // {

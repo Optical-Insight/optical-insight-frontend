@@ -137,7 +137,6 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
                 <TableCell className="font-bold">Doctor ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">Rating</TableCell>
                 <TableCell className="font-bold">Specialization</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
@@ -155,7 +154,6 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
                     {row.userId}
                   </TableCell>
                   <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.rating}</TableCell>
                   <TableCell>
                     {row.specialization.replace("Eye Specialist - ", "")}
                   </TableCell>

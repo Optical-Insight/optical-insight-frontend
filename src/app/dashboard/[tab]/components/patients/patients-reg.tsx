@@ -11,6 +11,8 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
+  const { storedAuthData } = useAuth();
+
   return (
     <div
       className={`flex items-center space-x-4 ${
@@ -179,6 +181,13 @@ const PatientsRegistration = ({
               required
               hasError={formErrors.sex}
             />
+            <FormField
+              label="Occupation"
+              placeholder="05 / 03 / 2023"
+              onChange={() => {}}
+            />
+
+            <div className="h-[6.445vh]" />
 
             <FormField
               label="Address"
@@ -189,6 +198,14 @@ const PatientsRegistration = ({
               hasError={formErrors.address}
             />
             <FormField
+              label="E-mail"
+              placeholder="saman@optmail.ai"
+              value={formValues.email}
+              onChange={(value) => handleInputChange("email", value)}
+              required
+              hasError={formErrors.email}
+            />
+            <FormField
               label="Contact Number"
               placeholder="071 234 5678"
               value={formValues.phone}
@@ -197,28 +214,8 @@ const PatientsRegistration = ({
               hasError={formErrors.phone}
             />
             <FormField
-              label="E-mail"
-              placeholder="saman@optmail.ai"
-              value={formValues.email}
-              onChange={(value) => handleInputChange("email", value)}
-              required
-              hasError={formErrors.email}
-            />
-
-            <FormField
               label="Emergency contact information"
               placeholder="077 785 2856"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Occupation"
-              placeholder="05 / 03 / 2023"
-              onChange={() => {}}
-            />
-
-            <FormFieldTextArea
-              label="Health insurance details"
-              placeholder="Please provide your health insurance details, including the name of your insurance provider, policy number, and any relevant coverage information."
               onChange={() => {}}
             />
           </div>
@@ -276,7 +273,13 @@ const PatientsRegistration = ({
 
             <div className="h-[6.445vh]" />
 
-            <FormField
+            {/* <FormFieldTextArea
+              label="Health insurance details"
+              placeholder="Please provide your health insurance details, including the name of your insurance provider, policy number, and any relevant coverage information."
+              onChange={() => {}}
+            /> */}
+
+            {/* <FormField
               label="Technician ID"
               placeholder="MLT209374"
               onChange={() => {}}
@@ -290,14 +293,18 @@ const PatientsRegistration = ({
               label="Created Date"
               placeholder="08 / 06 / 2024"
               onChange={() => {}}
-            />
+            /> */}
           </div>
         )}
 
         {/* Footer */}
         <div className="flex justify-end mt-[30px] mr-[4.722vw]">
           <div className="flex flex-row justify-end w-80 lg:w-[96px] xl:w-[450px] h-9 xl:h-11 gap-3">
-            <CommomBackBtn label="Back" onClick={stepBackward} />
+            <div className="w-full">
+              {activeStep !== 1 && (
+                <CommomBackBtn label="Back" onClick={stepBackward} />
+              )}
+            </div>
             <CommonBtn
               label={activeStep === 2 ? "Submit" : "Next"}
               onClick={stepForward}
