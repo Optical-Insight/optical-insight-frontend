@@ -177,7 +177,7 @@ const AppSidebar = ({
                       {userData?.name}
                     </div>
                     <div className="text-[12.65px] w-[12rem]">
-                      {userData?.email} dvsdv dv
+                      {userData?.email}
                     </div>
                   </div>
                 </>

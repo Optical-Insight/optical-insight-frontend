@@ -51,19 +51,17 @@ const ModalConfirm = ({
                 disabled={isLoading}
                 type="button"
                 className={`inline-flex w-full justify-center rounded-md ${
-                  isLoading ? "bg-btnDisabled" : "bg-buttonPrimary"
-                }  px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-buttonPrimaryHover sm:ml-3 sm:w-auto`}
+                  isLoading
+                    ? "bg-btnDisabled   text-gray-300"
+                    : "bg-buttonPrimary text-white"
+                }  px-3 py-2 text-sm font-semibold  shadow-sm hover:bg-buttonPrimaryHover sm:ml-3 sm:w-auto`}
                 onClick={onConfirm}
               >
-                {isLoading ? (
-                  <div className="w-full flex justify-center">
-                    <Flex align="center" gap="middle">
-                      <Spin />
-                    </Flex>
-                  </div>
-                ) : (
-                  confirmLabel
-                )}
+                <div className="w-full flex justify-center ">
+                  <Flex align="center" gap="middle">
+                    {confirmLabel} {isLoading && <Spin />}
+                  </Flex>
+                </div>
               </button>
 
               <button
@@ -71,6 +69,7 @@ const ModalConfirm = ({
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 onClick={onClose}
                 data-autofocus
+                disabled={isLoading}
               >
                 {canselLabel ? canselLabel : "Cancel"}
               </button>
