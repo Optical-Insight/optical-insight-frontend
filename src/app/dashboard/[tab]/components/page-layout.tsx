@@ -6,14 +6,9 @@ import AppSidebar from "@/app/components/common/sidebar";
 
 function PageLayout({ tab }: { tab: string }) {
   return (
-    <div className="flex flex-row bg-lightBg min-h-screen min-w-full w-fit">
-      <AppSidebar tab={tab} />
-
-      <div className="flex-grow ml-[3vw] mr-[3vw] ">
-        {/* <PageHeader tab={tab} /> */}
-        <PageContent tab={tab} />
-      </div>
-    </div>
+    <AppSidebar tab={tab}>
+      <PageContent tab={tab} />
+    </AppSidebar>
   );
 }
 
