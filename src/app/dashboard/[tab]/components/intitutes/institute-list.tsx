@@ -106,6 +106,12 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
     setPage(0);
   };
 
+  const handleRowClick = (row: any) => {
+    console.log("Row clicked", row);
+    setClickedRow(row);
+    setIsInfoModalOpen(true);
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
@@ -150,7 +156,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
                 <TableCell className="font-bold">Location</TableCell>
                 <TableCell className="font-bold">Contact Number</TableCell>
                 <TableCell className="font-bold">Email</TableCell>
-                <TableCell className="font-bold">Action</TableCell>
+                {/* <TableCell className="font-bold">Action</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -180,11 +186,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
                       key={row.id}
                       hover
                       style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        console.log("Row clicked", row);
-                        setClickedRow(row);
-                        setIsInfoModalOpen(true);
-                      }}
+                      onClick={() => handleRowClick(row)}
                     >
                       <TableCell component="th" scope="row">
                         {row.clinicId}
@@ -193,11 +195,11 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
                       <TableCell>{row.location}</TableCell>
                       <TableCell>{row.phone}</TableCell>
                       <TableCell>{row.email}</TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         <div>
                           <MoreVertIcon />
                         </div>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                   {emptyRows > 0 && (
@@ -246,9 +248,11 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
       {/* Info Modal */}
       <ModalInfo
         id={clickedRow?.clinicId ?? ""}
-        title="Test Info Modal"
-        confirmLabel="Edit"
+        title={`${clickedRow?.clinicId} - ${clickedRow?.name}`}
+        updateLabel="Update"
+        deleteLabel="Delete"
         isOpen={isInfoModalOpen}
+        clickedRow={clickedRow}
         onClose={() => setIsInfoModalOpen(false)}
         onEdit={() => console.log("Edit clicked")}
         onDelete={() => console.log("Delete clicked")}

@@ -83,9 +83,10 @@ export interface ModalInfoProps {
   phone?: string;
   email?: string;
   website?: string;
-  confirmLabel?: string;
+  updateLabel?: string;
   canselLabel?: string;
   deleteLabel?: string;
+  clickedRow?: any;
   isOpen: boolean;
   onClose: () => void;
   onEdit: () => void;
