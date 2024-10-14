@@ -4,9 +4,10 @@ import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import { CREATE_INSTITUTES_URL } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
-import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
+import { StepProps } from "@/utils/interfaces";
+import { InstituteRegistrationProps } from "@/utils/institute";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -39,12 +40,16 @@ const InstituteRegistration = ({
   activeStep,
   setActiveStep,
   setActiveHeading,
+  clickedRow,
 }: InstituteRegistrationProps) => {
+  console.log("clickedRow: ", clickedRow);
+
   const { storedAuthData } = useAuth();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
+    clinicId: "",
     instituteName: "",
     address: "",
     contactNo: "",
@@ -74,43 +79,66 @@ const InstituteRegistration = ({
     comments: "",
   });
 
+  useEffect(() => {
+    if (clickedRow) {
+      setFormValues((prev) => ({
+        ...prev,
+        clinicId: clickedRow.clinicId,
+        instituteName: clickedRow.name,
+        address: clickedRow.location,
+        contactNo: clickedRow.phone,
+        email: clickedRow.email,
+      }));
+    }
+  }, [clickedRow]);
+
   const handleInputChange = (field: string, value: string) => {
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmitForm = async () => {
     setIsLoading(true);
-    axios
-      .post(
-        CREATE_INSTITUTES_URL,
-        {
-          name: formValues.instituteName,
-          location: formValues.address,
-          phone: formValues.contactNo,
-          email: formValues.email,
-          website: formValues.website,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${storedAuthData.accessToken}`,
-            "Content-Type": "application/json",
+
+    // Create Institute
+    if (clickedRow === null) {
+      axios
+        .post(
+          CREATE_INSTITUTES_URL,
+          {
+            name: formValues.instituteName,
+            location: formValues.address,
+            phone: formValues.contactNo,
+            email: formValues.email,
+            website: formValues.website,
           },
-        }
-      )
-      .then((res) => {
-        setIsLoading(false);
-        setIsConfirmModalOpen(false);
-        console.log("Form submitted successfully:", res.data);
-        toast.success("Form Submission Successful");
-        setActiveHeading && setActiveHeading(1);
-        return res.data;
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setIsConfirmModalOpen(false);
-        console.error("Error:", err.message);
-        toast.error("Form Submission Failed. Try again.");
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${storedAuthData.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setIsLoading(false);
+          setIsConfirmModalOpen(false);
+          console.log("Form submitted successfully:", res.data);
+          toast.success("Form Submission Successful");
+          setActiveHeading && setActiveHeading(1);
+          return res.data;
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setIsConfirmModalOpen(false);
+          console.error("Error:", err.message);
+          toast.error("Form Submission Failed. Try again.");
+        });
+
+      // Update Institute
+    } else {
+      console.log("Update Confirmed: ");
+      setIsConfirmModalOpen(false);
+      setIsLoading(false);
+    }
   };
 
   console.log("activeStep", activeStep);
@@ -160,7 +188,7 @@ const InstituteRegistration = ({
       </div>
 
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-        Register an Institute
+        {clickedRow === null ? "Register" : "Update"} an Institute
       </div>
 
       {/* Form */}
@@ -388,7 +416,13 @@ const InstituteRegistration = ({
 
             <div className="w-full">
               <CommonBtn
-                label={activeStep === 3 ? "Submit" : "Next"}
+                label={
+                  activeStep === 3
+                    ? clickedRow === null
+                      ? "Submit"
+                      : "Update"
+                    : "Next"
+                }
                 onClick={stepForward}
               />
             </div>

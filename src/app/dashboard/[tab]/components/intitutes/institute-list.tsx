@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { ListAllProps, InstituteAllRowProps } from "@/utils/interfaces";
-
+import { InstituteAllRowProps } from "@/utils/interfaces";
+import { ListAllInstituteProps } from "@/utils/institute";
 // import rows from "./table-data";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,7 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePaginationActions from "./table-pagination";
 import { TableHead } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SearchFilter from "@/app/components/common/search-filter";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import axios from "axios";
@@ -20,8 +20,13 @@ import { useAuth } from "@/context/AuthContext";
 import { GET_ALL_INSTITUTES_URL } from "@/constants/config";
 import ModalInfo from "@/app/components/institute/modal-info-institute";
 import { Spin } from "antd";
+import ModalConfirm from "@/app/components/common/modal-confirm";
 
-const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
+const InstituteListAll = ({
+  setActiveHeading,
+  clickedRow,
+  setClickedRow,
+}: ListAllInstituteProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
 
   const [page, setPage] = useState(0);
@@ -29,9 +34,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   const [rows, setRows] = useState<InstituteAllRowProps[]>([]);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [clickedRow, setClickedRow] = useState<InstituteAllRowProps | null>(
-    null
-  );
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const createData = (
     id: string,
@@ -112,6 +115,28 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
     setIsInfoModalOpen(true);
   };
 
+  const handleEdit = (row: InstituteAllRowProps) => {
+    console.log("Edit clicked", row);
+    setIsInfoModalOpen(false);
+    setActiveHeading && setActiveHeading(2);
+  };
+
+  const handleDelete = (row: InstituteAllRowProps) => {
+    console.log("Delete clicked", row);
+    setIsInfoModalOpen(false);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleAddNew = () => {
+    setActiveHeading && setActiveHeading(2);
+    setClickedRow(null);
+  };
+
+  const handleDeleteInstiute = async () => {
+    console.log("Delete confirmed");
+    setIsConfirmModalOpen(false);
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
@@ -121,7 +146,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
         <div className="flex h-[42px]">
           <CommonRegisterBtn
             label="Register new Institute"
-            onClick={() => setActiveHeading && setActiveHeading(2)}
+            onClick={handleAddNew}
           />
         </div>
       </div>
@@ -252,8 +277,18 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
         isOpen={isInfoModalOpen}
         clickedRow={clickedRow}
         onClose={() => setIsInfoModalOpen(false)}
-        onEdit={() => console.log("Edit clicked")}
-        onDelete={() => console.log("Delete clicked")}
+        onEdit={() => clickedRow && handleEdit(clickedRow)}
+        onDelete={() => clickedRow && handleDelete(clickedRow)}
+      />
+
+      {/* Delete confirm modal */}
+      <ModalConfirm
+        title="Confirm Intitute Deletion"
+        message="Are you sure you want to permenantly delete this institute?"
+        confirmLabel="Delete"
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleDeleteInstiute}
       />
     </div>
   );

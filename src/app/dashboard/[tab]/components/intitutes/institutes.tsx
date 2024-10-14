@@ -4,10 +4,14 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Image from "next/image";
 import InstituteRegistration from "./institute-reg";
 import InstituteListAll from "./institute-list";
+import { InstituteAllRowProps } from "@/utils/institute";
 
 const InstitutesPage = () => {
   const [activeHeading, setActiveHeading] = useState(1);
   const [activeStep, setActiveStep] = useState(1);
+  const [clickedRow, setClickedRow] = useState<InstituteAllRowProps | null>(
+    null
+  );
 
   const handleBreadcrumbClick = (value: number) => {
     if (value === activeHeading) return;
@@ -70,7 +74,11 @@ const InstitutesPage = () => {
 
       {/* All Institutes */}
       {activeHeading === 1 && (
-        <InstituteListAll setActiveHeading={setActiveHeading} />
+        <InstituteListAll
+          setActiveHeading={setActiveHeading}
+          clickedRow={clickedRow}
+          setClickedRow={setClickedRow}
+        />
       )}
 
       {/* Register an Institute */}
@@ -79,6 +87,7 @@ const InstitutesPage = () => {
           activeStep={activeStep}
           setActiveStep={setActiveStep}
           setActiveHeading={setActiveHeading}
+          clickedRow={clickedRow}
         />
       )}
     </div>
