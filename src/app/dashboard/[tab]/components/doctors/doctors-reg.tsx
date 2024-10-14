@@ -4,7 +4,8 @@ import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import { CREATE_DOCTOR_URL } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
-import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
+import { StepProps } from "@/utils/interfaces";
+import { DoctorRegistrationProps } from "@/utils/doctor";
 import axios from "axios";
 import React, { useState } from "react";
 
@@ -38,7 +39,7 @@ const DoctorRegistration = ({
   activeStep,
   setActiveStep,
   setActiveHeading,
-}: InstituteRegistrationProps) => {
+}: DoctorRegistrationProps) => {
   const { storedAuthData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [formValues, setFormValues] = useState({

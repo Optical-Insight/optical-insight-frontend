@@ -4,7 +4,6 @@ import { CommonBtnProps } from "@/utils/interfaces";
 import { Flex, Spin } from "antd";
 
 const CommonBtn = ({ label, onClick, type, isLoading }: CommonBtnProps) => {
-  console.log("CommonBtnProps:", isLoading);
   return (
     <button
       disabled={isLoading}

@@ -19,14 +19,19 @@ import { GET_ALL_USERS_URL } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { Spin } from "antd";
+import ModalInfoLabTechnician from "@/app/components/lab-technician/modal-info-lab-technician";
 
-const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
+const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<TechniciansAllProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [clickedRow, setClickedRow] = useState<TechniciansAllProps | null>(
+    null
+  );
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const createTechnicianData = (
     id: string,
     name: string,
@@ -97,6 +102,13 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const handleRowClick = (row: any) => {
+    console.log("Row clicked", row);
+    setClickedRow(row);
+    setIsInfoModalOpen(true);
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
@@ -165,7 +177,12 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
                       )
                     : rows
                   ).map((row) => (
-                    <TableRow key={row.id}>
+                    <TableRow
+                      key={row.id}
+                      hover
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleRowClick(row)}
+                    >
                       <TableCell component="th" scope="row">
                         {row.userId}
                       </TableCell>
@@ -221,8 +238,19 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
           </Table>
         </TableContainer>
       </div>
+
+      {/* Info Modal */}
+      <ModalInfoLabTechnician
+        updateLabel="Update"
+        deleteLabel="Delete"
+        isOpen={isInfoModalOpen}
+        clickedRow={clickedRow}
+        onClose={() => setIsInfoModalOpen(false)}
+        onEdit={() => console.log("Edit clicked")}
+        onDelete={() => console.log("Delete clicked")}
+      />
     </div>
   );
 };
 
-export default InstituteListAll;
+export default TechnicianListAll;

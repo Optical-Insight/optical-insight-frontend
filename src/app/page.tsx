@@ -1,15 +1,8 @@
-"use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace("/dashboard/home");
-  }, [router]);
-
+  redirect("/dashboard/home");
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center bg-blueBg text-black">
       <div className="flex flex-col ">

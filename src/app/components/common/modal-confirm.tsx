@@ -53,8 +53,12 @@ const ModalConfirm = ({
                 className={`inline-flex w-full justify-center rounded-md ${
                   isLoading
                     ? "bg-btnDisabled   text-gray-300"
-                    : "bg-buttonPrimary text-white"
-                }  px-3 py-2 text-sm font-semibold  shadow-sm hover:bg-buttonPrimaryHover sm:ml-3 sm:w-auto`}
+                    : `${
+                        confirmLabel.includes("Delete")
+                          ? "bg-red-800 hover:bg-red-900"
+                          : "bg-buttonPrimary hover:bg-buttonPrimaryHover"
+                      }   text-white`
+                }  px-3 py-2 text-sm font-semibold  shadow-sm  sm:ml-3 sm:w-auto`}
                 onClick={onConfirm}
               >
                 <div className="w-full flex justify-center ">

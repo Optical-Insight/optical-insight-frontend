@@ -20,9 +20,7 @@ import { Spin } from "antd";
 
 const PatientListAll = ({
   setActiveHeading,
-  // isInfoModalOpen,
   setIsInfoModalOpen,
-  //  clickedRow,
   setClickedRow,
 }: ListAllPatientProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -30,10 +28,6 @@ const PatientListAll = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<PatientsAllProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  // const [clickedRow, setClickedRow] = useState<PatientsAllProps | undefined>(
-  //   undefined
-  // );
 
   const createPatientData = (
     id: string,
@@ -250,19 +244,6 @@ const PatientListAll = ({
           </Table>
         </TableContainer>
       </div>
-
-      {/* Info Modal */}
-      {/* <ModalInfoPatient
-        id="patient-info-modal"
-        setActiveHeading={setActiveHeading}
-        clickedRow={clickedRow}
-        title={clickedRow?.name ?? ""}
-        confirmLabel="Edit"
-        isOpen={isInfoModalOpen}
-        onClose={() => setIsInfoModalOpen(false)}
-        onEdit={() => console.log("Edit clicked")}
-        onAddRecord={() => console.log("Add Record clicked")}
-      /> */}
     </div>
   );
 };

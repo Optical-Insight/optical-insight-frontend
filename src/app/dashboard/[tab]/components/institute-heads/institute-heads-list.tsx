@@ -17,7 +17,7 @@ import TablePaginationActions from "./table-pagination";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { Spin } from "antd";
 
-const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
+const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,11 +43,11 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
         <div className="text-darkText font-bold text-4xl lg:text-[40px]">
-          List of all Institute Heads
+          List of all InstituteHead Heads
         </div>
         <div className="flex h-[42px]">
           <CommonRegisterBtn
-            label="Register new Institute Head"
+            label="Register new InstituteHead Head"
             onClick={() => setActiveHeading && setActiveHeading(2)}
           />
         </div>
@@ -55,7 +55,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
 
       {/* Filter */}
       <SearchFilter
-        labelSearch="Search for an Institute Head"
+        labelSearch="Search for an InstituteHead Head"
         labelSelectOne="Employment Status"
         labelSelectTwo="Location"
         placeholderSearch="Search by Name"
@@ -79,7 +79,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
                 <TableCell className="font-bold">Name</TableCell>
                 <TableCell className="font-bold">Status</TableCell>
-                <TableCell className="font-bold">Institute</TableCell>
+                <TableCell className="font-bold">InstituteHead</TableCell>
                 <TableCell className="font-bold">Email</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
@@ -129,7 +129,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
                       >
                         <p className="text-xl text-gray-600 font-semibold">
                           {" "}
-                          No Institute Heads Found
+                          No InstituteHead Heads Found
                         </p>
                       </TableCell>
                     </TableRow>
@@ -166,4 +166,4 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   );
 };
 
-export default InstituteListAll;
+export default InstituteHeadListAll;
