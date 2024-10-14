@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Image from "next/image";
-import InstituteRegistration from "./doctors-reg";
-import InstituteListAll from "./doctors-list";
+import DoctorRegistration from "./doctors-reg";
+import DoctorListAll from "./doctors-list";
 
-const InstituteHeadsPage = () => {
+const DoctorHeadsPage = () => {
   const [activeHeading, setActiveHeading] = useState(1);
   const [activeStep, setActiveStep] = useState(1);
 
@@ -68,14 +68,14 @@ const InstituteHeadsPage = () => {
         </Breadcrumbs>
       </div>
 
-      {/* All Institutes */}
+      {/* All Doctors */}
       {activeHeading === 1 && (
-        <InstituteListAll setActiveHeading={setActiveHeading} />
+        <DoctorListAll setActiveHeading={setActiveHeading} />
       )}
 
-      {/* Register an Institute */}
+      {/* Register an Doctor */}
       {activeHeading === 2 && (
-        <InstituteRegistration
+        <DoctorRegistration
           activeStep={activeStep}
           setActiveStep={setActiveStep}
         />
@@ -84,4 +84,4 @@ const InstituteHeadsPage = () => {
   );
 };
 
-export default InstituteHeadsPage;
+export default DoctorHeadsPage;

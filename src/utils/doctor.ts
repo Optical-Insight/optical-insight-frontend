@@ -6,6 +6,12 @@ export interface DoctorsAllProps {
   type: string;
 }
 
+export interface DoctorRegistrationProps {
+  activeStep: number;
+  setActiveStep: (value: number) => void;
+  setActiveHeading?: (value: number) => void;
+}
+
 export interface ModalInfoDoctorProps {
   updateLabel?: string;
   canselLabel?: string;

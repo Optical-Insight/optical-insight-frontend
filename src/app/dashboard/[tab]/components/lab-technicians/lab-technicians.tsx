@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Image from "next/image";
-import InstituteRegistration from "./lab-technicians-reg";
-import InstituteListAll from "./lab-technicians-list";
+import TechnicianRegistration from "./lab-technicians-reg";
+import TechnicianListAll from "./lab-technicians-list";
 
-const InstituteHeadsPage = () => {
+const TechnicianHeadsPage = () => {
   const [activeHeading, setActiveHeading] = useState(1);
   const [activeStep, setActiveStep] = useState(1);
 
@@ -61,21 +61,21 @@ const InstituteHeadsPage = () => {
               onClick={() => handleBreadcrumbClick(2)}
             >
               <div className="font-semibold text-[13.7px] pl-[0.732vw] pr-[0.732vw] pt-[0.747vh] pb-[0.747vh] ">
-                Register an Institute
+                Register an Technician
               </div>
             </div>
           )}
         </Breadcrumbs>
       </div>
 
-      {/* All Institutes */}
+      {/* All Technicians */}
       {activeHeading === 1 && (
-        <InstituteListAll setActiveHeading={setActiveHeading} />
+        <TechnicianListAll setActiveHeading={setActiveHeading} />
       )}
 
-      {/* Register an Institute */}
+      {/* Register an Technician */}
       {activeHeading === 2 && (
-        <InstituteRegistration
+        <TechnicianRegistration
           activeStep={activeStep}
           setActiveStep={setActiveStep}
         />
@@ -84,4 +84,4 @@ const InstituteHeadsPage = () => {
   );
 };
 
-export default InstituteHeadsPage;
+export default TechnicianHeadsPage;

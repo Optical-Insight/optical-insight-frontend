@@ -2,7 +2,8 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
-import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
+import { StepProps } from "@/utils/interfaces";
+import { InstituteHeadRegistrationProps } from "@/utils/institute-head";
 import React from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -31,10 +32,10 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
   );
 };
 
-const InstituteRegistration = ({
+const InstituteHeadRegistration = ({
   activeStep,
   setActiveStep,
-}: InstituteRegistrationProps) => {
+}: InstituteHeadRegistrationProps) => {
   // const [activeStep, setActiveStep] = useState(1);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
@@ -59,7 +60,7 @@ const InstituteRegistration = ({
   return (
     <div>
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-        Register an Institute Head
+        Register an InstituteHead Head
       </div>
 
       {/* Form */}
@@ -103,8 +104,8 @@ const InstituteRegistration = ({
               placeholder="0771965642"
             />
             <FormField
-              label="Institute"
-              placeholder="Sri Lanka Institute of Information Technology"
+              label="InstituteHead"
+              placeholder="Sri Lanka InstituteHead of Information Technology"
             />
             <FormField
               label="Starting Date"
@@ -126,7 +127,7 @@ const InstituteRegistration = ({
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
               label="Job Title"
-              placeholder="Institute Head"
+              placeholder="InstituteHead Head"
               onChange={() => {}}
             />
             <FormField
@@ -204,7 +205,7 @@ const InstituteRegistration = ({
 
       {/* Confirm Modal */}
       <ModalConfirm
-        title="Confirm Institute Registration"
+        title="Confirm InstituteHead Registration"
         message="Are you sure you want to submit the registration form?"
         confirmLabel="Submit"
         isOpen={isConfirmModalOpen}
@@ -215,4 +216,4 @@ const InstituteRegistration = ({
   );
 };
 
-export default InstituteRegistration;
+export default InstituteHeadRegistration;

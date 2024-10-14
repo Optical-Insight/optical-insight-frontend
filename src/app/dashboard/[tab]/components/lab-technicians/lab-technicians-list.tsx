@@ -21,7 +21,7 @@ import axios from "axios";
 import { Spin } from "antd";
 import ModalInfoLabTechnician from "@/app/components/lab-technician/modal-info-lab-technician";
 
-const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
+const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
 
   const [page, setPage] = React.useState(0);
@@ -253,4 +253,4 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   );
 };
 
-export default InstituteListAll;
+export default TechnicianListAll;

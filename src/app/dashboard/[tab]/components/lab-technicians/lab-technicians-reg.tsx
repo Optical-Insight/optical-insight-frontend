@@ -31,7 +31,7 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
   );
 };
 
-const InstituteRegistration = ({
+const TechnicianRegistration = ({
   activeStep,
   setActiveStep,
 }: InstituteRegistrationProps) => {
@@ -59,7 +59,7 @@ const InstituteRegistration = ({
   return (
     <div>
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-        Register an Institute
+        Register an Technician
       </div>
 
       {/* Form */}
@@ -89,7 +89,7 @@ const InstituteRegistration = ({
         {activeStep === 1 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
-              label="Name of the Institute / Venue"
+              label="Name of the Technician / Venue"
               placeholder="Vision Care Opticals"
               onChange={() => {}}
             />
@@ -212,7 +212,7 @@ const InstituteRegistration = ({
 
       {/* Confirm Modal */}
       <ModalConfirm
-        title="Confirm Institute Registration"
+        title="Confirm Technician Registration"
         message="Are you sure you want to submit the registration form?"
         confirmLabel="Submit"
         isOpen={isConfirmModalOpen}
@@ -223,4 +223,4 @@ const InstituteRegistration = ({
   );
 };
 
-export default InstituteRegistration;
+export default TechnicianRegistration;
