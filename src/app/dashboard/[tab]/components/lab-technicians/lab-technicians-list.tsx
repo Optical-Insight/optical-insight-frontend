@@ -18,6 +18,7 @@ import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { GET_ALL_USERS_URL } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
+import { Spin } from "antd";
 
 const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -25,7 +26,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<TechniciansAllProps[]>([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const createTechnicianData = (
     id: string,
     name: string,
@@ -38,6 +39,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
 
   const fetchAllTechnicians = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(GET_ALL_USERS_URL, {
         headers: {
           Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -63,6 +65,7 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
 
       // Set the rows with filtered data
       setRows(row);
+      setIsLoading(false);
     } catch (err: any) {
       console.error(
         "Error in retrieving data",
@@ -141,31 +144,56 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : rows
-              ).map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    {row.userId}
-                  </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>
-                    <div>
-                      <MoreVertIcon />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
+              {isLoading ? (
+                <>
+                  <TableRow className="h-[20vw]">
+                    <TableCell
+                      colSpan={5}
+                      align="center"
+                      style={{ textAlign: "center", verticalAlign: "middle" }}
+                    >
+                      <Spin size="large" />
+                    </TableCell>
+                  </TableRow>
+                </>
+              ) : (
+                <>
+                  {(rowsPerPage > 0
+                    ? rows.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : rows
+                  ).map((row) => (
+                    <TableRow key={row.id}>
+                      <TableCell component="th" scope="row">
+                        {row.userId}
+                      </TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell>
+                        <div>
+                          <MoreVertIcon />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {emptyRows > 0 && (
+                    <TableRow className="h-[20vw]">
+                      <TableCell
+                        colSpan={5}
+                        align="center"
+                        style={{ textAlign: "center", verticalAlign: "middle" }}
+                      >
+                        <p className="text-xl text-gray-600 font-semibold">
+                          {" "}
+                          No Lab Technicians Found
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               )}
             </TableBody>
             <TableFooter className="bg-lightBlueBg">
