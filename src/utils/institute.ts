@@ -17,10 +17,6 @@ export interface InstituteAllRowProps {
 }
 
 export interface ModalInfoInstituteProps {
-  location?: string;
-  phone?: string;
-  email?: string;
-  website?: string;
   updateLabel?: string;
   canselLabel?: string;
   deleteLabel?: string;
