@@ -125,7 +125,7 @@ const AppSidebar = ({
   ];
 
   return (
-    <div className="flex flex-row bg-lightBg min-h-screen min-w-full">
+    <div className="flex flex-row bg-lightBg min-h-screen w-full">
       <div className={` bg-blueBg px-6 xl:px-8   flex flex-col h-screen fixed`}>
         <div className={`flex flex-col h-full`}>
           {/* Logo */}
@@ -199,15 +199,9 @@ const AppSidebar = ({
       <div
         className={`flex-grow ${
           isShrunk ? "ml-[9rem]" : "ml-[24rem]"
-        }   mr-[3vw] `}
+        }   mr-[3vw] h-screen`}
       >
         {children}
-
-        <footer className="bg-transparent text-gray-700 py-4 text-center mt-10">
-          <p className="text-sm">
-            &copy; {new Date().getFullYear()} Axcer. All rights reserved.
-          </p>
-        </footer>
       </div>
     </div>
   );
