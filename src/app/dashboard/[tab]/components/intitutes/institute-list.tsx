@@ -18,7 +18,7 @@ import CommonRegisterBtn from "@/app/components/common/registerButton";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { GET_ALL_INSTITUTES_URL } from "@/constants/config";
-import ModalInfo from "@/app/components/common/modal-info";
+import ModalInfo from "@/app/components/institute/modal-info-institute";
 import { Spin } from "antd";
 
 const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
@@ -247,8 +247,6 @@ const InstituteListAll = ({ setActiveHeading }: ListAllProps) => {
 
       {/* Info Modal */}
       <ModalInfo
-        id={clickedRow?.clinicId ?? ""}
-        title={`${clickedRow?.clinicId} - ${clickedRow?.name}`}
         updateLabel="Update"
         deleteLabel="Delete"
         isOpen={isInfoModalOpen}

@@ -12,7 +12,7 @@ export interface PatientsAllProps {
 
 export interface ModalInfoPatientProps {
   clickedRow?: PatientsAllProps;
-  title: string;
+  title?: string;
   id: string;
   location?: string;
   phone?: string;

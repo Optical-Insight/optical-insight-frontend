@@ -76,8 +76,7 @@ export interface ModalConfirmTextInputProps {
   onConfirm: (inputText: string) => void;
 }
 
-export interface ModalInfoProps {
-  title: string;
+export interface ModalInfoInstituteHeadProps {
   id: string;
   location?: string;
   phone?: string;
@@ -91,24 +90,6 @@ export interface ModalInfoProps {
   onClose: () => void;
   onEdit: () => void;
   onDelete: () => void;
-}
-
-export interface ModalInfoPatientProps {
-  clickedRow?: PatientsAllProps;
-  title: string;
-  id: string;
-  location?: string;
-  phone?: string;
-  email?: string;
-  website?: string;
-  confirmLabel?: string;
-  canselLabel?: string;
-  deleteLabel?: string;
-  isOpen: boolean;
-  onClose: () => void;
-  onEdit: () => void;
-  onAddRecord: () => void;
-  setActiveHeading: (value: number) => void;
 }
 
 export interface SearchFilterProps {

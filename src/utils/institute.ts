@@ -15,3 +15,18 @@ export interface InstituteAllRowProps {
   website?: string;
   action?: string;
 }
+
+export interface ModalInfoInstituteProps {
+  location?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  updateLabel?: string;
+  canselLabel?: string;
+  deleteLabel?: string;
+  clickedRow?: any;
+  isOpen: boolean;
+  onClose: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+}

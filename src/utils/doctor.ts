@@ -5,3 +5,14 @@ export interface DoctorsAllProps {
   userId: string;
   type: string;
 }
+
+export interface ModalInfoDoctorProps {
+  updateLabel?: string;
+  canselLabel?: string;
+  deleteLabel?: string;
+  clickedRow: any;
+  isOpen: boolean;
+  onClose: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+}

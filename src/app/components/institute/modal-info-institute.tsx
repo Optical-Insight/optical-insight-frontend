@@ -6,23 +6,16 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { ModalInfoProps } from "@/utils/interfaces";
+import { ModalInfoInstituteProps } from "@/utils/institute";
 
-const ModalInfo = ({
-  title,
-  id,
-  // location,
-  // phone,
-  // email,
-  // website,
+const ModalInfoInstitute = ({
   updateLabel,
   canselLabel,
   deleteLabel,
   isOpen,
   clickedRow,
   onClose,
-  onEdit,
-}: ModalInfoProps) => {
+}: ModalInfoInstituteProps) => {
   console.log("ModalInfoProps", clickedRow);
 
   return (
@@ -45,7 +38,7 @@ const ModalInfo = ({
                     as="h3"
                     className="text-base font-semibold leading-6 text-gray-900 "
                   >
-                    {title}
+                    {`${clickedRow?.clinicId} - ${clickedRow?.name}`}
                   </DialogTitle>
                 </div>
               </div>
@@ -105,4 +98,4 @@ const ModalInfo = ({
   );
 };
 
-export default ModalInfo;
+export default ModalInfoInstitute;

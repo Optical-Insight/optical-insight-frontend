@@ -6,7 +6,7 @@ import PatientProfile from "./patient-profile";
 import PatientRecordNew from "./patients-new-record";
 import PatientListAll from "./patient-list";
 import PatientsRegistration from "./patients-reg";
-import ModalInfoPatient from "@/app/components/common/modal-info-patient";
+import ModalInfoPatient from "@/app/components/patient/modal-info-patient";
 import { PatientsAllProps } from "@/utils/interfaces";
 
 const PatientsPage = () => {
@@ -168,7 +168,6 @@ const PatientsPage = () => {
         id="patient-info-modal"
         setActiveHeading={setActiveHeading}
         clickedRow={clickedRow}
-        title={clickedRow?.name ?? ""}
         confirmLabel="Edit"
         isOpen={isInfoModalOpen}
         onClose={() => setIsInfoModalOpen(false)}
