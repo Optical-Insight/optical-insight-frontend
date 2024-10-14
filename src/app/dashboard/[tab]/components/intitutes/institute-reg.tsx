@@ -433,9 +433,17 @@ const InstituteRegistration = ({
       {/* Confirm Modal */}
       <ModalConfirm
         isLoading={isLoading}
-        title="Confirm Institute Registration"
-        message="Are you sure you want to submit the registration form?"
-        confirmLabel="Submit"
+        title={`Confirm Institute ${
+          clickedRow === null
+            ? "Registration"
+            : `Update - ${clickedRow.clinicId}`
+        }`}
+        message={`Are you sure you want to ${
+          clickedRow === null
+            ? "submit the registration form"
+            : "update the current institute"
+        } ?`}
+        confirmLabel={clickedRow === null ? "Submit" : "Update"}
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleSubmitForm}
