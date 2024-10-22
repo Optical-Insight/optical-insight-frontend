@@ -92,8 +92,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   //Logout function
   const logout = () => {
     setIsAuthenticated(false);
-    Cookies.remove("authData"); // Remove authData from cookies
-    router.replace("/auth/login/sys-admin");
+    Cookies.remove("authData");
+    router.replace("/auth/login");
   };
 
   return (
@@ -179,7 +179,7 @@ export const useAuth = () => {
 //   const logout = () => {
 //     setIsAuthenticated(false);
 //     localStorage.removeItem("authData");
-//     router.replace("/auth/login/sys-admin");
+//     router.replace("/auth/login");
 //   };
 
 //   return (

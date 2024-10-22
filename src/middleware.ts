@@ -13,7 +13,7 @@ export function middleware(req: NextRequest) {
     !token &&
     protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route))
   ) {
-    return NextResponse.redirect(new URL("/auth/login/sys-admin", req.url));
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
   return NextResponse.next();

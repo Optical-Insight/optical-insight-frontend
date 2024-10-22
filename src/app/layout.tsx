@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Optical Insight",
-  description: "Optical Insight",
+  description: "Optical Insight - Opthalmic Clinic Management System",
 };
 
 export default function RootLayout({

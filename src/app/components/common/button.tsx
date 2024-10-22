@@ -3,16 +3,22 @@ import React from "react";
 import { CommonBtnProps } from "@/utils/interfaces";
 import { Flex, Spin } from "antd";
 
-const CommonBtn = ({ label, onClick, type, isLoading }: CommonBtnProps) => {
+const CommonBtn = ({
+  label,
+  onClick,
+  type,
+  isLoading,
+  isBtnDisabled,
+}: CommonBtnProps) => {
   return (
     <button
-      disabled={isLoading}
+      disabled={isLoading || isBtnDisabled}
       onClick={onClick}
       className={`h-full text-buttonText text-sm md:text-base rounded-[7px] px-[15px]
         ${
           type === "Delete"
             ? "bg-btnDanger"
-            : isLoading
+            : isLoading || isBtnDisabled
             ? "bg-btnDisabled"
             : "bg-buttonPrimary"
         }  

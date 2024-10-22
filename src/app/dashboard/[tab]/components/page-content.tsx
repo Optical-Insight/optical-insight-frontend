@@ -2,6 +2,7 @@
 import React from "react";
 import HomePage from "./home/home";
 import InstitutesPage from "./intitutes/institutes";
+import BranchesPage from "./branches/branches";
 import InstituteHeadsPage from "./institute-heads/institute-heads";
 import LabTechniciansPage from "./lab-technicians/lab-technicians";
 import DoctorsPage from "./doctors/doctors";
@@ -16,6 +17,9 @@ function PageContent({ tab }: { tab: string }) {
 
     case "institutes":
       return <InstitutesPage />;
+
+    case "branches":
+      return <BranchesPage />;
 
     case "institute-heads":
       return <InstituteHeadsPage />;

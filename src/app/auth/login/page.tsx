@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import CommomBtn from "@/app/components/common/button";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -24,12 +24,61 @@ function AdminLogin() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loginBtnDisabled, setLoginBtnDisabled] = useState(true);
+
+  // Validation error states
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   useEffect(() => {
     if (isAuthenticated) {
       router.replace("/dashboard/home");
     }
   }, [isAuthenticated, router]);
+
+  // useEffect(() => {
+  //   if(email === "" || password === ""){
+  //     setIsLoading(false);
+  //   }
+  // }, [email, password]);
+
+  const validateEmail = (emailInput: string) => {
+    // Basic email regex pattern
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emailInput);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    if (!validateEmail(value)) {
+      setEmailError("Please enter a valid email address");
+      setLoginBtnDisabled(true);
+    } else {
+      setEmailError("");
+      if (password) {
+        setLoginBtnDisabled(false);
+      }
+    }
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPassword(value);
+    console.log("email: ", email);
+
+    if (value) {
+      setPasswordError("");
+      if (email) {
+        setLoginBtnDisabled(false);
+      }
+    } else {
+      setPasswordError("Password is required");
+
+      setLoginBtnDisabled(true);
+    }
+  };
 
   const handleForgotPassword = async () => {
     console.log("Forgot password clicked");
@@ -53,8 +102,24 @@ function AdminLogin() {
   const handleSubmitLogin = async (e: any) => {
     setIsLoading(true);
     e.preventDefault();
-    if (!email || !password) {
-      toast.error("Please fill all the fields");
+
+    // Reset errors
+    setEmailError("");
+    setPasswordError("");
+
+    // Validate input fields
+    if (!email) {
+      setEmailError("Email is required");
+    } else if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+    }
+
+    if (!password) {
+      setPasswordError("Password is required");
+    }
+
+    // Stop if there are errors
+    if (!email || !password || emailError || passwordError) {
       setIsLoading(false);
       return;
     }
@@ -140,14 +205,19 @@ function AdminLogin() {
                 <input
                   type="email"
                   placeholder="kamal@opticin.com"
-                  className="pl-1 text-base w-full h-12 mt-1 rounded-lg text-black"
-                  onChange={(e) => setEmail(e.target.value)}
+                  className={`pl-1 text-base w-full h-12 mt-1 rounded-lg text-black ${
+                    emailError ? "border border-red-500" : ""
+                  }`}
+                  onChange={handleEmailChange}
                 />
+                {emailError && (
+                  <p className="text-red-500 text-sm absolute">{emailError}</p>
+                )}
               </div>
 
               <div className="mt-6">
                 <div className="flex flex-row justify-between">
-                  <label className="block text-base text-labelText ">
+                  <label className="block text-base text-labelText">
                     Password
                   </label>
                   <label
@@ -161,16 +231,23 @@ function AdminLogin() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="************"
-                    className="pl-1 text-base w-full h-12 mt-1 rounded-lg text-black"
-                    onChange={(e) => setPassword(e.target.value)}
+                    className={`pl-1 text-base w-full h-12 mt-1 rounded-lg text-black ${
+                      passwordError ? "border border-red-500" : ""
+                    }`}
+                    onChange={handlePasswordChange}
                   />
+                  {passwordError && (
+                    <p className="text-red-500 text-sm absolute">
+                      {passwordError}
+                    </p>
+                  )}
                   <div className="absolute right-2 top-2/3 transform -translate-y-2/3 text-labelText">
                     {showPassword ? (
-                      <VisibilityOffOutlinedIcon
+                      <VisibilityOutlinedIcon
                         onClick={() => setShowPassword(false)}
                       />
                     ) : (
-                      <VisibilityOutlinedIcon
+                      <VisibilityOffOutlinedIcon
                         onClick={() => setShowPassword(true)}
                       />
                     )}
@@ -178,7 +255,7 @@ function AdminLogin() {
                 </div>
               </div>
 
-              <div className="flex items-center mt-3 mb-5 ml-[1px]">
+              <div className="flex items-center mt-6 mb-4 ml-[1px]">
                 <input type="checkbox" className="mr-[0.556vw] " />
                 <label className="block text-base text-labelText">
                   Keep me signed in
@@ -190,6 +267,7 @@ function AdminLogin() {
                   label="Login"
                   onClick={() => handleSubmitLogin}
                   isLoading={isLoading}
+                  isBtnDisabled={loginBtnDisabled}
                 />
               </div>
             </form>
