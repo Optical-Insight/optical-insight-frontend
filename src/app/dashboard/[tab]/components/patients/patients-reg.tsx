@@ -47,12 +47,26 @@ const PatientsRegistration = ({
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [formValues, setFormValues] = useState({
+    patientId: "",
     name: "",
-    address: "",
-    phone: "",
-    email: "",
+    dob: "",
     sex: "",
-    age: "",
+    occupation: "",
+    address: "",
+    email: "",
+    phone: "",
+    emergencyContact: "",
+    medicalHistory: "",
+    familyHistory: "",
+    pastEyeProblems: "",
+    currentMedications: "",
+    historyOfDrugs: "",
+    visionProblems: "",
+    eyeDiscomfort: "",
+    glassesOrContacts: "",
+    labTechnitianId: "",
+    labTechnitianName: "",
+    //date: "",
   });
 
   const handleInputChange = (field: string, value: string) => {
