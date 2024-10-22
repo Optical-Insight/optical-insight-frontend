@@ -28,6 +28,14 @@ export interface ModalInfoPatientProps {
   setActiveHeading: (value: number) => void;
 }
 
+export interface PatientRecordAllRowProps {
+  reportId: string;
+  createdBy: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface PatientListAllProps {
   setActiveHeading: (value: number) => void;
   handleBreadcrumbClick: (value: number) => void;

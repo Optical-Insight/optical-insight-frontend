@@ -102,6 +102,16 @@ export interface SearchFilterProps {
   onSearch: (value: string) => void;
 }
 
+export interface SearchFilterReportProps {
+  labelSearch?: string;
+  labelSelectOne: string;
+  labelSelectTwo?: string;
+  placeholderSearch?: string;
+  optionsSelectOne: { value: string; label: string }[];
+  optionsSelectTwo?: { value: string; label: string }[];
+  onSearch?: (value: string) => void;
+}
+
 // Institute Page
 export interface StepProps {
   number: number;
