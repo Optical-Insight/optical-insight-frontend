@@ -43,11 +43,11 @@ const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
         <div className="text-darkText font-bold text-4xl lg:text-[40px]">
-          List of all InstituteHead Heads
+          List of all Institute Heads
         </div>
         <div className="flex h-[42px]">
           <CommonRegisterBtn
-            label="Register new InstituteHead Head"
+            label="Register new Institute Head"
             onClick={() => setActiveHeading && setActiveHeading(2)}
           />
         </div>
@@ -55,7 +55,7 @@ const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
 
       {/* Filter */}
       <SearchFilter
-        labelSearch="Search for an InstituteHead Head"
+        labelSearch="Search for an Institute Head"
         labelSelectOne="Employment Status"
         labelSelectTwo="Location"
         placeholderSearch="Search by Name"
@@ -79,7 +79,7 @@ const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
                 <TableCell className="font-bold">Name</TableCell>
                 <TableCell className="font-bold">Status</TableCell>
-                <TableCell className="font-bold">InstituteHead</TableCell>
+                <TableCell className="font-bold">Institute</TableCell>
                 <TableCell className="font-bold">Email</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
@@ -129,7 +129,7 @@ const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
                       >
                         <p className="text-xl text-gray-600 font-semibold">
                           {" "}
-                          No InstituteHead Heads Found
+                          No Institute Heads Found
                         </p>
                       </TableCell>
                     </TableRow>

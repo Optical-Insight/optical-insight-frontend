@@ -78,7 +78,7 @@ const AppSidebar = ({
 
   // const handleLogout = () => {
   //   localStorage.removeItem("authData");
-  //   router.replace("/auth/login/sys-admin");
+  //   router.replace("/auth/login");
   // };
 
   const sidebarItems = [
@@ -91,6 +91,11 @@ const AppSidebar = ({
       iconSrc: "/assets/icons/institute-sidebar.svg",
       iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
       label: "Institutes",
+    },
+    {
+      iconSrc: "/assets/icons/institute-sidebar.svg",
+      iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
+      label: "Branches",
     },
     {
       iconSrc: "/assets/icons/institute-heads.svg",
