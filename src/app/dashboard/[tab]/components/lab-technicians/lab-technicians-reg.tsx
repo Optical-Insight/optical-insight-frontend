@@ -3,7 +3,7 @@ import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
-import React from "react";
+import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -35,9 +35,25 @@ const TechnicianRegistration = ({
   activeStep,
   setActiveStep,
 }: InstituteRegistrationProps) => {
-  // const [activeStep, setActiveStep] = useState(1);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [formValues, setFormValues] = useState({
+    name: "",
+    gender: "",
+    dob: "",
+    nic: "",
+    email: "",
+    phone: "",
+    yearsOfXp: "",
+    speciality: "",
+    familiarityWithLab: "",
+    skills: "",
+    refContact: "",
+    comments: "",
+  });
 
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
+  const handleInputChange = (field: string, value: string) => {
+    setFormValues((prev) => ({ ...prev, [field]: value }));
+  };
 
   console.log("activeStep", activeStep);
 
@@ -89,35 +105,92 @@ const TechnicianRegistration = ({
         {activeStep === 1 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
-              label="Name of the Technician / Venue"
+              label="Name of the Technician"
               placeholder="Vision Care Opticals"
-              onChange={() => {}}
+              required={true}
+              value={formValues.name}
+              onChange={(value) => handleInputChange("name", value)}
             />
             <FormField
-              label="Address"
-              placeholder="1st Floor, 907 Peradeniya Rd, Kandy"
-              onChange={() => {}}
-            />
-            {/* <FormField label="Contact Number" placeholder="081 208 5004" />
-            <FormField label="Email Address" placeholder="info@visioncare.lk" />
-            <FormField label="Website URL" placeholder="visioncare.lk" />
-            <div className="h-[6.445vh]" />
-            <FormField
-              label="Type of Optical Services Provided"
-              placeholder="Eye Examine, Contact Lenses, Glasses, etc."
+              label="Gender"
+              placeholder="Male"
+              required={true}
+              value={formValues.gender}
+              onChange={(value) => handleInputChange("gender", value)}
             />
             <FormField
-              label="Specialty Services"
-              placeholder="Pediatric Optometry, Low Vision Services, etc."
+              label="Date of Birth"
+              type="date"
+              placeholder=""
+              required={true}
+              value={formValues.dob}
+              onChange={(value) => handleInputChange("dob", value)}
             />
             <FormField
-              label="Accepted Insurances"
-              placeholder="Lucas Bennett"
+              label="NIC"
+              placeholder="200165288452"
+              required={true}
+              value={formValues.nic}
+              onChange={(value) => handleInputChange("nic", value)}
             />
             <FormField
-              label="Certifications"
-              placeholder="Accreditation from relevant organizations"
-            /> */}
+              label="Email"
+              placeholder="visioncare@opthal.com"
+              required={true}
+              value={formValues.email}
+              onChange={(value) => handleInputChange("email", value)}
+            />
+            <FormField
+              label="Contact Number"
+              placeholder="0761245852"
+              required={true}
+              value={formValues.phone}
+              onChange={(value) => handleInputChange("phone", value)}
+            />
+
+            <FormField
+              label="Years of Experience"
+              placeholder="Vision Care Opticals"
+              required={true}
+              value={formValues.name}
+              onChange={(value) => handleInputChange("name", value)}
+            />
+            <FormField
+              label="Gender"
+              placeholder="Male"
+              required={true}
+              value={formValues.gender}
+              onChange={(value) => handleInputChange("gender", value)}
+            />
+            <FormField
+              label="Date of Birth"
+              type="date"
+              placeholder=""
+              required={true}
+              value={formValues.dob}
+              onChange={(value) => handleInputChange("dob", value)}
+            />
+            <FormField
+              label="NIC"
+              placeholder="200165288452"
+              required={true}
+              value={formValues.nic}
+              onChange={(value) => handleInputChange("nic", value)}
+            />
+            <FormField
+              label="Email"
+              placeholder="visioncare@opthal.com"
+              required={true}
+              value={formValues.email}
+              onChange={(value) => handleInputChange("email", value)}
+            />
+            <FormField
+              label="Contact Number"
+              placeholder="0761245852"
+              required={true}
+              value={formValues.phone}
+              onChange={(value) => handleInputChange("phone", value)}
+            />
           </div>
         )}
 

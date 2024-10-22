@@ -4,7 +4,7 @@ import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import { StepProps } from "@/utils/interfaces";
 import { InstituteHeadRegistrationProps } from "@/utils/institute-head";
-import React from "react";
+import React, { useState } from "react";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -36,9 +36,22 @@ const InstituteHeadRegistration = ({
   activeStep,
   setActiveStep,
 }: InstituteHeadRegistrationProps) => {
-  // const [activeStep, setActiveStep] = useState(1);
-
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  // const [formValues, setFormValues] = useState({
+  //   clinicId: "",
+  //   instituteName: "",
+  //   address: "",
+  //   contactNo: "",
+  //   email: "",
+  //   website: "",
+  //   services: "",
+  //   certifications: "",
+  //   noOfTechnicians: "",
+  //   hrsOfOperation: "",
+  //   specialServices: "",
+  //   ehr: "",
+  //   comments: "",
+  // });
 
   console.log("activeStep", activeStep);
 
@@ -46,7 +59,6 @@ const InstituteHeadRegistration = ({
     if (activeStep === 3) {
       // Submit the form
       setIsConfirmModalOpen(true);
-
       return;
     }
     setActiveStep(activeStep + 1);

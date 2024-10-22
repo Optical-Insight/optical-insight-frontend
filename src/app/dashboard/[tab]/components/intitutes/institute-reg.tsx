@@ -20,12 +20,12 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
       <span
         className={`text-[16px] px-3 py-1 rounded-full font-semibold border ${
           active ? "border-blueText" : "border-disabledText"
-        } ${(number == 2 || number == 3) && "ml-[0.556vw]"} `}
+        } ${number == 2 && "ml-[0.556vw]"} `}
       >
         {number}
       </span>
       <h2 className="text-[16px] font-semibold">{title}</h2>
-      {number == 1 || number == 2 ? (
+      {number == 1 ? (
         <div
           className={`w-[4.444vw] h-[0.195vh] ${
             lineActive ? "bg-blueText" : "bg-disabledText"
@@ -45,7 +45,6 @@ const InstituteRegistration = ({
   console.log("clickedRow: ", clickedRow);
 
   const { storedAuthData } = useAuth();
-
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -56,26 +55,11 @@ const InstituteRegistration = ({
     email: "",
     website: "",
     services: "",
-    specialty: "",
-    insurances: "",
     certifications: "",
-    regNo: "",
-    taxNo: "",
-    pin: "",
-    license: "",
-    optometrists: "",
-    opticians: "",
-    supportStaff: "",
-    qualifications: "",
-    staffContact: "",
-    equipment: "",
-    facilities: "",
-    hours: "",
+    noOfTechnicians: "",
+    hrsOfOperation: "",
     specialServices: "",
     ehr: "",
-    compatibility: "",
-    security: "",
-    otherInfo: "",
     comments: "",
   });
 
@@ -99,7 +83,6 @@ const InstituteRegistration = ({
   const handleSubmitForm = async () => {
     setIsLoading(true);
 
-    // Create Institute
     if (clickedRow === null) {
       axios
         .post(
@@ -132,8 +115,6 @@ const InstituteRegistration = ({
           console.error("Error:", err.message);
           toast.error("Form Submission Failed. Try again.");
         });
-
-      // Update Institute
     } else {
       console.log("Update Confirmed: ");
       setIsConfirmModalOpen(false);
@@ -144,7 +125,7 @@ const InstituteRegistration = ({
   console.log("activeStep", activeStep);
 
   const stepForward = () => {
-    if (activeStep === 3) {
+    if (activeStep === 2) {
       if (
         formValues.instituteName === "" ||
         formValues.address === "" ||
@@ -203,14 +184,9 @@ const InstituteRegistration = ({
           />
           <Step
             number={2}
-            title="Legal & Staff Information"
+            title="Other Information"
             active={activeStep >= 2}
             lineActive={activeStep >= 3}
-          />
-          <Step
-            number={3}
-            title="Technology Information"
-            active={activeStep >= 3}
           />
         </div>
 
@@ -259,18 +235,6 @@ const InstituteRegistration = ({
                 onChange={(value) => handleInputChange("services", value)}
               />
               <FormField
-                label="Specialty Services"
-                placeholder="Pediatric Optometry, Low Vision Services, etc."
-                value={formValues.specialty}
-                onChange={(value) => handleInputChange("specialty", value)}
-              />
-              <FormField
-                label="Accepted Insurances"
-                placeholder="Lucas Bennett"
-                value={formValues.insurances}
-                onChange={(value) => handleInputChange("insurances", value)}
-              />
-              <FormField
                 label="Certifications"
                 placeholder="Accreditation from relevant organizations"
                 value={formValues.certifications}
@@ -282,86 +246,6 @@ const InstituteRegistration = ({
           {/* Step 02 */}
           {activeStep === 2 && (
             <>
-              <FormField
-                label="Business Registration Number"
-                placeholder="123 4567 890"
-                value={formValues.regNo}
-                onChange={(value) => handleInputChange("regNo", value)}
-              />
-              <FormField
-                label="Tax Identification Number"
-                placeholder="123 4567 890"
-                value={formValues.taxNo}
-                onChange={(value) => handleInputChange("taxNo", value)}
-              />
-              <FormField
-                label="PIN"
-                placeholder="123 4567 890"
-                value={formValues.pin}
-                onChange={(value) => handleInputChange("pin", value)}
-              />
-
-              <FormField
-                label="Business License"
-                placeholder="Attach files"
-                value={formValues.license}
-                onChange={(value) => handleInputChange("license", value)}
-              />
-              <div className="h-[6.445vh]" />
-              <FormField
-                label="Number of Optometrists"
-                placeholder="10"
-                value={formValues.optometrists}
-                onChange={(value) => handleInputChange("optometrists", value)}
-              />
-              <FormField
-                label="Number of Opticians"
-                placeholder="10"
-                value={formValues.opticians}
-                onChange={(value) => handleInputChange("opticians", value)}
-              />
-              <FormField
-                label="Number of Support Staff"
-                placeholder="10"
-                value={formValues.supportStaff}
-                onChange={(value) => handleInputChange("supportStaff", value)}
-              />
-              <FormField
-                label="Staff Qualifications"
-                placeholder="Bsc (Hons) in Medical Sciences"
-                value={formValues.qualifications}
-                onChange={(value) => handleInputChange("qualifications", value)}
-              />
-              <FormField
-                label="Staff Contact Information"
-                placeholder="info@visioncare.lk"
-                value={formValues.staffContact}
-                onChange={(value) => handleInputChange("staffContact", value)}
-              />
-            </>
-          )}
-
-          {/* Step 03 */}
-          {activeStep === 3 && (
-            <>
-              <FormField
-                label="List of Equipment"
-                placeholder="Diagnostic Tools, Optical Equipment, etc."
-                value={formValues.equipment}
-                onChange={(value) => handleInputChange("equipment", value)}
-              />
-              <FormField
-                label="Details about Facilities"
-                placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
-                value={formValues.facilities}
-                onChange={(value) => handleInputChange("facilities", value)}
-              />
-              <FormField
-                label="Hours of Operation"
-                placeholder="60hrs per Week"
-                value={formValues.hours}
-                onChange={(value) => handleInputChange("hours", value)}
-              />
               <FormField
                 label="Special Services"
                 placeholder="Home Visits, Emergency Services, etc."
@@ -376,24 +260,6 @@ const InstituteRegistration = ({
                 placeholder="Yes"
                 value={formValues.ehr}
                 onChange={(value) => handleInputChange("ehr", value)}
-              />
-              <FormField
-                label="Compatibility with Our IT Infrastructure"
-                placeholder="Compatible"
-                value={formValues.compatibility}
-                onChange={(value) => handleInputChange("compatibility", value)}
-              />
-              <FormField
-                label="Data Security Measures"
-                placeholder="Lorem Ipsum"
-                value={formValues.security}
-                onChange={(value) => handleInputChange("security", value)}
-              />
-              <FormField
-                label="Other Relevant Information or Specializations"
-                placeholder="Lorem Ipsum"
-                value={formValues.otherInfo}
-                onChange={(value) => handleInputChange("otherInfo", value)}
               />
               <FormField
                 label="Comments or Notes"
@@ -417,7 +283,7 @@ const InstituteRegistration = ({
             <div className="w-full">
               <CommonBtn
                 label={
-                  activeStep === 3
+                  activeStep === 2
                     ? clickedRow === null
                       ? "Submit"
                       : "Update"
