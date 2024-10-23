@@ -50,12 +50,12 @@ const HomePage = () => {
         <div className="text-headerText  font-semibold text-4xl lg:text-[40px]">
           Welcome back, {userData?.name?.split(" ")[0]}
         </div>
-        <div className="flex gap-[20px] xl:gap-[40px]">
+        <div className="flex gap-[20px] xl:gap-[20px]">
           <div className="text-headerText text-sm xl:text-[16px] h-[42px] font-medium ">
             <CommonBtn label="Add new Patient" onClick={handleSubmit} />
           </div>
           {/* <div className="text-headerText text-sm xl:text-[16px] h-[42px] font-medium ">
-            <CommonBtn label="Add new Doctor" onClick={handleSubmit} />
+            <CommonBtn label="Download Report" onClick={fetchPdf} />
           </div> */}
         </div>
       </div>

@@ -6,7 +6,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import TablePaginationActions from "./table-pagination";
@@ -16,11 +15,15 @@ import { useAuth } from "@/context/AuthContext";
 import { GET_ALL_REPORTS } from "@/constants/config";
 import { ReportListAllProps } from "@/utils/interfaces";
 import { Spin } from "antd";
+import CommonBtn from "@/app/components/common/button";
+
 const ReportsList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState<ReportListAllProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingReport, setIsGeneratingReport] = useState<string[]>([]);
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -44,6 +47,7 @@ const ReportsList = () => {
     name: string,
     createdBy: string,
     patientId: string,
+    status: string,
     leftEyeImageUrl: string,
     rightEyeImageUrl: string
   ): ReportListAllProps => {
@@ -52,6 +56,7 @@ const ReportsList = () => {
       name,
       createdBy,
       patientId,
+      status,
       leftEyeImageUrl,
       rightEyeImageUrl,
     };
@@ -75,24 +80,16 @@ const ReportsList = () => {
               report.name,
               report.createdBy,
               report.patientId,
+              report.status,
               report.leftEyeImageUrl,
               report.rightEyeImageUrl
             )
           );
           setRows(row);
+          console.log("Rows", row);
           setIsLoading(false);
         })
         .catch((err) => console.log(err));
-      // const row = response.data.map((report: ReportListAllProps) =>
-      //   createReportData(
-      //     report.reportId,
-      //     report.name,
-      //     report.createdBy,
-      //     report.patientId,
-      //     report.leftEyeImageUrl,
-      //     report.rightEyeImageUrl
-      //   )
-      // );
 
       // Set the rows with filtered data
     } catch (err: any) {
@@ -110,6 +107,27 @@ const ReportsList = () => {
       console.error("No authentication data found.");
     }
   }, [storedAuthData.accessToken]);
+
+  // const generateReport = async () => {
+  //   const response = await fetch("http://localhost:3000/pdf");
+  //   const blob = await response.blob();
+  //   const url = window.URL.createObjectURL(blob);
+  //   window.open(url, "_blank");
+  // };
+
+  const generateReport = async (reportId: string) => {
+    setIsGeneratingReport((prev) => [...prev, reportId]);
+    try {
+      const response = await fetch("http://localhost:3000/pdf");
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error generating report", error);
+    } finally {
+      setIsGeneratingReport((prev) => prev.filter((id) => id !== reportId));
+    }
+  };
 
   return (
     <div>
@@ -144,6 +162,7 @@ const ReportsList = () => {
                 <TableCell className="font-bold">Report Name</TableCell>
                 <TableCell className="font-bold">Patient ID</TableCell>
                 <TableCell className="font-bold">Created By</TableCell>
+                <TableCell className="font-bold">Status</TableCell>
                 <TableCell className="font-bold">Action</TableCell>
               </TableRow>
             </TableHead>
@@ -177,8 +196,28 @@ const ReportsList = () => {
                       <TableCell>{row.patientId}</TableCell>
                       <TableCell>{row.createdBy}</TableCell>
                       <TableCell>
-                        <div>
-                          <MoreVertIcon />
+                        <span
+                          className={`${
+                            row.status === "completed"
+                              ? "text-green-500"
+                              : row.status === "pending"
+                              ? "text-yellow-600"
+                              : ""
+                          } font-semibold`}
+                        >
+                          {row.status.charAt(0).toUpperCase() +
+                            row.status.slice(1)}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-headerText text-sm xl:text-[16px] h-[42px] w-32 font-medium">
+                          <CommonBtn
+                            label="View Report"
+                            onClick={() => generateReport(row.reportId)}
+                            isLoading={isGeneratingReport.includes(
+                              row.reportId
+                            )}
+                          />
                         </div>
                       </TableCell>
                     </TableRow>
