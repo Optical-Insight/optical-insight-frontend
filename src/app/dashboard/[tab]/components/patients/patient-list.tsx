@@ -11,12 +11,14 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePaginationActions from "./table-pagination";
 import { TableHead } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+// import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { GET_ALL_USERS_BY_TYPE_URL } from "@/constants/config";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { Spin } from "antd";
+import ModifyBtn from "@/app/components/common/button-modify";
+import ModalConfirm from "@/app/components/common/modal-confirm";
 
 const PatientListAll = ({
   setActiveHeading,
@@ -28,6 +30,8 @@ const PatientListAll = ({
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<PatientsAllProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [modifyId, setModifyId] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const createPatientData = (
     id: string,
@@ -82,6 +86,22 @@ const PatientListAll = ({
         err.response?.data || err.message
       );
     }
+  };
+
+  const handleUpdatePatient = async (patientId: string) => {
+    setModifyId(patientId);
+    console.log("Update patient with id: ", patientId);
+  };
+
+  const handleDeletePatient = async (patientId: string) => {
+    setModifyId(patientId);
+    console.log("Delete patient with id: ", patientId);
+    setShowDeleteModal(true);
+  };
+
+  const handleSubmitDelete = async () => {
+    console.log("Confirmed Deletion of patient with id: ", modifyId);
+    setShowDeleteModal(false);
   };
 
   useEffect(() => {
@@ -196,8 +216,31 @@ const PatientListAll = ({
                       <TableCell>{String(row.age)}</TableCell>
                       <TableCell>{row.phone}</TableCell>
                       <TableCell>
-                        <div>
-                          <MoreVertIcon />
+                        <div className="inline-flex gap-2">
+                          <div className="h-9 xl:h-11 w-9 xl:w-11">
+                            <ModifyBtn
+                              label="Update"
+                              onClick={(
+                                e: React.MouseEvent<HTMLButtonElement>
+                              ) => {
+                                e.stopPropagation();
+                                setClickedRow && setClickedRow(row);
+                                handleUpdatePatient(row.userId);
+                              }}
+                            />
+                          </div>
+                          <div className="h-9 xl:h-11 w-9 xl:w-11">
+                            <ModifyBtn
+                              label="Delete"
+                              onClick={(
+                                e: React.MouseEvent<HTMLButtonElement>
+                              ) => {
+                                e.stopPropagation();
+                                setClickedRow && setClickedRow(row);
+                                handleDeletePatient(row.userId);
+                              }}
+                            />
+                          </div>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -244,6 +287,16 @@ const PatientListAll = ({
           </Table>
         </TableContainer>
       </div>
+
+      {/* Delete Confirm Modal */}
+      <ModalConfirm
+        title={`Confirm Delete Patient - ${modifyId}`}
+        message="Are you sure you want to delete this patient?"
+        confirmLabel="Delete"
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleSubmitDelete}
+      />
     </div>
   );
 };

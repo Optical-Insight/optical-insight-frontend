@@ -24,7 +24,7 @@ export interface AuthData {
 
 export interface CommonBtnProps {
   label: string;
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   type?: string;
   isLoading?: boolean;
   isBtnDisabled?: boolean;

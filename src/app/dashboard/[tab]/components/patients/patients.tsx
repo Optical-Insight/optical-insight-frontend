@@ -134,6 +134,7 @@ const PatientsPage = () => {
           setActiveHeading={setActiveHeading}
           setIsInfoModalOpen={setIsInfoModalOpen}
           setClickedRow={setClickedRow}
+          clickedRow={clickedRow}
         />
       )}
 
