@@ -20,7 +20,7 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
       <span
         className={`text-[16px] px-3 py-1 rounded-full font-semibold border ${
           active ? "border-blueText" : "border-disabledText"
-        } ${number == 2 && "ml-[0.556vw]"} `}
+        } ${number == 2 && "ml-[1vw]"} `}
       >
         {number}
       </span>
@@ -227,7 +227,12 @@ const InstituteRegistration = ({
                 value={formValues.website}
                 onChange={(value) => handleInputChange("website", value)}
               />
-              <div className="h-[6.445vh]" />
+            </>
+          )}
+
+          {/* Step 02 */}
+          {activeStep === 2 && (
+            <>
               <FormField
                 label="Type of Optical Services Provided"
                 placeholder="Eye Examine, Contact Lenses, Glasses, etc."
@@ -240,12 +245,6 @@ const InstituteRegistration = ({
                 value={formValues.certifications}
                 onChange={(value) => handleInputChange("certifications", value)}
               />
-            </>
-          )}
-
-          {/* Step 02 */}
-          {activeStep === 2 && (
-            <>
               <FormField
                 label="Special Services"
                 placeholder="Home Visits, Emergency Services, etc."
@@ -254,7 +253,6 @@ const InstituteRegistration = ({
                   handleInputChange("specialServices", value)
                 }
               />
-              <div className="h-[6.445vh]" />
               <FormField
                 label="Electronic Health Record (EHR) System Used"
                 placeholder="Yes"

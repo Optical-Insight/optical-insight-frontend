@@ -5,6 +5,8 @@ import ModalConfirm from "@/app/components/common/modal-confirm";
 import { StepProps } from "@/utils/interfaces";
 import { InstituteHeadRegistrationProps } from "@/utils/institute-head";
 import React, { useState } from "react";
+import { Toaster } from "react-hot-toast";
+import FormFieldTextArea from "@/app/components/common/form-textArea";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -16,12 +18,12 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
       <span
         className={`text-[16px] px-3 py-1 rounded-full font-semibold border ${
           active ? "border-blueText" : "border-disabledText"
-        } ${(number == 2 || number == 3) && "ml-[0.556vw]"} `}
+        } ${number == 2 && "ml-[1vw]"} `}
       >
         {number}
       </span>
       <h2 className="text-[16px] font-semibold">{title}</h2>
-      {number == 1 || number == 2 ? (
+      {number == 1 ? (
         <div
           className={`w-[4.444vw] h-[0.195vh] ${
             lineActive ? "bg-blueText" : "bg-disabledText"
@@ -37,26 +39,30 @@ const InstituteHeadRegistration = ({
   setActiveStep,
 }: InstituteHeadRegistrationProps) => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  // const [formValues, setFormValues] = useState({
-  //   clinicId: "",
-  //   instituteName: "",
-  //   address: "",
-  //   contactNo: "",
-  //   email: "",
-  //   website: "",
-  //   services: "",
-  //   certifications: "",
-  //   noOfTechnicians: "",
-  //   hrsOfOperation: "",
-  //   specialServices: "",
-  //   ehr: "",
-  //   comments: "",
-  // });
+  const [formValues, setFormValues] = useState({
+    name: "",
+    gender: "",
+    dob: "",
+    nic: "",
+    email: "",
+    phone: "",
+    institute: "",
+    startDate: "",
+    supervisor: "",
+
+    yrsOfXp: "",
+    equipmentProf: "",
+
+    comSkills: "",
+    info: "",
+    refContact: "",
+    comments: "",
+  });
 
   console.log("activeStep", activeStep);
 
   const stepForward = () => {
-    if (activeStep === 3) {
+    if (activeStep === 2) {
       // Submit the form
       setIsConfirmModalOpen(true);
       return;
@@ -69,10 +75,33 @@ const InstituteHeadRegistration = ({
     setActiveStep(activeStep - 1);
   };
 
+  const handleInputChange = (field: string, value: string) => {
+    setFormValues((prev) => ({ ...prev, [field]: value }));
+  };
+
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-        Register an InstituteHead Head
+        Register an Institute Head
       </div>
 
       {/* Form */}
@@ -81,7 +110,7 @@ const InstituteHeadRegistration = ({
         <div className="flex items-center justify-center">
           <Step
             number={1}
-            title="Basic & Employeement Information"
+            title="Employeement Information"
             active={activeStep >= 1}
             lineActive={activeStep >= 2}
           />
@@ -91,11 +120,6 @@ const InstituteHeadRegistration = ({
             active={activeStep >= 2}
             lineActive={activeStep >= 3}
           />
-          <Step
-            number={3}
-            title="Skills and Certification"
-            active={activeStep >= 3}
-          />
         </div>
 
         {/* Step 01 */}
@@ -104,33 +128,60 @@ const InstituteHeadRegistration = ({
             <FormField
               label="Full Name"
               placeholder="Sahan Thilakaratne"
-              onChange={() => {}}
-            />
-            <FormField label="Gender" placeholder="Male" onChange={() => {}} />
-            {/* <FormField label="Date of Birth" placeholder="11/12/2000" />
-            <FormField label="NIC" placeholder="12345678910" />
-            <FormField label="Email" placeholder="sahanpradeeptha@gmail.com" />
-            
-            <FormField
-              label="Contact No."
-              placeholder="0771965642"
+              required={true}
+              value={formValues.name}
+              onChange={(value) => handleInputChange("name", value)}
             />
             <FormField
-              label="InstituteHead"
-              placeholder="Sri Lanka InstituteHead of Information Technology"
+              label="Gender"
+              placeholder="Male"
+              required={true}
+              value={formValues.gender}
+              onChange={(value) => handleInputChange("gender", value)}
             />
             <FormField
-              label="Starting Date"
-              placeholder="20/07/2024"
+              label="Date of Birth"
+              type="date"
+              placeholder=""
+              required={true}
+              value={formValues.dob}
+              onChange={(value) => handleInputChange("dob", value)}
             />
             <FormField
-              label="Supervisor's Name"
-              placeholder="Dinuka R wijendra"
+              label="NIC"
+              placeholder="200165288452"
+              required={true}
+              value={formValues.nic}
+              onChange={(value) => handleInputChange("nic", value)}
             />
             <FormField
-              label="Employment Status"
-              placeholder="Full-Time"
-            /> */}
+              label="Email"
+              placeholder="visioncare@opthal.com"
+              required={true}
+              value={formValues.email}
+              onChange={(value) => handleInputChange("email", value)}
+            />
+            <FormField
+              label="Contact Number"
+              placeholder="0761245852"
+              required={true}
+              value={formValues.phone}
+              onChange={(value) => handleInputChange("phone", value)}
+            />
+            <FormField
+              label="Institute"
+              placeholder="Vision Care Opticals"
+              required={true}
+              value={formValues.institute}
+              onChange={(value) => handleInputChange("institute", value)}
+            />
+            <FormField
+              label="SuperVisor"
+              placeholder="Dr. John Doe"
+              required={true}
+              value={formValues.supervisor}
+              onChange={(value) => handleInputChange("supervisor", value)}
+            />
           </div>
         )}
 
@@ -138,68 +189,44 @@ const InstituteHeadRegistration = ({
         {activeStep === 2 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
             <FormField
-              label="Job Title"
-              placeholder="InstituteHead Head"
-              onChange={() => {}}
+              label="Years of Experience"
+              placeholder="8 years"
+              value={formValues.name}
+              onChange={(value) => handleInputChange("name", value)}
             />
-            <FormField
-              label="Department"
-              placeholder="123 4567 890"
-              onChange={() => {}}
+            <div className="h-[4px]" />
+            <FormFieldTextArea
+              label="Equipment Proficiency"
+              placeholder="Good in handling equipment"
+              value={formValues.equipmentProf}
+              onChange={(value) => handleInputChange("equipmentProf", value)}
             />
-            {/* <FormField label="Years of Experience" placeholder="123 4567 890" />
+            <FormFieldTextArea
+              label="Communication Skills"
+              placeholder="Sinhala, English, Tamil"
+              value={formValues.comSkills}
+              onChange={(value) => handleInputChange("comSkills", value)}
+            />
+            <FormFieldTextArea
+              label="Other Information"
+              placeholder="Good with computers"
+              value={formValues.info}
+              onChange={(value) => handleInputChange("info", value)}
+            />
 
-            <FormField label="Speciality Areas" placeholder="Attach files" />
-            
-            <FormField label="Equipment Proficiency" placeholder="10" />
-            <FormField label="Safety Protocols Knowledge" placeholder="10" />
-            <FormField label="Professional Licences" placeholder="10" />
             <FormField
-              label="Lab Techniques"
-              placeholder="Bsc (Hons) in Medical Sciences"
-            /> */}
-          </div>
-        )}
-
-        {/* Step 03 */}
-        {activeStep === 3 && (
-          <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
-            <FormField
-              label="Educational Qualifications"
-              placeholder="Diagnostic Tools, Optical Equipment, etc."
-              onChange={() => {}}
+              label="Reference Contacts"
+              placeholder="0783625942"
+              value={formValues.refContact}
+              onChange={(value) => handleInputChange("refContact", value)}
             />
-            <FormField
-              label="Completed Training Courses"
-              placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
-              onChange={() => {}}
+            <div className="h-[4px]" />
+            <FormFieldTextArea
+              label="Comments"
+              placeholder="Good with computers"
+              value={formValues.comments}
+              onChange={(value) => handleInputChange("comments", value)}
             />
-            {/* <FormField
-              label="On-going Courses"
-              placeholder="60hrs per Week"
-            />
-            <FormField
-              label="Computer Skills"
-              placeholder="Home Visits, Emergency Services, etc."
-            />
-            
-            <FormField
-              label="Familiarity with Laboratory Systems"
-              placeholder="Yes"
-            />
-            <FormField
-              label="Any Other Relevant Information or Skills"
-              placeholder="Compatible"
-            />
-            <FormField
-              label="Data Analysis and Interpretation Skills"
-              placeholder="Lorem Ipsum"
-            />
-            <FormField
-              label="Other Relevant Information or Specializations"
-              placeholder="Lorem Ipsum"
-            />
-            <FormField label="Reference Contacts" placeholder="Lorem Ipsum" /> */}
           </div>
         )}
 

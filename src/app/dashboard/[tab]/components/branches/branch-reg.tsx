@@ -20,12 +20,12 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
       <span
         className={`text-[16px] px-3 py-1 rounded-full font-semibold border ${
           active ? "border-blueText" : "border-disabledText"
-        } ${(number == 2 || number == 3) && "ml-[0.556vw]"} `}
+        } ${number == 2 && "ml-[1vw]"} `}
       >
         {number}
       </span>
       <h2 className="text-[16px] font-semibold">{title}</h2>
-      {number == 1 || number == 2 ? (
+      {number == 1 ? (
         <div
           className={`w-[4.444vw] h-[0.195vh] ${
             lineActive ? "bg-blueText" : "bg-disabledText"
@@ -144,7 +144,7 @@ const BranchRegistration = ({
   console.log("activeStep", activeStep);
 
   const stepForward = () => {
-    if (activeStep === 3) {
+    if (activeStep === 2) {
       if (
         formValues.branchName === "" ||
         formValues.address === "" ||
@@ -203,14 +203,9 @@ const BranchRegistration = ({
           />
           <Step
             number={2}
-            title="Legal & Staff Information"
+            title="Other Information"
             active={activeStep >= 2}
             lineActive={activeStep >= 3}
-          />
-          <Step
-            number={3}
-            title="Technology Information"
-            active={activeStep >= 3}
           />
         </div>
 
@@ -219,7 +214,7 @@ const BranchRegistration = ({
           {activeStep === 1 && (
             <>
               <FormField
-                label="Name of the Branch / Venue"
+                label="Name of the Branch"
                 placeholder="Vision Care Opticals"
                 required={true}
                 value={formValues.branchName}
@@ -251,31 +246,6 @@ const BranchRegistration = ({
                 value={formValues.website}
                 onChange={(value) => handleInputChange("website", value)}
               />
-              <div className="h-[6.445vh]" />
-              <FormField
-                label="Type of Optical Services Provided"
-                placeholder="Eye Examine, Contact Lenses, Glasses, etc."
-                value={formValues.services}
-                onChange={(value) => handleInputChange("services", value)}
-              />
-              <FormField
-                label="Specialty Services"
-                placeholder="Pediatric Optometry, Low Vision Services, etc."
-                value={formValues.specialty}
-                onChange={(value) => handleInputChange("specialty", value)}
-              />
-              <FormField
-                label="Accepted Insurances"
-                placeholder="Lucas Bennett"
-                value={formValues.insurances}
-                onChange={(value) => handleInputChange("insurances", value)}
-              />
-              <FormField
-                label="Certifications"
-                placeholder="Accreditation from relevant organizations"
-                value={formValues.certifications}
-                onChange={(value) => handleInputChange("certifications", value)}
-              />
             </>
           )}
 
@@ -283,84 +253,16 @@ const BranchRegistration = ({
           {activeStep === 2 && (
             <>
               <FormField
-                label="Business Registration Number"
-                placeholder="123 4567 890"
-                value={formValues.regNo}
-                onChange={(value) => handleInputChange("regNo", value)}
+                label="Type of Optical Services Provided"
+                placeholder="Eye Examine, Contact Lenses, Glasses, etc."
+                value={formValues.services}
+                onChange={(value) => handleInputChange("services", value)}
               />
               <FormField
-                label="Tax Identification Number"
-                placeholder="123 4567 890"
-                value={formValues.taxNo}
-                onChange={(value) => handleInputChange("taxNo", value)}
-              />
-              <FormField
-                label="PIN"
-                placeholder="123 4567 890"
-                value={formValues.pin}
-                onChange={(value) => handleInputChange("pin", value)}
-              />
-
-              <FormField
-                label="Business License"
-                placeholder="Attach files"
-                value={formValues.license}
-                onChange={(value) => handleInputChange("license", value)}
-              />
-              <div className="h-[6.445vh]" />
-              <FormField
-                label="Number of Optometrists"
-                placeholder="10"
-                value={formValues.optometrists}
-                onChange={(value) => handleInputChange("optometrists", value)}
-              />
-              <FormField
-                label="Number of Opticians"
-                placeholder="10"
-                value={formValues.opticians}
-                onChange={(value) => handleInputChange("opticians", value)}
-              />
-              <FormField
-                label="Number of Support Staff"
-                placeholder="10"
-                value={formValues.supportStaff}
-                onChange={(value) => handleInputChange("supportStaff", value)}
-              />
-              <FormField
-                label="Staff Qualifications"
-                placeholder="Bsc (Hons) in Medical Sciences"
-                value={formValues.qualifications}
-                onChange={(value) => handleInputChange("qualifications", value)}
-              />
-              <FormField
-                label="Staff Contact Information"
-                placeholder="info@visioncare.lk"
-                value={formValues.staffContact}
-                onChange={(value) => handleInputChange("staffContact", value)}
-              />
-            </>
-          )}
-
-          {/* Step 03 */}
-          {activeStep === 3 && (
-            <>
-              <FormField
-                label="List of Equipment"
-                placeholder="Diagnostic Tools, Optical Equipment, etc."
-                value={formValues.equipment}
-                onChange={(value) => handleInputChange("equipment", value)}
-              />
-              <FormField
-                label="Details about Facilities"
-                placeholder="Waiting Area, Exam Rooms, Dispensing Area, etc."
-                value={formValues.facilities}
-                onChange={(value) => handleInputChange("facilities", value)}
-              />
-              <FormField
-                label="Hours of Operation"
-                placeholder="60hrs per Week"
-                value={formValues.hours}
-                onChange={(value) => handleInputChange("hours", value)}
+                label="Certifications"
+                placeholder="Accreditation from relevant organizations"
+                value={formValues.certifications}
+                onChange={(value) => handleInputChange("certifications", value)}
               />
               <FormField
                 label="Special Services"
@@ -370,30 +272,11 @@ const BranchRegistration = ({
                   handleInputChange("specialServices", value)
                 }
               />
-              <div className="h-[6.445vh]" />
               <FormField
                 label="Electronic Health Record (EHR) System Used"
                 placeholder="Yes"
                 value={formValues.ehr}
                 onChange={(value) => handleInputChange("ehr", value)}
-              />
-              <FormField
-                label="Compatibility with Our IT Infrastructure"
-                placeholder="Compatible"
-                value={formValues.compatibility}
-                onChange={(value) => handleInputChange("compatibility", value)}
-              />
-              <FormField
-                label="Data Security Measures"
-                placeholder="Lorem Ipsum"
-                value={formValues.security}
-                onChange={(value) => handleInputChange("security", value)}
-              />
-              <FormField
-                label="Other Relevant Information or Specializations"
-                placeholder="Lorem Ipsum"
-                value={formValues.otherInfo}
-                onChange={(value) => handleInputChange("otherInfo", value)}
               />
               <FormField
                 label="Comments or Notes"
@@ -417,7 +300,7 @@ const BranchRegistration = ({
             <div className="w-full">
               <CommonBtn
                 label={
-                  activeStep === 3
+                  activeStep === 2
                     ? clickedRow === null
                       ? "Submit"
                       : "Update"
