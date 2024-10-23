@@ -248,6 +248,7 @@ export interface ReportListAllProps {
   name: string;
   createdBy: string;
   patientId: string;
+  status: string;
   leftEyeImageUrl: string;
   rightEyeImageUrl: string;
 }
