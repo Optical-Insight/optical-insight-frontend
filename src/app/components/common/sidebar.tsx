@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { MdOutlineMenu } from "react-icons/md";
+import ModalConfirm from "./modal-confirm";
 
 const SidebarItem = ({
   iconSrc,
@@ -45,6 +46,7 @@ const AppSidebar = ({
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(tab);
   const [isShrunk, setIsShrunk] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { isAuthenticated, logout, userData } = useAuth();
 
@@ -75,11 +77,6 @@ const AppSidebar = ({
   const handleLogout = () => {
     if (isAuthenticated) logout();
   };
-
-  // const handleLogout = () => {
-  //   localStorage.removeItem("authData");
-  //   router.replace("/auth/login");
-  // };
 
   const sidebarItems = [
     {
@@ -195,7 +192,7 @@ const AppSidebar = ({
                 src="/assets/icons/sign-out-sidebar.svg"
                 width={21.08}
                 height={21.08}
-                onClick={handleLogout}
+                onClick={() => setShowDeleteModal(true)}
               />
             </div>
           )}
@@ -208,6 +205,16 @@ const AppSidebar = ({
       >
         {children}
       </div>
+      {/* Logout Confirm Modal */}
+      <ModalConfirm
+        title={`Confirm Logout`}
+        // title={`Confirm Logout - ${userData?.name}`}
+        message="Are you sure you want to logout from the system?"
+        confirmLabel="Logout"
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleLogout}
+      />
     </div>
   );
 };

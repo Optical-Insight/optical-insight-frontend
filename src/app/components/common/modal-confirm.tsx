@@ -54,7 +54,8 @@ const ModalConfirm = ({
                   isLoading
                     ? "bg-btnDisabled   text-gray-300"
                     : `${
-                        confirmLabel.includes("Delete")
+                        confirmLabel.includes("Delete") ||
+                        confirmLabel.includes("Logout")
                           ? "bg-red-800 hover:bg-red-900"
                           : "bg-buttonPrimary hover:bg-buttonPrimaryHover"
                       }   text-white`

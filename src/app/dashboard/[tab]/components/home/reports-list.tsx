@@ -198,7 +198,8 @@ const ReportsList = () => {
                       <TableCell>
                         <span
                           className={`${
-                            row.status === "completed"
+                            row.status === "completed" ||
+                            row.status === "complete"
                               ? "text-green-500"
                               : row.status === "pending"
                               ? "text-yellow-600"
@@ -217,6 +218,7 @@ const ReportsList = () => {
                             isLoading={isGeneratingReport.includes(
                               row.reportId
                             )}
+                            isBtnDisabled={row.status === "pending"}
                           />
                         </div>
                       </TableCell>
@@ -243,7 +245,7 @@ const ReportsList = () => {
               <TableRow>
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                  colSpan={5}
+                  colSpan={6}
                   count={rows.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
