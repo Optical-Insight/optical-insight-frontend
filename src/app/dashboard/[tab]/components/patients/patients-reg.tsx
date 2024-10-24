@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
 import axios from "axios";
 import React, { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   // const { storedAuthData } = useAuth();
@@ -46,27 +47,31 @@ const PatientsRegistration = ({
   const { storedAuthData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [formValues, setFormValues] = useState({
     patientId: "",
     name: "",
-    dob: "",
+    dateOfBirth: "",
     sex: "",
     occupation: "",
     address: "",
     email: "",
     phone: "",
-    emergencyContact: "",
-    medicalHistory: "",
-    familyHistory: "",
-    pastEyeProblems: "",
+    emergencyPhone: "",
+    generalMedicalHistory: "",
+    familyHistoryOfEyeConditions: "",
     currentMedications: "",
-    historyOfDrugs: "",
+    historyOfSmokingAndAlcoholConsumption: "",
     visionProblems: "",
+    pastEyeProblemsOrSurgeries: "",
     eyeDiscomfort: "",
-    glassesOrContacts: "",
-    labTechnitianId: "",
-    labTechnitianName: "",
-    //date: "",
+    glassesOrContactLenseUsage: "",
+    height: "",
+    weight: "",
+    // labTechnitianId: "",
+    // labTechnitianName: "",
+    // date: "",
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -82,6 +87,8 @@ const PatientsRegistration = ({
   });
 
   const handleSubmitPatientForm = async () => {
+    setIsLoading(true);
+    console.log("Form values: ", formValues);
     try {
       const res = await axios.post(
         CREATE_PATIENT_URL,
@@ -91,8 +98,20 @@ const PatientsRegistration = ({
           phone: formValues.phone,
           address: formValues.address,
           sex: formValues.sex,
-          age: 23,
-          password: "udesh123",
+          dateOfBirth: formValues.dateOfBirth,
+          occupation: formValues.occupation,
+          emergencyPhone: formValues.emergencyPhone,
+          generalMedicalHistory: formValues.generalMedicalHistory,
+          familyHistoryOfEyeConditions: formValues.familyHistoryOfEyeConditions,
+          currentMedications: formValues.currentMedications,
+          historyOfSmokingAndAlcoholConsumption:
+            formValues.historyOfSmokingAndAlcoholConsumption,
+          visionProblems: formValues.visionProblems,
+          pastEyeProblemsOrSurgeries: formValues.pastEyeProblemsOrSurgeries,
+          eyeDiscomfort: formValues.eyeDiscomfort,
+          glassesOrContactLenseUsage: formValues.glassesOrContactLenseUsage,
+          height: formValues.height,
+          weight: formValues.weight,
           type: "patient",
         },
         {
@@ -103,11 +122,14 @@ const PatientsRegistration = ({
         }
       );
       setIsConfirmModalOpen(false);
+      setIsLoading(false);
+      toast.success("Login Successful");
       console.log("Form submitted successfully:", res.data);
       setActiveHeading && setActiveHeading(1);
     } catch (err) {
       console.log("Submit error: ", err);
-      alert("Error in submitting form");
+      setIsLoading(false);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -146,6 +168,29 @@ const PatientsRegistration = ({
 
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
         Register a Patient
       </div>
@@ -184,11 +229,14 @@ const PatientsRegistration = ({
               label="Date of Birth"
               placeholder={"02/12/2001"}
               type="date"
-              onChange={() => {}}
+              value={formValues.dateOfBirth}
+              onChange={(value) => {
+                handleInputChange("dateOfBirth", value);
+              }}
             />
 
             <FormField
-              label="Sex"
+              label="Gender"
               placeholder={"Male"}
               value={formValues.sex}
               onChange={(value) => handleInputChange("sex", value)}
@@ -196,13 +244,30 @@ const PatientsRegistration = ({
               hasError={formErrors.sex}
             />
             <FormField
-              label="Occupation"
-              placeholder="05 / 03 / 2023"
-              onChange={() => {}}
+              label="Height (cm)"
+              placeholder={"142"}
+              value={formValues.height}
+              onChange={(value) => handleInputChange("height", value)}
+              hasError={formErrors.sex}
+            />
+            <FormField
+              label="Weight (kg)"
+              placeholder={"59"}
+              value={formValues.weight}
+              onChange={(value) => handleInputChange("weight", value)}
+              hasError={formErrors.sex}
             />
 
             <div className="h-[6.445vh]" />
 
+            <FormField
+              label="Occupation"
+              placeholder="Software Engineer"
+              value={formValues.occupation}
+              onChange={(value) => {
+                handleInputChange("occupation", value);
+              }}
+            />
             <FormField
               label="Address"
               placeholder={"Colombo"}
@@ -230,7 +295,10 @@ const PatientsRegistration = ({
             <FormField
               label="Emergency contact information"
               placeholder="077 785 2856"
-              onChange={() => {}}
+              value={formValues.emergencyPhone}
+              onChange={(value) => {
+                handleInputChange("emergencyPhone", value);
+              }}
             />
           </div>
         )}
@@ -241,27 +309,45 @@ const PatientsRegistration = ({
             <FormFieldTextArea
               label="General medical history"
               placeholder="Any chronic diseases (e.g., diabetes, hypertension, autoimmune diseases)"
-              onChange={() => {}}
+              value={formValues.generalMedicalHistory}
+              onChange={(value) => {
+                handleInputChange("generalMedicalHistory", value);
+              }}
             />
             <FormFieldTextArea
               label="Family history of eye conditions"
-              placeholder="e.g., glaucoma, macular degeneration"
-              onChange={() => {}}
+              placeholder="glaucoma, macular degeneration"
+              value={formValues.familyHistoryOfEyeConditions}
+              onChange={(value) => {
+                handleInputChange("familyHistoryOfEyeConditions", value);
+              }}
             />
             <FormFieldTextArea
               label="Past eye problems or surgeries"
-              placeholder="e.g., cataracts, LASIK, retinal detachment"
-              onChange={() => {}}
+              placeholder="cataracts, LASIK, retinal detachment"
+              value={formValues.pastEyeProblemsOrSurgeries}
+              onChange={(value) => {
+                handleInputChange("pastEyeProblemsOrSurgeries", value);
+              }}
             />
             <FormFieldTextArea
               label="Current medications"
-              placeholder="especially steroids or medications that can affect vision"
-              onChange={() => {}}
+              placeholder="Specially steroids or medications that can affect vision"
+              value={formValues.currentMedications}
+              onChange={(value) => {
+                handleInputChange("currentMedications", value);
+              }}
             />
             <FormFieldTextArea
               label="History of smoking or alcohol consumption"
               placeholder=""
-              onChange={() => {}}
+              value={formValues.historyOfSmokingAndAlcoholConsumption}
+              onChange={(value) => {
+                handleInputChange(
+                  "historyOfSmokingAndAlcoholConsumption",
+                  value
+                );
+              }}
             />
           </div>
         )}
@@ -272,42 +358,29 @@ const PatientsRegistration = ({
             <FormFieldTextArea
               label="Vision problems"
               placeholder="Blurry vision, double vision, halos, floaters"
-              onChange={() => {}}
+              value={formValues.visionProblems}
+              onChange={(value) => {
+                handleInputChange("visionProblems", value);
+              }}
             />
             <FormFieldTextArea
               label="Eye discomfort"
               placeholder="Itching, redness, dryness, pain, or sensitivity to light"
-              onChange={() => {}}
+              value={formValues.eyeDiscomfort}
+              onChange={(value) => {
+                handleInputChange("eyeDiscomfort", value);
+              }}
             />
             <FormFieldTextArea
               label="Glasses or contact lens usage"
               placeholder="Whether they currently wear glasses or contacts, and any issues with them"
-              onChange={() => {}}
+              value={formValues.glassesOrContactLenseUsage}
+              onChange={(value) => {
+                handleInputChange("glassesOrContactLenseUsage", value);
+              }}
             />
 
             <div className="h-[6.445vh]" />
-
-            {/* <FormFieldTextArea
-              label="Health insurance details"
-              placeholder="Please provide your health insurance details, including the name of your insurance provider, policy number, and any relevant coverage information."
-              onChange={() => {}}
-            /> */}
-
-            {/* <FormField
-              label="Technician ID"
-              placeholder="MLT209374"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Technician Name"
-              placeholder="Saman Kumara"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Created Date"
-              placeholder="08 / 06 / 2024"
-              onChange={() => {}}
-            /> */}
           </div>
         )}
 
@@ -320,7 +393,7 @@ const PatientsRegistration = ({
               )}
             </div>
             <CommonBtn
-              label={activeStep === 2 ? "Submit" : "Next"}
+              label={activeStep === 3 ? "Submit" : "Next"}
               onClick={stepForward}
             />
           </div>
@@ -335,6 +408,7 @@ const PatientsRegistration = ({
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleSubmitPatientForm}
+        isLoading={isLoading}
       />
 
       <ModalError
