@@ -3,7 +3,8 @@ export interface PatientsAllProps {
   name: string;
   address: string;
   sex: string;
-  age: Number;
+  age?: Number;
+  dateOfBirth?: string;
   phone: string;
   email: string;
   userId: string;

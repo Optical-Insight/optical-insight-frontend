@@ -62,7 +62,26 @@ const ModalInfoPatient = ({
                 <div className="ml-10 font-bold text-gray-700 flex flex-col space-y-2">
                   <p>{clickedRow?.userId}</p>
                   <p>{clickedRow?.name}</p>
-                  <p>{clickedRow?.age.toString()}</p>
+                  <p>
+                    {clickedRow?.dateOfBirth
+                      ? (() => {
+                          const birthDate = new Date(clickedRow.dateOfBirth);
+                          const today = new Date();
+                          let age =
+                            today.getFullYear() - birthDate.getFullYear();
+                          const monthDiff =
+                            today.getMonth() - birthDate.getMonth();
+                          if (
+                            monthDiff < 0 ||
+                            (monthDiff === 0 &&
+                              today.getDate() < birthDate.getDate())
+                          ) {
+                            age--;
+                          }
+                          return age;
+                        })()
+                      : "N/A"}
+                  </p>
                   <p>{clickedRow?.sex}</p>
                   <br />
                   <p>{clickedRow?.address}</p>
