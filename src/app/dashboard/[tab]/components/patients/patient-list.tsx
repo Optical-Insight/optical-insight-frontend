@@ -13,12 +13,16 @@ import TablePaginationActions from "./table-pagination";
 import { TableHead } from "@mui/material";
 // import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
-import { GET_ALL_USERS_BY_TYPE_URL } from "@/constants/config";
+import {
+  GET_ALL_USERS_BY_TYPE_URL,
+  DELETE_USER_BY_ID_URL,
+} from "@/constants/config";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { Spin } from "antd";
 import ModifyBtn from "@/app/components/common/button-modify";
 import ModalConfirm from "@/app/components/common/modal-confirm";
+import toast, { Toaster } from "react-hot-toast";
 
 const PatientListAll = ({
   setActiveHeading,
@@ -88,6 +92,28 @@ const PatientListAll = ({
     }
   };
 
+  // const deletePatient = async (patientId: string) => {
+  //   setIsLoading(true);
+
+  //   await axios
+  //     .delete(`${DELETE_USER_BY_ID_URL}/${patientId}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${storedAuthData.accessToken}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log("Patient deleted successfully", res.data);
+  //       toast.success("Patient deleted successfully");
+  //       setIsLoading(false);
+  //       fetchAllPatients();
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error in deleting patient", err);
+  //       toast.error("Error in deleting patient. Please try again.");
+  //       setIsLoading(false);
+  //     });
+  // };
+
   const handleUpdatePatient = async (patientId: string) => {
     setModifyId(patientId);
     console.log("Update patient with id: ", patientId);
@@ -101,6 +127,25 @@ const PatientListAll = ({
 
   const handleSubmitDelete = async () => {
     console.log("Confirmed Deletion of patient with id: ", modifyId);
+    setIsLoading(true);
+
+    await axios
+      .delete(`${DELETE_USER_BY_ID_URL}${modifyId}`, {
+        headers: {
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
+        },
+      })
+      .then((res) => {
+        console.log("Patient deleted successfully", res.data);
+        toast.success("Patient deleted successfully");
+        setIsLoading(false);
+        fetchAllPatients();
+      })
+      .catch((err) => {
+        console.error("Error in deleting patient", err);
+        toast.error("Error in deleting patient. Please try again.");
+        setIsLoading(false);
+      });
     setShowDeleteModal(false);
   };
 
@@ -129,6 +174,28 @@ const PatientListAll = ({
   };
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
       <div className="flex justify-between mb-[25px] items-center ">
         <div className="text-darkText font-bold text-4xl lg:text-[40px]">
           List of all Patients
