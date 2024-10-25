@@ -11,7 +11,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePaginationActions from "./table-pagination";
 import { TableHead } from "@mui/material";
-// import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import {
   GET_ALL_USERS_BY_TYPE_URL,
@@ -36,6 +35,8 @@ const PatientListAll = ({
   const [isLoading, setIsLoading] = useState(false);
   const [modifyId, setModifyId] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [locationFilter, setLocationFilter] = useState("");
 
   const fetchAllPatients = async () => {
     try {
@@ -98,6 +99,10 @@ const PatientListAll = ({
     setShowDeleteModal(false);
   };
 
+  // // Handle search and filters update
+  // const handleSearchChange = (value: string) => setSearchQuery(value);
+  // const handleLocationChange = (value: string) => setLocationFilter(value);
+
   useEffect(() => {
     if (isAuthenticated && storedAuthData) {
       fetchAllPatients();
@@ -105,6 +110,18 @@ const PatientListAll = ({
       console.error("No authentication data found.");
     }
   }, [storedAuthData.accessToken]);
+
+  // // Filtered rows based on search and filter states
+  // const filteredRows = rows.filter((row) => {
+  //   const matchesSearchQuery =
+  //     row.userId.includes(searchQuery) ||
+  //     row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     row.phone.includes(searchQuery);
+
+  //   const matchesLocation = !locationFilter || row.address === locationFilter;
+
+  //   return matchesSearchQuery && matchesLocation;
+  // });
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -182,20 +199,15 @@ const PatientListAll = ({
       {/* Filter */}
       <SearchFilter
         labelSearch="Search for a Patient"
-        labelSelectOne="Status"
-        labelSelectTwo="Location"
+        labelSelectOne="Location"
         placeholderSearch="Search by Patient ID, Name or Phone Number"
         optionsSelectOne={[
-          { value: "active", label: "Active" },
-          { value: "inactive", label: "Inactive" },
-          { value: "pending", label: "Pending" },
-        ]}
-        optionsSelectTwo={[
           { value: "colombo", label: "Colombo" },
           { value: "kandy", label: "Kandy" },
           { value: "gampaha", label: "Gampaha" },
         ]}
-        onSearch={() => {}}
+        // onSearch={handleSearchChange}
+        // onSelectTwoChange={handleLocationChange}
       />
 
       {/* Table - MUI */}
