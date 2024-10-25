@@ -7,7 +7,7 @@ import PatientRecordNew from "./patients-new-record";
 import PatientListAll from "./patient-list";
 import PatientsRegistration from "./patients-reg";
 import ModalInfoPatient from "@/app/components/patient/modal-info-patient";
-import { PatientsAllProps } from "@/utils/interfaces";
+import { PatientsAllProps } from "@/utils/patient";
 
 const PatientsPage = () => {
   const [activeHeading, setActiveHeading] = useState(1);

@@ -154,17 +154,33 @@ export interface InstituteAllRowProps {
   action?: string;
 }
 
-export interface PatientsAllProps {
-  id: string;
-  name: string;
-  address: string;
-  sex: string;
-  age: Number;
-  phone: string;
-  email: string;
-  userId: string;
-  type: string;
-}
+// export interface PatientsAllProps {
+//   id: string;
+//   name: string;
+//   address: string;
+//   sex: string;
+//   age?: Number;
+//   dateOfBirth: string;
+//   phone: string;
+//   email: string;
+//   userId: string;
+//   type: string;
+// }
+
+// export interface ListAllPatientProps {
+//   setActiveHeading: (value: number) => void;
+//   isInfoModalOpen?: boolean;
+//   setIsInfoModalOpen?: (value: boolean) => void;
+//   clickedRow?: PatientsAllProps;
+//   setClickedRow?: (value: PatientsAllProps) => void;
+// }
+
+// export interface PatientRecordProps {
+//   activeStep: number;
+//   setActiveStep: (value: number) => void;
+//   setActiveHeading?: (value: number) => void;
+//   patientData?: PatientsAllProps;
+// }
 
 export interface DoctorsAllProps {
   id: string;
@@ -225,21 +241,6 @@ export interface PatientProfileCardTextProps {
   alt: string;
   text: string;
   value: string;
-}
-
-export interface ListAllPatientProps {
-  setActiveHeading: (value: number) => void;
-  isInfoModalOpen?: boolean;
-  setIsInfoModalOpen?: (value: boolean) => void;
-  clickedRow?: PatientsAllProps;
-  setClickedRow?: (value: PatientsAllProps) => void;
-}
-
-export interface PatientRecordProps {
-  activeStep: number;
-  setActiveStep: (value: number) => void;
-  setActiveHeading?: (value: number) => void;
-  patientData?: PatientsAllProps;
 }
 
 //reports

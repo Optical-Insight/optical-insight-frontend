@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ListAllPatientProps, PatientsAllProps } from "@/utils/interfaces";
+import { ListAllPatientProps, PatientsAllProps } from "@/utils/patient";
 import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -37,20 +37,6 @@ const PatientListAll = ({
   const [modifyId, setModifyId] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const createPatientData = (
-    id: string,
-    name: string,
-    address: string,
-    sex: string,
-    age: Number,
-    phone: string,
-    email: string,
-    userId: string,
-    type: string
-  ): PatientsAllProps => {
-    return { id, name, address, sex, age, phone, email, userId, type };
-  };
-
   const fetchAllPatients = async () => {
     try {
       setIsLoading(true);
@@ -66,23 +52,8 @@ const PatientListAll = ({
         (patient: PatientsAllProps) => patient.type === "patient"
       );
 
-      // Map the filtered patients to the desired format
-      const row = filteredPatients.map((patient: PatientsAllProps) =>
-        createPatientData(
-          patient.id,
-          patient.name,
-          patient.address,
-          patient.sex,
-          patient.age,
-          patient.phone,
-          patient.email,
-          patient.userId,
-          patient.type
-        )
-      );
-
       // Set the rows with filtered data
-      setRows(row);
+      setRows(filteredPatients);
       setIsLoading(false);
     } catch (err: any) {
       console.error(
@@ -91,28 +62,6 @@ const PatientListAll = ({
       );
     }
   };
-
-  // const deletePatient = async (patientId: string) => {
-  //   setIsLoading(true);
-
-  //   await axios
-  //     .delete(`${DELETE_USER_BY_ID_URL}/${patientId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${storedAuthData.accessToken}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log("Patient deleted successfully", res.data);
-  //       toast.success("Patient deleted successfully");
-  //       setIsLoading(false);
-  //       fetchAllPatients();
-  //     })
-  //     .catch((err) => {
-  //       console.error("Error in deleting patient", err);
-  //       toast.error("Error in deleting patient. Please try again.");
-  //       setIsLoading(false);
-  //     });
-  // };
 
   const handleUpdatePatient = async (patientId: string) => {
     setModifyId(patientId);
@@ -172,6 +121,25 @@ const PatientListAll = ({
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  // calculates age
+  const calculateAge = (dateOfBirth: string) => {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    // Adjust age if the birth date has not occurred yet this year
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
+
   return (
     <div>
       <div>
@@ -245,7 +213,7 @@ const PatientListAll = ({
             <TableBody>
               {isLoading ? (
                 <>
-                  <TableRow className="h-[20vw]">
+                  <TableRow className="h-[20vw] cursor-pointer">
                     <TableCell
                       colSpan={7}
                       align="center"
@@ -280,7 +248,7 @@ const PatientListAll = ({
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.address}</TableCell>
                       <TableCell>{row.sex}</TableCell>
-                      <TableCell>{String(row.age)}</TableCell>
+                      <TableCell>{calculateAge(row.dateOfBirth)}</TableCell>
                       <TableCell>{row.phone}</TableCell>
                       <TableCell>
                         <div className="inline-flex gap-2">
