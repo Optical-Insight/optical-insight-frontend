@@ -27,8 +27,8 @@ export interface ListAllPatientProps {
   setActiveHeading: (value: number) => void;
   isInfoModalOpen?: boolean;
   setIsInfoModalOpen?: (value: boolean) => void;
-  clickedRow?: PatientsAllProps;
-  setClickedRow?: (value: PatientsAllProps) => void;
+  clickedRow?: any;
+  setClickedRow: (value: any) => void;
 }
 
 export interface PatientRecordProps {
@@ -36,6 +36,14 @@ export interface PatientRecordProps {
   setActiveStep: (value: number) => void;
   setActiveHeading?: (value: number) => void;
   patientData?: PatientsAllProps;
+}
+
+export interface PatientRegistrationProps {
+  activeStep: number;
+  setActiveStep: (value: number) => void;
+  setActiveHeading?: (value: number) => void;
+  clickedRow?: any;
+  setClickedRow?: (value: any) => void;
 }
 
 export interface ModalInfoPatientProps {

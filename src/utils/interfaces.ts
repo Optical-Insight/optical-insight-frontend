@@ -95,12 +95,12 @@ export interface ModalInfoInstituteHeadProps {
 
 export interface SearchFilterProps {
   labelSearch: string;
-  labelSelectOne: string;
-  labelSelectTwo: string;
+  labelSelectOne?: string;
+  labelSelectTwo?: string;
   placeholderSearch: string;
-  optionsSelectOne: { value: string; label: string }[];
-  optionsSelectTwo: { value: string; label: string }[];
-  onSearch: (value: string) => void;
+  optionsSelectOne?: { value: string; label: string }[];
+  optionsSelectTwo?: { value: string; label: string }[];
+  onSearch?: (value: string) => void;
 }
 
 export interface SearchFilterReportProps {
@@ -136,6 +136,7 @@ export interface InstituteRegistrationProps {
   activeStep: number;
   setActiveStep: (value: number) => void;
   setActiveHeading?: (value: number) => void;
+  clickedRow?: InstituteAllRowProps;
 }
 
 export interface ListAllProps {

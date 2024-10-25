@@ -144,6 +144,8 @@ const PatientsPage = () => {
           setActiveHeading={setActiveHeading}
           activeStep={activeStep}
           setActiveStep={setActiveStep}
+          clickedRow={clickedRow}
+          setClickedRow={setClickedRow}
         />
       )}
 
@@ -151,6 +153,7 @@ const PatientsPage = () => {
       {activeHeading === 3 && (
         <PatientProfile
           setActiveHeading={setActiveHeading}
+          setClickedRow={setClickedRow}
           clickedRow={clickedRow}
         />
       )}
