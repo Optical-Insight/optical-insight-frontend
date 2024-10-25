@@ -100,7 +100,8 @@ export interface SearchFilterProps {
   placeholderSearch: string;
   optionsSelectOne?: { value: string; label: string }[];
   optionsSelectTwo?: { value: string; label: string }[];
-  onSearch?: (value: string) => void;
+  onSearch?: any;
+  // onSearch?: (value: string) => void;
 }
 
 export interface SearchFilterReportProps {
