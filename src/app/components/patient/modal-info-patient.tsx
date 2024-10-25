@@ -15,7 +15,23 @@ const ModalInfoPatient = ({
   onClose,
   setActiveHeading,
 }: ModalInfoPatientProps) => {
-  console.log("ModalInfoProps", clickedRow);
+  // calculates age
+  const calculateAge = (dateOfBirth: string) => {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    // Adjust age if the birth date has not occurred yet this year
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
 
   return (
     <Dialog className="relative z-10" open={isOpen} onClose={onClose}>
@@ -28,7 +44,7 @@ const ModalInfoPatient = ({
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <DialogPanel
             transition
-            className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+            className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-4xl data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
           >
             <div className="px-4 pb-4 pt-5 sm:px-6 sm:pb-4 bg-lightBlueBg">
               <div className="sm:flex sm:items-start ">
@@ -54,39 +70,49 @@ const ModalInfoPatient = ({
                   <p>Name:</p>
                   <p>Age:</p>
                   <p>Gender:</p>
+                  <p>Height:</p>
+                  <p>Weight:</p>
                   <br />
                   <p>Address:</p>
                   <p>Telephone No:</p>
                   <p>Email:</p>
+                  <p>Occupation:</p>
+                  <p>Emergency Contact No.:</p>
+                  <br />
+                  <p>General Medical History:</p>
+                  <p>Family History of Eye Conditions:</p>
+                  <p>Past Eye Problems or Surgeries:</p>
+                  <p>Current Medications:</p>
+                  <p>History of Smoking and Alcohol Consumption:</p>
+                  <p>Vision Problems:</p>
+                  <p>Eye Discomfort:</p>
+                  <p>Glasses or Contact Lense Usage:</p>
                 </div>
                 <div className="ml-10 font-bold text-gray-700 flex flex-col space-y-2">
                   <p>{clickedRow?.userId}</p>
-                  <p>{clickedRow?.name}</p>
                   <p>
-                    {clickedRow?.dateOfBirth
-                      ? (() => {
-                          const birthDate = new Date(clickedRow.dateOfBirth);
-                          const today = new Date();
-                          let age =
-                            today.getFullYear() - birthDate.getFullYear();
-                          const monthDiff =
-                            today.getMonth() - birthDate.getMonth();
-                          if (
-                            monthDiff < 0 ||
-                            (monthDiff === 0 &&
-                              today.getDate() < birthDate.getDate())
-                          ) {
-                            age--;
-                          }
-                          return age;
-                        })()
-                      : "N/A"}
+                    {clickedRow?.sex === "Male" ? "Mr. " : "Ms. "}
+                    {clickedRow?.name}
                   </p>
+                  <p>{calculateAge(clickedRow?.dateOfBirth)} years</p>
                   <p>{clickedRow?.sex}</p>
+                  <p>{clickedRow?.height} cm</p>
+                  <p>{clickedRow?.weight} kg</p>
                   <br />
                   <p>{clickedRow?.address}</p>
                   <p>{clickedRow?.phone}</p>
                   <p>{clickedRow?.email}</p>
+                  <p>{clickedRow?.occupation}</p>
+                  <p>{clickedRow?.emergencyPhone}</p>
+                  <br />
+                  <p>{clickedRow?.generalMedicalHistory}</p>
+                  <p>{clickedRow?.familyHistoryOfEyeConditions}</p>
+                  <p>{clickedRow?.pastEyeProblemsOrSurgeries}</p>
+                  <p>{clickedRow?.currentMedications}</p>
+                  <p>{clickedRow?.historyOfSmokingAndAlcoholConsumption}</p>
+                  <p>{clickedRow?.visionProblems}</p>
+                  <p>{clickedRow?.eyeDiscomfort}</p>
+                  <p>{clickedRow?.glassesOrContactLenseUsage}</p>
                 </div>
               </div>
             </div>

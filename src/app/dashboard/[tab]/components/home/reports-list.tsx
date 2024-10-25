@@ -118,7 +118,16 @@ const ReportsList = () => {
   const generateReport = async (reportId: string) => {
     setIsGeneratingReport((prev) => [...prev, reportId]);
     try {
-      const response = await fetch("http://localhost:3000/pdf");
+      const response = await fetch(
+        "http://localhost:5013/api/reports/generatePdf/RPT164142",
+        {
+          headers: {
+            Authorization: `Bearer ${storedAuthData.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //const response = await fetch("http://localhost:3000/pdf");
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       window.open(url, "_blank");
