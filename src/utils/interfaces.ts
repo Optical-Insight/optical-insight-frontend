@@ -136,6 +136,7 @@ export interface InstituteRegistrationProps {
   activeStep: number;
   setActiveStep: (value: number) => void;
   setActiveHeading?: (value: number) => void;
+  clickedRow?: InstituteAllRowProps;
 }
 
 export interface ListAllProps {

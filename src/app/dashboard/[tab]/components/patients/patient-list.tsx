@@ -63,9 +63,9 @@ const PatientListAll = ({
     }
   };
 
-  const handleUpdatePatient = async (patientId: string) => {
-    setModifyId(patientId);
-    console.log("Update patient with id: ", patientId);
+  const handleUpdatePatient = async (patient: PatientsAllProps) => {
+    console.log("Update patient with id: ", patient);
+    setActiveHeading && setActiveHeading(2);
   };
 
   const handleDeletePatient = async (patientId: string) => {
@@ -85,14 +85,14 @@ const PatientListAll = ({
         },
       })
       .then((res) => {
-        console.log("Patient deleted successfully", res.data);
-        toast.success("Patient deleted successfully");
+        toast.success("Patient Deleted successfully");
+        console.log("Patient Deleted successfully", res);
         setIsLoading(false);
         fetchAllPatients();
       })
       .catch((err) => {
-        console.error("Error in deleting patient", err);
         toast.error("Error in deleting patient. Please try again.");
+        console.error("Error in deleting patient", err.response?.data || err);
         setIsLoading(false);
       });
     setShowDeleteModal(false);
@@ -171,7 +171,10 @@ const PatientListAll = ({
         <div className="flex h-[42px]">
           <CommonRegisterBtn
             label="Register new Patient"
-            onClick={() => setActiveHeading && setActiveHeading(2)}
+            onClick={() => {
+              setClickedRow && setClickedRow(null);
+              setActiveHeading && setActiveHeading(2);
+            }}
           />
         </div>
       </div>
@@ -181,7 +184,7 @@ const PatientListAll = ({
         labelSearch="Search for a Patient"
         labelSelectOne="Status"
         labelSelectTwo="Location"
-        placeholderSearch="Search by Name or Patient ID"
+        placeholderSearch="Search by Patient ID, Name or Phone Number"
         optionsSelectOne={[
           { value: "active", label: "Active" },
           { value: "inactive", label: "Inactive" },
@@ -260,7 +263,7 @@ const PatientListAll = ({
                               ) => {
                                 e.stopPropagation();
                                 setClickedRow && setClickedRow(row);
-                                handleUpdatePatient(row.userId);
+                                handleUpdatePatient(row);
                               }}
                             />
                           </div>

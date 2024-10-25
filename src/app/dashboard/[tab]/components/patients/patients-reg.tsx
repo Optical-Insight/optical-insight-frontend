@@ -4,16 +4,15 @@ import FormField from "@/app/components/common/form-common";
 import FormFieldTextArea from "@/app/components/common/form-textArea";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import ModalError from "@/app/components/common/modal-error";
-import { CREATE_PATIENT_URL } from "@/constants/config";
+import { CREATE_PATIENT_URL, UPDATE_USER_BY_ID_URL } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
-import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
+import { StepProps } from "@/utils/interfaces";
+import { PatientRegistrationProps } from "@/utils/patient";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
-  // const { storedAuthData } = useAuth();
-
   return (
     <div
       className={`flex items-center space-x-4 ${
@@ -43,35 +42,71 @@ const PatientsRegistration = ({
   activeStep,
   setActiveStep,
   setActiveHeading,
-}: InstituteRegistrationProps) => {
+  clickedRow,
+}: PatientRegistrationProps) => {
+  console.log("clicked Patient Row: ", clickedRow);
+
   const { storedAuthData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    setActiveStep(1);
+  }, []);
+
+  // const [formValues, setFormValues] = useState({
+  //   patientId: "",
+  //   name: "",
+  //   dateOfBirth: "",
+  //   sex: "",
+  //   occupation: "",
+  //   address: "",
+  //   email: "",
+  //   phone: "",
+  //   emergencyPhone: "",
+  //   generalMedicalHistory: "",
+  //   familyHistoryOfEyeConditions: "",
+  //   currentMedications: "",
+  //   historyOfSmokingAndAlcoholConsumption: "",
+  //   visionProblems: "",
+  //   pastEyeProblemsOrSurgeries: "",
+  //   eyeDiscomfort: "",
+  //   glassesOrContactLenseUsage: "",
+  //   height: "",
+  //   weight: "",
+  //   // labTechnitianId: "",
+  //   // labTechnitianName: "",
+  //   // date: "",
+  // });
+
   const [formValues, setFormValues] = useState({
-    patientId: "",
-    name: "",
-    dateOfBirth: "",
-    sex: "",
-    occupation: "",
-    address: "",
-    email: "",
-    phone: "",
-    emergencyPhone: "",
-    generalMedicalHistory: "",
-    familyHistoryOfEyeConditions: "",
-    currentMedications: "",
-    historyOfSmokingAndAlcoholConsumption: "",
-    visionProblems: "",
-    pastEyeProblemsOrSurgeries: "",
-    eyeDiscomfort: "",
-    glassesOrContactLenseUsage: "",
-    height: "",
-    weight: "",
-    // labTechnitianId: "",
-    // labTechnitianName: "",
-    // date: "",
+    name: clickedRow ? clickedRow.name : "",
+    email: clickedRow ? clickedRow.email : "",
+    phone: clickedRow ? clickedRow.phone : "",
+    address: clickedRow ? clickedRow.address : "",
+    sex: clickedRow ? clickedRow.sex : "",
+    dateOfBirth: clickedRow ? clickedRow.dateOfBirth : "",
+    occupation: clickedRow ? clickedRow.occupation : "",
+    emergencyPhone: clickedRow ? clickedRow.emergencyPhone : "",
+    generalMedicalHistory: clickedRow ? clickedRow.generalMedicalHistory : "",
+    familyHistoryOfEyeConditions: clickedRow
+      ? clickedRow.familyHistoryOfEyeConditions
+      : "",
+    currentMedications: clickedRow ? clickedRow.currentMedications : "",
+    historyOfSmokingAndAlcoholConsumption: clickedRow
+      ? clickedRow.historyOfSmokingAndAlcoholConsumption
+      : "",
+    visionProblems: clickedRow ? clickedRow.visionProblems : "",
+    pastEyeProblemsOrSurgeries: clickedRow
+      ? clickedRow.pastEyeProblemsOrSurgeries
+      : "",
+    eyeDiscomfort: clickedRow ? clickedRow.eyeDiscomfort : "",
+    glassesOrContactLenseUsage: clickedRow
+      ? clickedRow.glassesOrContactLenseUsage
+      : "",
+    height: clickedRow ? clickedRow.height : "",
+    weight: clickedRow ? clickedRow.weight : "",
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -86,50 +121,144 @@ const PatientsRegistration = ({
     address: false,
   });
 
+  // const handleSubmitPatientForm = async () => {
+  //   setIsLoading(true);
+  //   console.log("Form values: ", formValues);
+  //   try {
+  //     const res = await axios.post(
+  //       CREATE_PATIENT_URL,
+  //       {
+  //         name: formValues.name,
+  //         email: formValues.email,
+  //         phone: formValues.phone,
+  //         address: formValues.address,
+  //         sex: formValues.sex,
+  //         dateOfBirth: formValues.dateOfBirth,
+  //         occupation: formValues.occupation,
+  //         emergencyPhone: formValues.emergencyPhone,
+  //         generalMedicalHistory: formValues.generalMedicalHistory,
+  //         familyHistoryOfEyeConditions: formValues.familyHistoryOfEyeConditions,
+  //         currentMedications: formValues.currentMedications,
+  //         historyOfSmokingAndAlcoholConsumption:
+  //           formValues.historyOfSmokingAndAlcoholConsumption,
+  //         visionProblems: formValues.visionProblems,
+  //         pastEyeProblemsOrSurgeries: formValues.pastEyeProblemsOrSurgeries,
+  //         eyeDiscomfort: formValues.eyeDiscomfort,
+  //         glassesOrContactLenseUsage: formValues.glassesOrContactLenseUsage,
+  //         height: formValues.height,
+  //         weight: formValues.weight,
+  //         type: "patient",
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${storedAuthData.accessToken}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     setIsConfirmModalOpen(false);
+  //     setIsLoading(false);
+  //     toast.success("Login Successful");
+  //     console.log("Form submitted successfully:", res.data);
+  //     setActiveHeading && setActiveHeading(1);
+  //   } catch (err) {
+  //     console.log("Submit error: ", err);
+  //     setIsLoading(false);
+  //     toast.error("Something went wrong. Please try again.");
+  //   }
+  // };
+
   const handleSubmitPatientForm = async () => {
     setIsLoading(true);
     console.log("Form values: ", formValues);
-    try {
-      const res = await axios.post(
-        CREATE_PATIENT_URL,
-        {
-          name: formValues.name,
-          email: formValues.email,
-          phone: formValues.phone,
-          address: formValues.address,
-          sex: formValues.sex,
-          dateOfBirth: formValues.dateOfBirth,
-          occupation: formValues.occupation,
-          emergencyPhone: formValues.emergencyPhone,
-          generalMedicalHistory: formValues.generalMedicalHistory,
-          familyHistoryOfEyeConditions: formValues.familyHistoryOfEyeConditions,
-          currentMedications: formValues.currentMedications,
-          historyOfSmokingAndAlcoholConsumption:
-            formValues.historyOfSmokingAndAlcoholConsumption,
-          visionProblems: formValues.visionProblems,
-          pastEyeProblemsOrSurgeries: formValues.pastEyeProblemsOrSurgeries,
-          eyeDiscomfort: formValues.eyeDiscomfort,
-          glassesOrContactLenseUsage: formValues.glassesOrContactLenseUsage,
-          height: formValues.height,
-          weight: formValues.weight,
-          type: "patient",
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${storedAuthData.accessToken}`,
-            "Content-Type": "application/json",
+
+    if (!clickedRow) {
+      try {
+        const res = await axios.post(
+          CREATE_PATIENT_URL,
+          {
+            name: formValues.name,
+            email: formValues.email,
+            phone: formValues.phone,
+            address: formValues.address,
+            sex: formValues.sex,
+            dateOfBirth: formValues.dateOfBirth,
+            occupation: formValues.occupation,
+            emergencyPhone: formValues.emergencyPhone,
+            generalMedicalHistory: formValues.generalMedicalHistory,
+            familyHistoryOfEyeConditions:
+              formValues.familyHistoryOfEyeConditions,
+            currentMedications: formValues.currentMedications,
+            historyOfSmokingAndAlcoholConsumption:
+              formValues.historyOfSmokingAndAlcoholConsumption,
+            visionProblems: formValues.visionProblems,
+            pastEyeProblemsOrSurgeries: formValues.pastEyeProblemsOrSurgeries,
+            eyeDiscomfort: formValues.eyeDiscomfort,
+            glassesOrContactLenseUsage: formValues.glassesOrContactLenseUsage,
+            height: formValues.height,
+            weight: formValues.weight,
+            type: "patient",
           },
-        }
-      );
-      setIsConfirmModalOpen(false);
-      setIsLoading(false);
-      toast.success("Login Successful");
-      console.log("Form submitted successfully:", res.data);
-      setActiveHeading && setActiveHeading(1);
-    } catch (err) {
-      console.log("Submit error: ", err);
-      setIsLoading(false);
-      toast.error("Something went wrong. Please try again.");
+          {
+            headers: {
+              Authorization: `Bearer ${storedAuthData.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setIsConfirmModalOpen(false);
+        setIsLoading(false);
+        toast.success("Login Successful");
+        console.log("Form submitted successfully:", res.data);
+        setActiveHeading && setActiveHeading(1);
+      } catch (err) {
+        console.log("Submit error: ", err);
+        setIsLoading(false);
+        toast.error("Something went wrong. Please try again.");
+      }
+    } else {
+      try {
+        const res = await axios.patch(
+          `${UPDATE_USER_BY_ID_URL}${clickedRow.userId}`,
+          {
+            name: formValues.name,
+            email: formValues.email,
+            phone: formValues.phone,
+            address: formValues.address,
+            sex: formValues.sex,
+            dateOfBirth: formValues.dateOfBirth,
+            occupation: formValues.occupation,
+            emergencyPhone: formValues.emergencyPhone,
+            generalMedicalHistory: formValues.generalMedicalHistory,
+            familyHistoryOfEyeConditions:
+              formValues.familyHistoryOfEyeConditions,
+            currentMedications: formValues.currentMedications,
+            historyOfSmokingAndAlcoholConsumption:
+              formValues.historyOfSmokingAndAlcoholConsumption,
+            visionProblems: formValues.visionProblems,
+            pastEyeProblemsOrSurgeries: formValues.pastEyeProblemsOrSurgeries,
+            eyeDiscomfort: formValues.eyeDiscomfort,
+            glassesOrContactLenseUsage: formValues.glassesOrContactLenseUsage,
+            height: formValues.height,
+            weight: formValues.weight,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${storedAuthData.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setIsConfirmModalOpen(false);
+        setIsLoading(false);
+        toast.success("Patient Update Successfully");
+        console.log("Form submitted successfully:", res.data);
+        setActiveHeading && setActiveHeading(1);
+      } catch (err) {
+        console.log("Submit error: ", err);
+        setIsLoading(false);
+        toast.error("Something went wrong. Please try again.");
+      }
     }
   };
 
@@ -192,7 +321,7 @@ const PatientsRegistration = ({
       </div>
 
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-        Register a Patient
+        {!clickedRow ? "Register" : "Update"} a Patient
       </div>
 
       {/* Form */}
@@ -393,7 +522,9 @@ const PatientsRegistration = ({
               )}
             </div>
             <CommonBtn
-              label={activeStep === 3 ? "Submit" : "Next"}
+              label={
+                activeStep === 3 ? (!clickedRow ? "Submit" : "Update") : "Next"
+              }
               onClick={stepForward}
             />
           </div>
@@ -402,9 +533,17 @@ const PatientsRegistration = ({
 
       {/* Confirm Modal */}
       <ModalConfirm
-        title="Confirm Patients Registration"
-        message="Are you sure you want to submit the registration form?"
-        confirmLabel="Submit"
+        title={
+          !clickedRow
+            ? "Confirm Patients Registration"
+            : "Confirm Patients Update"
+        }
+        message={
+          !clickedRow
+            ? "Are you sure you want to submit the registration form?"
+            : "Are you sure you want to update the selected patient?"
+        }
+        confirmLabel={!clickedRow ? "Submit" : "Update"}
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleSubmitPatientForm}
