@@ -23,6 +23,7 @@ const ReportsList = () => {
   const [rows, setRows] = useState<ReportListAllProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isGeneratingReport, setIsGeneratingReport] = useState<string[]>([]);
+  const [filteredRows, setFilteredRows] = useState<ReportListAllProps[]>([]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -86,6 +87,7 @@ const ReportsList = () => {
             )
           );
           setRows(row);
+          setFilteredRows(row);
           console.log("Rows", row);
           setIsLoading(false);
         })
@@ -107,6 +109,25 @@ const ReportsList = () => {
       console.error("No authentication data found.");
     }
   }, [storedAuthData.accessToken]);
+
+  // const handleSearch = (searchTerm: string, status: string) => {
+  //   console.log("Search Term", searchTerm);
+  //   const filtered = rows.filter((row) => {
+  //     const matchesSearchTerm =
+  //       row.reportId.includes(searchTerm) ||
+  //       row.patientId.includes(searchTerm) ||
+  //       row.createdBy.includes(searchTerm);
+  //     const matchesStatus = status ? row.status === status : true;
+  //     return matchesSearchTerm && matchesStatus;
+  //   });
+  //   setFilteredRows(filtered);
+  // };
+
+  useEffect(() => {
+    if (rows.length > 0) {
+      setFilteredRows(rows);
+    }
+  }, [rows]);
 
   // const generateReport = async () => {
   //   const response = await fetch("http://localhost:3000/pdf");
@@ -144,21 +165,15 @@ const ReportsList = () => {
       <div className="mt-5 h-auto grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row justify-between bg-lightBlueBg rounded-lg p-[1.563vh] gap-4 lg:gap-4">
         {/* Filter */}
         <SearchFilter
-          labelSearch="Search for a Patient"
+          labelSearch="Search for a Report"
           labelSelectOne="Status"
           labelSelectTwo="Location"
-          placeholderSearch="Search by Name or NIC"
+          placeholderSearch="Search by ReportID, PatientID, CreatedBy"
           optionsSelectOne={[
             { value: "pending", label: "Pending" },
-            { value: "verified", label: "Verified" },
-            { value: "completed", label: "Completed" },
+            { value: "complete", label: "Completed" },
           ]}
-          optionsSelectTwo={[
-            { value: "colombo", label: "Colombo" },
-            { value: "kandy", label: "Kandy" },
-            { value: "gampaha", label: "Gampaha" },
-          ]}
-          onSearch={() => {}}
+          // onSearch={handleSearch}
         />
       </div>
 
@@ -168,7 +183,6 @@ const ReportsList = () => {
             <TableHead>
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
                 <TableCell className="font-bold">Report ID</TableCell>
-                <TableCell className="font-bold">Report Name</TableCell>
                 <TableCell className="font-bold">Patient ID</TableCell>
                 <TableCell className="font-bold">Created By</TableCell>
                 <TableCell className="font-bold">Status</TableCell>
@@ -191,17 +205,16 @@ const ReportsList = () => {
               ) : (
                 <>
                   {(rowsPerPage > 0
-                    ? rows.slice(
+                    ? filteredRows.slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                    : rows
+                    : filteredRows
                   ).map((row) => (
                     <TableRow key={row.reportId}>
                       <TableCell component="th" scope="row">
                         {row.reportId}
                       </TableCell>
-                      <TableCell>{row.name}</TableCell>
                       <TableCell>{row.patientId}</TableCell>
                       <TableCell>{row.createdBy}</TableCell>
                       <TableCell>
