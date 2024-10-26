@@ -20,7 +20,7 @@ import { TableHead } from "@mui/material";
 import { Spin } from "antd";
 import { PatientRecordAllRowProps, ListAllPatientProps } from "@/utils/patient";
 import axios from "axios";
-import { GET_ALL_REPORTS } from "@/constants/config";
+import { CREATE_TEST_REPORT, GET_ALL_REPORTS } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 
 const PatientProfile = ({
@@ -142,15 +142,12 @@ const PatientProfile = ({
   const generateReport = async (reportId: string) => {
     setIsGeneratingReport((prev) => [...prev, reportId]);
     try {
-      const response = await fetch(
-        `http://localhost:5013/api/reports/generatePdf/${reportId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${storedAuthData.accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${CREATE_TEST_REPORT}${reportId}`, {
+        headers: {
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       //const response = await fetch("http://localhost:3000/pdf");
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);

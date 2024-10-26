@@ -12,7 +12,7 @@ import TablePaginationActions from "@/app/components/common/table-pagination";
 import SearchFilter from "@/app/components/common/search-filter";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-import { GET_ALL_REPORTS } from "@/constants/config";
+import { CREATE_TEST_REPORT, GET_ALL_REPORTS } from "@/constants/config";
 import { ReportListAllProps } from "@/utils/interfaces";
 import { Spin } from "antd";
 import CommonBtn from "@/app/components/common/button";
@@ -140,8 +140,8 @@ const ReportsList = () => {
     setIsGeneratingReport((prev) => [...prev, reportId]);
     try {
       const response = await fetch(
-        `http://localhost:5013/api/reports/generatePdf/${reportId}`,
-        //`https://optical-insight-ms-report-api-452754564019.us-central1.run.app/api/reports/generatePdf/RPT164142`,
+        // `http://localhost:5013/api/reports/generatePdf/${reportId}`,
+        `${CREATE_TEST_REPORT}${reportId}`,
         {
           headers: {
             Authorization: `Bearer ${storedAuthData.accessToken}`,
