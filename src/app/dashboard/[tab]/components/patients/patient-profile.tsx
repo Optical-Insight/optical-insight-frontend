@@ -143,7 +143,7 @@ const PatientProfile = ({
     setIsGeneratingReport((prev) => [...prev, reportId]);
     try {
       const response = await fetch(
-        "http://localhost:5013/api/reports/generatePdf/RPT164142",
+        `http://localhost:5013/api/reports/generatePdf/${reportId}`,
         {
           headers: {
             Authorization: `Bearer ${storedAuthData.accessToken}`,
