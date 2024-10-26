@@ -7,8 +7,6 @@ import InstituteHeadsPage from "./institute-heads/institute-heads";
 import LabTechniciansPage from "./lab-technicians/lab-technicians";
 import DoctorsPage from "./doctors/doctors";
 import PatientsPage from "./patients/patients";
-import NotificationsPage from "./notifications/notifications";
-import SettingsPage from "./settings/settings";
 
 function PageContent({ tab }: { tab: string }) {
   switch (tab) {
@@ -32,12 +30,6 @@ function PageContent({ tab }: { tab: string }) {
 
     case "patients":
       return <PatientsPage />;
-
-    case "notification":
-      return <NotificationsPage />;
-
-    case "settings":
-      return <SettingsPage />;
 
     default:
       return <HomePage />;

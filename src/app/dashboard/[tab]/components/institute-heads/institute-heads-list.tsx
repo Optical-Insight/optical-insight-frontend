@@ -13,7 +13,7 @@ import rows from "./table-data";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
-import TablePaginationActions from "./table-pagination";
+import TablePaginationActions from "@/app/components/common/table-pagination";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { Spin } from "antd";
 
