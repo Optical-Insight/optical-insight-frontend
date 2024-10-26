@@ -10,7 +10,7 @@ import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import TablePaginationActions from "./table-pagination";
+import TablePaginationActions from "@/app/components/common/table-pagination";
 import { TableHead } from "@mui/material";
 // import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SearchFilter from "@/app/components/common/search-filter";

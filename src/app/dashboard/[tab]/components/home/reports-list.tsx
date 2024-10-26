@@ -8,7 +8,7 @@ import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
-import TablePaginationActions from "./table-pagination";
+import TablePaginationActions from "@/app/components/common/table-pagination";
 import SearchFilter from "@/app/components/common/search-filter";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";

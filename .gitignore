@@ -13,6 +13,8 @@
 /.next/
 /out/
 
+/.scannerwork
+
 # production
 /build
 
