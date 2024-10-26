@@ -140,7 +140,8 @@ const ReportsList = () => {
     setIsGeneratingReport((prev) => [...prev, reportId]);
     try {
       const response = await fetch(
-        `{http://localhost:5013/api/reports/generatePdf/${reportId}}`,
+        `http://localhost:5013/api/reports/generatePdf/${reportId}`,
+        //`https://optical-insight-ms-report-api-452754564019.us-central1.run.app/api/reports/generatePdf/RPT164142`,
         {
           headers: {
             Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -148,7 +149,7 @@ const ReportsList = () => {
           },
         }
       );
-      //const response = await fetch("http://localhost:3000/pdf");
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       window.open(url, "_blank");
