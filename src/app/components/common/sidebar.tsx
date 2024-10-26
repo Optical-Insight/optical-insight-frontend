@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { IoIosArrowDropleft } from "react-icons/io";
 import { MdOutlineMenu } from "react-icons/md";
 import ModalConfirm from "./modal-confirm";
-
+import Footer from "@/app/components/common/footer";
 const SidebarItem = ({
   iconSrc,
   iconSrcActive,
@@ -127,7 +127,7 @@ const AppSidebar = ({
   ];
 
   return (
-    <div className="flex flex-row bg-lightBg min-h-screen w-full">
+    <div className="flex flex-row bg-lightBg h-screen overflow-hidden w-full">
       <div className={` bg-blueBg px-6 xl:px-8   flex flex-col h-screen fixed`}>
         <div className={`flex flex-col h-full`}>
           {/* Logo */}
@@ -201,9 +201,10 @@ const AppSidebar = ({
       <div
         className={`flex-grow ${
           isShrunk ? "ml-[9rem]" : "ml-[24rem]"
-        }   mr-[3vw] h-screen`}
+        }  h-screen  overflow-auto pr-[3vw]`}
       >
-        {children}
+        <div className="min-h-[95vh]"> {children} </div>
+        <Footer />
       </div>
       {/* Logout Confirm Modal */}
       <ModalConfirm
