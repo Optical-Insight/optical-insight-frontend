@@ -260,7 +260,7 @@ const PatientRecordNew = ({
                       >
                         <label
                           htmlFor="file"
-                          className="h-full flex flex-col justify-center text-center"
+                          className="h-full flex flex-col justify-center text-center text-gray-500"
                         >
                           Click to upload or Drag and drop
                         </label>
@@ -361,7 +361,7 @@ const PatientRecordNew = ({
                       >
                         <label
                           htmlFor="fileRight"
-                          className="h-full flex flex-col justify-center text-center"
+                          className="h-full flex flex-col justify-center text-center text-gray-500"
                         >
                           Click to upload or Drag and drop
                         </label>
