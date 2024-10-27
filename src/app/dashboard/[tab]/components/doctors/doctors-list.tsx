@@ -95,21 +95,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     { value: "macular hole", label: "Macular Hole" },
   ];
 
-  const handleSpecializationChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const value = e.target.value;
-    setSpecialization(value);
-    filterDoctors(searchTerm, value); // Pass both searchTerm and specialization
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    filterDoctors(value, specialization);
-  };
-
-  const filterDoctors = (term: string, specialization: string) => {
+  const filterDoctors = (term: string, selectedSpecialization: string) => {
     const lowerCaseTerm = term.toLowerCase();
 
     const filtered = rows.filter((row) => {
@@ -118,13 +104,29 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
         row.name.toLowerCase().includes(lowerCaseTerm);
 
       const matchesSpecialization =
-        specialization === "" ||
-        row.specialization.toLowerCase().includes(specialization.toLowerCase());
+        selectedSpecialization === "" ||
+        row.specialization
+          .toLowerCase()
+          .includes(selectedSpecialization.toLowerCase());
 
       return matchesSearchTerm && matchesSpecialization;
     });
 
     setFilteredRows(filtered);
+  };
+
+  const handleSpecializationChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const value = e.target.value;
+    setSpecialization(value);
+    filterDoctors(searchTerm, value);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterDoctors(value, specialization);
   };
 
   return (
