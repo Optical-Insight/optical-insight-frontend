@@ -2,13 +2,14 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
-import { GENERATE_REPORT_PDF } from "@/constants/config";
+import { CREATE_TEST_REPORT } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import { StepProps } from "@/utils/interfaces";
 import { PatientRecordProps } from "@/utils/patient";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -50,6 +51,7 @@ const PatientRecordNew = ({
   const [fileRight, setFileRight] = useState<File | null>(null);
   const [fileRightEnter, setFileRightEnter] = useState(false);
   const [comments, setComments] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const stepForward = () => {
     if (activeStep === 2) {
@@ -65,6 +67,7 @@ const PatientRecordNew = ({
   };
 
   const handleSubmitTestRecord = async () => {
+    setIsLoading(true);
     const formData = new FormData();
 
     if (fileLeft) {
@@ -85,23 +88,48 @@ const PatientRecordNew = ({
 
     // Post request to server
     try {
-      const response = await axios.post(GENERATE_REPORT_PDF, formData, {
+      const response = await axios.post(CREATE_TEST_REPORT, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${storedAuthData.accessToken}`,
         },
       });
       console.log("Form submitted successfully:", response.data);
-      alert("Test record submitted successfully");
+      setIsLoading(false);
+      toast.success("Test record submitted successfully");
       router.replace("/dashboard/home");
     } catch (error: any) {
       console.error("Submit error:", error);
-      alert("Error in submitting form");
+      setIsLoading(false);
+      toast.error("Error in submitting form");
     }
   };
 
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
         Add New Test Data
       </div>
@@ -428,6 +456,7 @@ const PatientRecordNew = ({
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleSubmitTestRecord}
+        isLoading={isLoading}
       />
     </div>
   );
