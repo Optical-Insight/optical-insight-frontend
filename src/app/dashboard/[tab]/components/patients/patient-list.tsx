@@ -207,6 +207,7 @@ const PatientListAll = ({
       {/* Filter */}
       <div className="mt-6 flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
         <SearchComponent
+          label="Search Patients"
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
           placeholder="Search by PatientID, Name, or Phone Number"
