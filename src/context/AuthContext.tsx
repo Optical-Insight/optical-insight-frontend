@@ -84,7 +84,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     // Serialize and store the auth data in cookies (session cookie)
     Cookies.set("authData", JSON.stringify(authData));
 
-    router.replace("/dashboard/home");
     setIsAuthenticated(true);
     console.log("Login Success:", isAuthenticated);
   };
