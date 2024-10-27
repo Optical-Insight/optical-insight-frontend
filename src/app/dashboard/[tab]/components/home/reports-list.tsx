@@ -9,7 +9,6 @@ import Paper from "@mui/material/Paper";
 import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import TablePaginationActions from "@/app/components/common/table-pagination";
-import SearchFilter from "@/app/components/common/search-filter";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { GENERATE_REPORT_PDF, GET_ALL_REPORTS } from "@/constants/config";
@@ -45,25 +44,25 @@ const ReportsList = () => {
 
   const { isAuthenticated, storedAuthData } = useAuth();
 
-  const createReportData = (
-    reportId: string,
-    name: string,
-    createdBy: string,
-    patientId: string,
-    status: string,
-    leftEyeImageUrl: string,
-    rightEyeImageUrl: string
-  ): ReportListAllProps => {
-    return {
-      reportId,
-      name,
-      createdBy,
-      patientId,
-      status,
-      leftEyeImageUrl,
-      rightEyeImageUrl,
-    };
-  };
+  // const createReportData = (
+  //   reportId: string,
+  //   name: string,
+  //   createdBy: string,
+  //   patientId: string,
+  //   status: string,
+  //   leftEyeImageUrl: string,
+  //   rightEyeImageUrl: string
+  // ): ReportListAllProps => {
+  //   return {
+  //     reportId,
+  //     name,
+  //     createdBy,
+  //     patientId,
+  //     status,
+  //     leftEyeImageUrl,
+  //     rightEyeImageUrl,
+  //   };
+  // };
 
   const fetchAllReports = async () => {
     try {
@@ -77,20 +76,20 @@ const ReportsList = () => {
         })
         .then((res) => {
           console.log(res.data);
-          const row = res.data.map((report: ReportListAllProps) =>
-            createReportData(
-              report.reportId,
-              report.name,
-              report.createdBy,
-              report.patientId,
-              report.status,
-              report.leftEyeImageUrl,
-              report.rightEyeImageUrl
-            )
-          );
-          setRows(row);
-          setFilteredRows(row);
-          console.log("Rows", row);
+          // const row = res.data.map((report: ReportListAllProps) =>
+          //   createReportData(
+          //     report.reportId,
+          //     report.name,
+          //     report.createdBy,
+          //     report.patientId,
+          //     report.status,
+          //     report.leftEyeImageUrl,
+          //     report.rightEyeImageUrl
+          //   )
+          // );
+          setRows(res.data);
+          setFilteredRows(res.data);
+          console.log("Rows", res.data);
           setIsLoading(false);
         })
         .catch((err) => console.log(err));
@@ -112,18 +111,6 @@ const ReportsList = () => {
     }
   }, [storedAuthData.accessToken]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    filterReports(value, status);
-  };
-
-  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    setStatus(value);
-    filterReports(searchTerm, value);
-  };
-
   const filterReports = (term: string, statusFilter: string) => {
     const filtered = rows.filter((row) => {
       const matchesSearchTerm =
@@ -137,6 +124,18 @@ const ReportsList = () => {
       return matchesSearchTerm && matchesStatus;
     });
     setFilteredRows(filtered);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterReports(value, status);
+  };
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setStatus(value);
+    filterReports(searchTerm, value);
   };
 
   // const handleSearch = (searchTerm: string, status: string) => {

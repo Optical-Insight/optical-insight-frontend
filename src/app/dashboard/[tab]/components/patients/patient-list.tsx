@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ListAllPatientProps, PatientsAllProps } from "@/utils/patient";
-import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -37,8 +36,6 @@ const PatientListAll = ({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredRows, setFilteredRows] = useState<PatientsAllProps[]>([]);
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [locationFilter, setLocationFilter] = useState("");
 
   const fetchAllPatients = async () => {
     try {
@@ -102,10 +99,6 @@ const PatientListAll = ({
     setShowDeleteModal(false);
   };
 
-  // // Handle search and filters update
-  // const handleSearchChange = (value: string) => setSearchQuery(value);
-  // const handleLocationChange = (value: string) => setLocationFilter(value);
-
   useEffect(() => {
     if (isAuthenticated && storedAuthData) {
       fetchAllPatients();
@@ -113,18 +106,6 @@ const PatientListAll = ({
       console.error("No authentication data found.");
     }
   }, [storedAuthData.accessToken]);
-
-  // // Filtered rows based on search and filter states
-  // const filteredRows = rows.filter((row) => {
-  //   const matchesSearchQuery =
-  //     row.userId.includes(searchQuery) ||
-  //     row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     row.phone.includes(searchQuery);
-
-  //   const matchesLocation = !locationFilter || row.address === locationFilter;
-
-  //   return matchesSearchQuery && matchesLocation;
-  // });
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
