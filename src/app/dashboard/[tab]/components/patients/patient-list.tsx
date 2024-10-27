@@ -21,6 +21,7 @@ import { Spin } from "antd";
 import ModifyBtn from "@/app/components/common/button-modify";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import toast, { Toaster } from "react-hot-toast";
+import SearchComponent from "@/app/components/common/search-component";
 
 const PatientListAll = ({
   setActiveHeading,
@@ -142,11 +143,16 @@ const PatientListAll = ({
   };
 
   const filterPatients = (term: string) => {
+    console.log("rows", rows);
+    const lowerCaseTerm = term.toLowerCase();
     const filtered = rows.filter((row) => {
       const matchesSearchTerm =
-        row.userId.includes(term) ||
-        row.name.includes(term) ||
-        row.phone.includes(term);
+        row.userId.toLowerCase().includes(lowerCaseTerm) ||
+        row.name.toLowerCase().includes(lowerCaseTerm) ||
+        row.phone.includes(lowerCaseTerm);
+
+      console.log("matchesSearchTerm", row.name);
+      console.log("matchesSearchTerm", term);
 
       return matchesSearchTerm;
     });
@@ -200,18 +206,11 @@ const PatientListAll = ({
 
       {/* Filter */}
       <div className="mt-6 flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
-        <div className="flex flex-col flex-grow">
-          <label className="text-labelText text-[16px] mb-[6px]">
-            Search for a Patient
-          </label>
-          <input
-            type="search"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search by PatientID, Name or Phone Number"
-            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
-          />
-        </div>
+        <SearchComponent
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          placeholder="Search by PatientID, Name, or Phone Number"
+        />
       </div>
 
       {/* Table - MUI */}

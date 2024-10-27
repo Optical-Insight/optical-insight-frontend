@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { DoctorsAllProps, ListAllProps } from "@/utils/interfaces";
-import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -18,6 +17,7 @@ import { GET_ALL_USERS_URL } from "@/constants/config";
 import axios from "axios";
 import { Spin } from "antd";
 import ModalInfoDoctor from "@/app/components/doctor/modal-info-doctor";
+import SearchComponent from "@/app/components/common/search-component";
 
 const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -27,18 +27,20 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [clickedRow, setClickedRow] = useState<DoctorsAllProps | null>(null);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredRows, setFilteredRows] = useState<DoctorsAllProps[]>([]);
 
-  const createDoctorData = (
-    id: string,
-    name: string,
-    email: string,
-    userId: string,
-    type: string,
-    rating: string,
-    specialization: string
-  ): DoctorsAllProps => {
-    return { id, name, email, userId, type, rating, specialization };
-  };
+  // const createDoctorData = (
+  //   id: string,
+  //   name: string,
+  //   email: string,
+  //   userId: string,
+  //   type: string,
+  //   rating: string,
+  //   specialization: string
+  // ): DoctorsAllProps => {
+  //   return { id, name, email, userId, type, rating, specialization };
+  // };
 
   const fetchAllDoctors = async () => {
     try {
@@ -54,21 +56,22 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
         (doctor: DoctorsAllProps) => doctor.type === "doctor"
       );
 
-      // Map the filtered doctors to the desired format
-      const row = filteredPatients.map((doctor: DoctorsAllProps) =>
-        createDoctorData(
-          doctor.id,
-          doctor.name,
-          doctor.email,
-          doctor.userId,
-          doctor.type,
-          doctor.rating,
-          doctor.specialization
-        )
-      );
+      // // Map the filtered doctors to the desired format
+      // const row = filteredPatients.map((doctor: DoctorsAllProps) =>
+      //   createDoctorData(
+      //     doctor.id,
+      //     doctor.name,
+      //     doctor.email,
+      //     doctor.userId,
+      //     doctor.type,
+      //     doctor.rating,
+      //     doctor.specialization
+      //   )
+      // );
 
       // Set the rows with filtered data
-      setRows(row);
+      setRows(filteredPatients);
+      setFilteredRows(filteredPatients);
       setIsLoading(false);
     } catch (err: any) {
       console.error(
@@ -108,6 +111,28 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     setIsInfoModalOpen(true);
   };
 
+  const filterPatients = (term: string) => {
+    console.log("rows", rows);
+    const lowerCaseTerm = term.toLowerCase();
+    const filtered = rows.filter((row) => {
+      const matchesSearchTerm =
+        row.userId.toLowerCase().includes(lowerCaseTerm) ||
+        row.name.toLowerCase().includes(lowerCaseTerm);
+
+      console.log("matchesSearchTerm", row.name);
+      console.log("matchesSearchTerm", term);
+
+      return matchesSearchTerm;
+    });
+    setFilteredRows(filtered);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterPatients(value);
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
@@ -123,7 +148,15 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
       </div>
 
       {/* Filter */}
-      <SearchFilter
+      <div className="flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
+        <SearchComponent
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          placeholder="Search by PatientID, Name, or Phone Number"
+        />
+      </div>
+
+      {/* <SearchFilter
         labelSearch="Search for a Doctor"
         labelSelectOne="Status"
         labelSelectTwo="Location"
@@ -139,7 +172,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
           { value: "gampaha", label: "Gampaha" },
         ]}
         onSearch={() => {}}
-      />
+      /> */}
 
       {/* Table - MUI */}
       <div className="mb-[45px]">
@@ -170,11 +203,11 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
                 <>
                   {" "}
                   {(rowsPerPage > 0
-                    ? rows.slice(
+                    ? filteredRows.slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                    : rows
+                    : filteredRows
                   ).map((row) => (
                     <TableRow
                       key={row.id}
@@ -187,7 +220,9 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
                       </TableCell>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>
-                        {row.specialization.replace("Eye Specialist - ", "")}
+                        {row.specialization
+                          ? row.specialization.replace("Eye Specialist - ", "")
+                          : "N/A"}
                       </TableCell>
                       <TableCell>
                         <div>
