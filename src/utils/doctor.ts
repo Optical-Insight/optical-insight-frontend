@@ -8,6 +8,7 @@ export interface DoctorsAllProps {
 
 export interface DoctorRegistrationProps {
   activeStep: number;
+  clickedRow?: any;
   setActiveStep: (value: number) => void;
   setActiveHeading?: (value: number) => void;
 }
