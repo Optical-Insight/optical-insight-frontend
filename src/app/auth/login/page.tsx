@@ -136,7 +136,6 @@ function AdminLogin() {
           await login(response.data);
           router.push("/dashboard/home");
           toast.success("Login Successful");
-          setIsLoading(false);
         })
         .catch((error) => {
           console.error("Error in Login:", error);
