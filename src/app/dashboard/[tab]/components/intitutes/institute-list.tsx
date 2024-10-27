@@ -14,12 +14,16 @@ import { TableHead } from "@mui/material";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-import { GET_ALL_INSTITUTES_URL } from "@/constants/config";
+import {
+  DELETE_INSTITUTE_BY_ID_URL,
+  GET_ALL_INSTITUTES_URL,
+} from "@/constants/config";
 import ModalInfo from "@/app/components/institute/modal-info-institute";
 import { Spin } from "antd";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import SearchComponent from "@/app/components/common/search-component";
 import { optionsInstituteLocations } from "@/constants/data";
+import toast, { Toaster } from "react-hot-toast";
 
 const InstituteListAll = ({
   setActiveHeading,
@@ -66,8 +70,8 @@ const InstituteListAll = ({
   }, [storedAuthData.accessToken]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -105,8 +109,30 @@ const InstituteListAll = ({
   };
 
   const handleDeleteInstiute = async () => {
+    setIsLoading(true);
     console.log("Delete confirmed");
-    setIsConfirmModalOpen(false);
+
+    await axios
+      .delete(`${DELETE_INSTITUTE_BY_ID_URL}${clickedRow.clinicId}`, {
+        headers: {
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
+        },
+      })
+      .then((res) => {
+        toast.success("Institue Deleted successfully");
+        console.log("Institue Deleted successfully", res);
+        setIsLoading(false);
+        fetchAllInstitutes();
+      })
+      .catch((err) => {
+        toast.error("Error in Institue patient. Please try again.");
+        console.error("Error in Institue patient", err.response?.data || err);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setIsConfirmModalOpen(false);
+      });
   };
 
   const filterInstiutes = (term: string, selectedLocation: string) => {
@@ -147,6 +173,29 @@ const InstituteListAll = ({
 
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       <div className="flex justify-between mb-[25px] items-center ">
         <div className="text-darkText font-bold text-4xl lg:text-[40px] ">
           List of all Institutes
@@ -236,14 +285,9 @@ const InstituteListAll = ({
                       <TableCell>{row.location}</TableCell>
                       <TableCell>{row.phone}</TableCell>
                       <TableCell>{row.email}</TableCell>
-                      {/* <TableCell>
-                        <div>
-                          <MoreVertIcon />
-                        </div>
-                      </TableCell> */}
                     </TableRow>
                   ))}
-                  {emptyRows > 0 && (
+                  {rows.length === 0 && (
                     <TableRow className="h-[20vw]">
                       <TableCell
                         colSpan={6}
@@ -305,6 +349,7 @@ const InstituteListAll = ({
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleDeleteInstiute}
+        isLoading={isLoading}
       />
     </div>
   );
