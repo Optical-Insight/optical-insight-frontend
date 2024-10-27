@@ -18,6 +18,7 @@ import axios from "axios";
 import { Spin } from "antd";
 import ModalInfoDoctor from "@/app/components/doctor/modal-info-doctor";
 import SearchComponent from "@/app/components/common/search-component";
+import { optionsDoctorStatus } from "@/constants/data";
 
 const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -87,14 +88,6 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     setIsInfoModalOpen(true);
   };
 
-  const optionsSelect = [
-    { value: "", label: "All Doctors" },
-    { value: "drusen", label: "Drusen" },
-    { value: "glaucoma", label: "Glaucoma" },
-    { value: "csr", label: "CSR" },
-    { value: "macular hole", label: "Macular Hole" },
-  ];
-
   const filterDoctors = (term: string, selectedSpecialization: string) => {
     const lowerCaseTerm = term.toLowerCase();
 
@@ -146,6 +139,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
       {/* Filter */}
       <div className="flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
         <SearchComponent
+          label="Search Doctors"
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
           placeholder="Search by PatientID, Name, or Phone Number"
@@ -160,7 +154,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
             onChange={handleSpecializationChange}
             className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
           >
-            {optionsSelect.map((option) => (
+            {optionsDoctorStatus.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

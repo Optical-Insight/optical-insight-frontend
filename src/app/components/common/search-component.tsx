@@ -1,21 +1,21 @@
 import React from "react";
 
 interface PatientSearchFilterProps {
+  label: string;
   searchTerm: string;
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
 }
 
 const SearchComponent: React.FC<PatientSearchFilterProps> = ({
+  label,
   searchTerm,
   onSearchChange,
-  placeholder = "Search by PatientID, Name, or Phone Number",
+  placeholder,
 }) => {
   return (
     <div className="flex flex-col flex-grow">
-      <label className="text-labelText text-[16px] mb-[6px]">
-        Search for a Patient
-      </label>
+      <label className="text-labelText text-[16px] mb-[6px]">{label}</label>
       <input
         type="search"
         value={searchTerm}

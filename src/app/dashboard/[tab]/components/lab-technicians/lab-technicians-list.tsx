@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ListAllProps, TechniciansAllProps } from "@/utils/interfaces";
 
-import SearchFilter from "@/app/components/common/search-filter";
+// import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -20,6 +20,7 @@ import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { Spin } from "antd";
 import ModalInfoLabTechnician from "@/app/components/lab-technician/modal-info-lab-technician";
+import SearchComponent from "@/app/components/common/search-component";
 
 const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -32,15 +33,9 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
     null
   );
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const createTechnicianData = (
-    id: string,
-    name: string,
-    email: string,
-    userId: string,
-    type: string
-  ): TechniciansAllProps => {
-    return { id, name, email, userId, type };
-  };
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredRows, setFilteredRows] = useState<TechniciansAllProps[]>([]);
+  const [institute, setInstitute] = useState("");
 
   const fetchAllTechnicians = async () => {
     try {
@@ -57,19 +52,9 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
         (technician: TechniciansAllProps) => technician.type === "mlt"
       );
 
-      // Map the filtered technicians to the desired format
-      const row = filteredTechnicians.map((technician: TechniciansAllProps) =>
-        createTechnicianData(
-          technician.id,
-          technician.name,
-          technician.email,
-          technician.userId,
-          technician.type
-        )
-      );
-
       // Set the rows with filtered data
-      setRows(row);
+      setRows(filteredTechnicians);
+      setFilteredRows(filteredTechnicians);
       setIsLoading(false);
     } catch (err: any) {
       console.error(
@@ -109,6 +94,41 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
     setIsInfoModalOpen(true);
   };
 
+  const filterDoctors = (term: string, selectedInstitute: string) => {
+    console.log("filterDoctors - selectedInstitute "), selectedInstitute;
+    const lowerCaseTerm = term.toLowerCase();
+
+    const filtered = rows.filter((row) => {
+      console.log("filterDoctors - row", setInstitute);
+      const matchesSearchTerm =
+        row.userId.toLowerCase().includes(lowerCaseTerm) ||
+        row.name.toLowerCase().includes(lowerCaseTerm);
+
+      // const matchesSpecialization =
+      // selectedInstitute === "" ||
+      //   row.institute
+      //     .toLowerCase()
+      //     .includes(selectedInstitute.toLowerCase());
+
+      return matchesSearchTerm;
+      //return matchesSearchTerm && matchesSpecialization;
+    });
+
+    setFilteredRows(filtered);
+  };
+
+  // const handleInstituteChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const value = e.target.value;
+  //   setInstitute(value);
+  //   filterDoctors(searchTerm, value);
+  // };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterDoctors(value, institute);
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
@@ -124,7 +144,7 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
       </div>
 
       {/* Filter */}
-      <SearchFilter
+      {/* <SearchFilter
         labelSearch="Search for a Lab Technician"
         labelSelectOne="Status"
         labelSelectTwo="Location"
@@ -140,7 +160,34 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
           { value: "gampaha", label: "Gampaha" },
         ]}
         onSearch={() => {}}
-      />
+      /> */}
+
+      {/* Filter */}
+      <div className="flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
+        <SearchComponent
+          label="Search Doctors"
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          placeholder="Search by PatientID, Name, or Phone Number"
+        />
+
+        {/* <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">
+            {"Filter by Status"}
+          </label>
+          <select
+            value={institute}
+            onChange={handleInstituteChange}
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          >
+            {optionsDoctorStatus.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div> */}
+      </div>
 
       {/* Table - MUI */}
       <div className="mb-[45px]">
@@ -171,7 +218,7 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
               ) : (
                 <>
                   {(rowsPerPage > 0
-                    ? rows.slice(
+                    ? filteredRows.slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
