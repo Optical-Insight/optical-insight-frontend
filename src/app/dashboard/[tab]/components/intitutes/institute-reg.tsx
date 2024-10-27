@@ -83,16 +83,40 @@ const InstituteRegistration = ({
   const handleSubmitForm = async () => {
     setIsLoading(true);
 
+
+
     if (clickedRow === null) {
       axios
         .post(
           CREATE_INSTITUTES_URL,
           {
-            name: formValues.instituteName,
-            location: formValues.address,
-            phone: formValues.contactNo,
-            email: formValues.email,
-            website: formValues.website,
+            //name: formValues.instituteName,
+            //location: formValues.address,
+            //phone: formValues.contactNo,
+            //email: formValues.email,
+            //website: formValues.website,
+            //typeOfOpticalServicesProvided: formValues.services,
+            //certifications: formValues.certifications,
+            //numberOfPatients: formValues.noOfTechnicians,
+            //numberOfLabTechnicians: formValues.noOfTechnicians,
+            //hoursOfOperation: formValues.hrsOfOperation,
+            //specialServices: formValues.specialServices,
+            //isEHR: formValues.ehr === "Yes",
+            //comments: formValues.comments
+
+            name: "formValues4",
+            location: "formValues.address",
+            phone: "formValues.contactNo",
+            email: "formValues2@gmail.com",
+            website: "formValues.website",
+            typeOfOpticalServicesProvided: "formValues.services",
+            certifications: "formValues.certifications",
+            numberOfPatients: 5,
+            numberOfLabTechnicians: 2,
+            hoursOfOperation: 10,
+            specialServices: "formValues.specialServices",
+            isEHR: formValues.ehr === "Yes",
+            comments: "formValues.comments"
           },
           {
             headers: {
@@ -245,14 +269,14 @@ const InstituteRegistration = ({
                 value={formValues.certifications}
                 onChange={(value) => handleInputChange("certifications", value)}
               />
-              <FormField
+              {/*<FormField
                 label="Special Services"
                 placeholder="Home Visits, Emergency Services, etc."
                 value={formValues.specialServices}
                 onChange={(value) =>
                   handleInputChange("specialServices", value)
                 }
-              />
+              />*/}
               <FormField
                 label="Electronic Health Record (EHR) System Used"
                 placeholder="Yes"

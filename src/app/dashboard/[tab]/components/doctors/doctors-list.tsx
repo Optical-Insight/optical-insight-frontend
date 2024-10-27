@@ -18,6 +18,7 @@ import { GET_ALL_USERS_URL } from "@/constants/config";
 import axios from "axios";
 import { Spin } from "antd";
 import ModalInfoDoctor from "@/app/components/doctor/modal-info-doctor";
+import ModifyBtn from "@/app/components/common/button-modify";
 
 const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -27,6 +28,8 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [clickedRow, setClickedRow] = useState<DoctorsAllProps | null>(null);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [modifyId, setModifyId] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const createDoctorData = (
     id: string,
@@ -106,6 +109,17 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     console.log("Row clicked", row);
     setClickedRow(row);
     setIsInfoModalOpen(true);
+  };
+
+  const handleUpdateDoctor = async (doctor: DoctorsAllProps) => {
+    console.log("Update patient with id: ", doctor);
+    setActiveHeading && setActiveHeading(2);
+  };
+
+  const handleDeleteDoctor = async (patientId: string) => {
+    setModifyId(patientId);
+    console.log("Delete patient with id: ", patientId);
+    setShowDeleteModal(true);
   };
 
   return (
@@ -190,8 +204,31 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
                         {row.specialization.replace("Eye Specialist - ", "")}
                       </TableCell>
                       <TableCell>
-                        <div>
-                          <MoreVertIcon />
+                      <div className="inline-flex gap-2">
+                          <div className="h-9 xl:h-11 w-9 xl:w-11">
+                            <ModifyBtn
+                              label="Update"
+                              onClick={(
+                                e: React.MouseEvent<HTMLButtonElement>
+                              ) => {
+                                e.stopPropagation();
+                                setClickedRow && setClickedRow(row);
+                                handleUpdateDoctor(row);
+                              }}
+                            />
+                          </div>
+                          <div className="h-9 xl:h-11 w-9 xl:w-11">
+                            <ModifyBtn
+                              label="Delete"
+                              onClick={(
+                                e: React.MouseEvent<HTMLButtonElement>
+                              ) => {
+                                e.stopPropagation();
+                                setClickedRow && setClickedRow(row);
+                                handleDeleteDoctor(row.userId);
+                              }}
+                            />
+                          </div>
                         </div>
                       </TableCell>
                     </TableRow>
