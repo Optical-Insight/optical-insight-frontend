@@ -29,18 +29,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredRows, setFilteredRows] = useState<DoctorsAllProps[]>([]);
-
-  // const createDoctorData = (
-  //   id: string,
-  //   name: string,
-  //   email: string,
-  //   userId: string,
-  //   type: string,
-  //   rating: string,
-  //   specialization: string
-  // ): DoctorsAllProps => {
-  //   return { id, name, email, userId, type, rating, specialization };
-  // };
+  const [specialization, setSpecialization] = useState("");
 
   const fetchAllDoctors = async () => {
     try {
@@ -52,26 +41,13 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
         },
       });
 
-      const filteredPatients = response.data.filter(
+      const filteredDoctors = response.data.filter(
         (doctor: DoctorsAllProps) => doctor.type === "doctor"
       );
 
-      // // Map the filtered doctors to the desired format
-      // const row = filteredPatients.map((doctor: DoctorsAllProps) =>
-      //   createDoctorData(
-      //     doctor.id,
-      //     doctor.name,
-      //     doctor.email,
-      //     doctor.userId,
-      //     doctor.type,
-      //     doctor.rating,
-      //     doctor.specialization
-      //   )
-      // );
-
       // Set the rows with filtered data
-      setRows(filteredPatients);
-      setFilteredRows(filteredPatients);
+      setRows(filteredDoctors);
+      setFilteredRows(filteredDoctors);
       setIsLoading(false);
     } catch (err: any) {
       console.error(
@@ -111,26 +87,46 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     setIsInfoModalOpen(true);
   };
 
-  const filterPatients = (term: string) => {
-    console.log("rows", rows);
+  const optionsSelect = [
+    { value: "", label: "All Doctors" },
+    { value: "drusen", label: "Drusen" },
+    { value: "glaucoma", label: "Glaucoma" },
+    { value: "csr", label: "CSR" },
+    { value: "macular hole", label: "Macular Hole" },
+  ];
+
+  const filterDoctors = (term: string, selectedSpecialization: string) => {
     const lowerCaseTerm = term.toLowerCase();
+
     const filtered = rows.filter((row) => {
       const matchesSearchTerm =
         row.userId.toLowerCase().includes(lowerCaseTerm) ||
         row.name.toLowerCase().includes(lowerCaseTerm);
 
-      console.log("matchesSearchTerm", row.name);
-      console.log("matchesSearchTerm", term);
+      const matchesSpecialization =
+        selectedSpecialization === "" ||
+        row.specialization
+          .toLowerCase()
+          .includes(selectedSpecialization.toLowerCase());
 
-      return matchesSearchTerm;
+      return matchesSearchTerm && matchesSpecialization;
     });
+
     setFilteredRows(filtered);
+  };
+
+  const handleSpecializationChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const value = e.target.value;
+    setSpecialization(value);
+    filterDoctors(searchTerm, value);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    filterPatients(value);
+    filterDoctors(value, specialization);
   };
 
   return (
@@ -154,25 +150,24 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
           onSearchChange={handleSearchChange}
           placeholder="Search by PatientID, Name, or Phone Number"
         />
-      </div>
 
-      {/* <SearchFilter
-        labelSearch="Search for a Doctor"
-        labelSelectOne="Status"
-        labelSelectTwo="Location"
-        placeholderSearch="Search by Name"
-        optionsSelectOne={[
-          { value: "active", label: "Active" },
-          { value: "inactive", label: "Inactive" },
-          { value: "pending", label: "Pending" },
-        ]}
-        optionsSelectTwo={[
-          { value: "colombo", label: "Colombo" },
-          { value: "kandy", label: "Kandy" },
-          { value: "gampaha", label: "Gampaha" },
-        ]}
-        onSearch={() => {}}
-      /> */}
+        <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">
+            {"Filter by Status"}
+          </label>
+          <select
+            value={specialization}
+            onChange={handleSpecializationChange}
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          >
+            {optionsSelect.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       {/* Table - MUI */}
       <div className="mb-[45px]">
