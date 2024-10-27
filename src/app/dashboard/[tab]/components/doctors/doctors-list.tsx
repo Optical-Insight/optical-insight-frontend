@@ -10,19 +10,16 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePaginationActions from "@/app/components/common/table-pagination";
 import { TableHead } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { useAuth } from "@/context/AuthContext";
-import { GET_ALL_USERS_URL } from "@/constants/config";
+import { DELETE_USER_BY_ID_URL, GET_ALL_USERS_URL } from "@/constants/config";
 import axios from "axios";
 import { Spin } from "antd";
 import ModalInfoDoctor from "@/app/components/doctor/modal-info-doctor";
-
-import ModifyBtn from "@/app/components/common/button-modify";
-
 import SearchComponent from "@/app/components/common/search-component";
 import { optionsDoctorStatus } from "@/constants/data";
-
+import ModalConfirm from "@/app/components/common/modal-confirm";
+import toast, { Toaster } from "react-hot-toast";
 
 const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -32,26 +29,10 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [clickedRow, setClickedRow] = useState<DoctorsAllProps | null>(null);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-
-  const [modifyId, setModifyId] = useState("");
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const createDoctorData = (
-    id: string,
-    name: string,
-    email: string,
-    userId: string,
-    type: string,
-    rating: string,
-    specialization: string
-  ): DoctorsAllProps => {
-    return { id, name, email, userId, type, rating, specialization };
-  };
-
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredRows, setFilteredRows] = useState<DoctorsAllProps[]>([]);
   const [specialization, setSpecialization] = useState("");
-
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const fetchAllDoctors = async () => {
     try {
@@ -88,8 +69,8 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   }, [storedAuthData.accessToken]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -109,16 +90,39 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     setIsInfoModalOpen(true);
   };
 
-
-  const handleUpdateDoctor = async (doctor: DoctorsAllProps) => {
-    console.log("Update patient with id: ", doctor);
+  const handleEdit = (row: DoctorsAllProps) => {
+    console.log("Edit clicked", row);
+    setIsInfoModalOpen(false);
     setActiveHeading && setActiveHeading(2);
   };
 
-  const handleDeleteDoctor = async (patientId: string) => {
-    setModifyId(patientId);
-    console.log("Delete patient with id: ", patientId);
-    setShowDeleteModal(true);
+  const handleDelete = (row: DoctorsAllProps) => {
+    console.log("Delete clicked", row);
+    setIsInfoModalOpen(false);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleSubmitDelete = async () => {
+    setIsLoading(true);
+    await axios
+      .delete(`${DELETE_USER_BY_ID_URL}${clickedRow?.userId}`, {
+        headers: {
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
+        },
+      })
+      .then((res) => {
+        toast.success("Doctor Deleted successfully");
+        console.log("Doctor Deleted successfully", res);
+        setIsLoading(false);
+        fetchAllDoctors();
+      })
+      .catch((err) => {
+        toast.error("Error in deleting Doctor. Please try again.");
+        console.error("Error in deleting Doctor", err.response?.data || err);
+        setIsLoading(false);
+      });
+    setIsConfirmModalOpen(false);
+  };
 
   const filterDoctors = (term: string, selectedSpecialization: string) => {
     const lowerCaseTerm = term.toLowerCase();
@@ -152,11 +156,33 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     const value = e.target.value;
     setSearchTerm(value);
     filterDoctors(value, specialization);
-
   };
 
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       <div className="flex justify-between mb-[25px] items-center ">
         <div className="text-darkText font-bold text-4xl lg:text-[40px]">
           List of all Doctors
@@ -204,8 +230,8 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
                 <TableCell className="font-bold">Doctor ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
+                <TableCell className="font-bold">Email</TableCell>
                 <TableCell className="font-bold">Specialization</TableCell>
-                <TableCell className="font-bold">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -241,42 +267,15 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
                         {row.userId}
                       </TableCell>
                       <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.email}</TableCell>
                       <TableCell>
                         {row.specialization
                           ? row.specialization.replace("Eye Specialist - ", "")
                           : "N/A"}
                       </TableCell>
-                      <TableCell>
-                      <div className="inline-flex gap-2">
-                          <div className="h-9 xl:h-11 w-9 xl:w-11">
-                            <ModifyBtn
-                              label="Update"
-                              onClick={(
-                                e: React.MouseEvent<HTMLButtonElement>
-                              ) => {
-                                e.stopPropagation();
-                                setClickedRow && setClickedRow(row);
-                                handleUpdateDoctor(row);
-                              }}
-                            />
-                          </div>
-                          <div className="h-9 xl:h-11 w-9 xl:w-11">
-                            <ModifyBtn
-                              label="Delete"
-                              onClick={(
-                                e: React.MouseEvent<HTMLButtonElement>
-                              ) => {
-                                e.stopPropagation();
-                                setClickedRow && setClickedRow(row);
-                                handleDeleteDoctor(row.userId);
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </TableCell>
                     </TableRow>
                   ))}
-                  {emptyRows > 0 && (
+                  {filteredRows.length === 0 && (
                     <TableRow className="h-[20vw]">
                       <TableCell
                         colSpan={4}
@@ -326,8 +325,19 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
         isOpen={isInfoModalOpen}
         clickedRow={clickedRow}
         onClose={() => setIsInfoModalOpen(false)}
-        onEdit={() => console.log("Edit clicked")}
-        onDelete={() => console.log("Delete clicked")}
+        onEdit={() => clickedRow && handleEdit(clickedRow)}
+        onDelete={() => clickedRow && handleDelete(clickedRow)}
+      />
+
+      {/* Delete Confirm Modal */}
+      <ModalConfirm
+        title={`Confirm Delete Doctor - ${clickedRow?.userId}`}
+        message="Are you sure you want to delete this doctor?"
+        confirmLabel="Delete"
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleSubmitDelete}
+        isLoading={isLoading}
       />
     </div>
   );

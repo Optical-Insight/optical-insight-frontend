@@ -50,26 +50,25 @@ const DoctorRegistration = ({
 }: DoctorRegistrationProps) => {
   const { storedAuthData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     name: clickedRow ? clickedRow.name : "",
-    gender: clickedRow ?  clickedRow.gender : "",
+    gender: clickedRow ? clickedRow.gender : "",
 
-    dob: clickedRow ? clickedRow.dob: "",
-    nic: clickedRow ? clickedRow.nic: "",
-    email: clickedRow ? clickedRow.email: "",
-    phone: clickedRow ? clickedRow.phone: "",
-    address: clickedRow ? clickedRow.address: "",
-    hospitalLocation: clickedRow ? clickedRow.hospitalLocation: "",
-    medLicense: clickedRow ? clickedRow.medLicense: "",
-    institute: clickedRow ? clickedRow.institute: "",
-    
-    
-    specialization: clickedRow ? clickedRow.specialization: "",
-    yrsOfXp: clickedRow ? clickedRow.yrsOfXp: "",
-    
-    comments: clickedRow ? clickedRow.comments: "",
+    dob: clickedRow ? clickedRow.dob : "",
+    nic: clickedRow ? clickedRow.nic : "",
+    email: clickedRow ? clickedRow.email : "",
+    phone: clickedRow ? clickedRow.phone : "",
+    address: clickedRow ? clickedRow.address : "",
+    hospitalLocation: clickedRow ? clickedRow.hospitalLocation : "",
+    medLicense: clickedRow ? clickedRow.medLicense : "",
+    institute: clickedRow ? clickedRow.institute : "",
+
+    specialization: clickedRow ? clickedRow.specialization : "",
+    yrsOfXp: clickedRow ? clickedRow.yrsOfXp : "",
+
+    comments: clickedRow ? clickedRow.comments : "",
   });
 
   const stepForward = () => {
@@ -90,9 +89,8 @@ const DoctorRegistration = ({
   };
 
   const handleSubmitDoctor = async () => {
-    setIsLoading(true)
-    if(!clickedRow){
-
+    setIsLoading(true);
+    if (!clickedRow) {
       try {
         const res = await axios.post(
           CREATE_DOCTOR_URL,
@@ -104,13 +102,13 @@ const DoctorRegistration = ({
             dateOfBirth: formValues.dob,
             nic: formValues.nic,
             address: formValues.address,
-            hospitalLocation:  formValues.hospitalLocation,
-  
+            hospitalLocation: formValues.hospitalLocation,
+
             specialization: formValues.specialization,
             experience: formValues.yrsOfXp,
             medicalLicenceNumber: formValues.medLicense,
-            institute:formValues.institute,
-            specialNotes:formValues.comments,
+            institute: formValues.institute,
+            specialNotes: formValues.comments,
             type: "doctor",
           },
           {
@@ -123,14 +121,13 @@ const DoctorRegistration = ({
         setIsConfirmModalOpen(false);
         setIsLoading(false);
         console.log("Form submitted successfully:", res.data);
-        alert("Form submitted successfully:")
+        alert("Form submitted successfully:");
         setActiveHeading && setActiveHeading(1);
       } catch (err) {
         console.log("Submit error: ", err);
         alert("Error in submitting form");
       }
-
-    }else{
+    } else {
       try {
         const res = await axios.patch(
           `${UPDATE_USER_BY_ID_URL}${clickedRow.userId}`,
@@ -142,13 +139,13 @@ const DoctorRegistration = ({
             dateOfBirth: formValues.dob,
             nic: formValues.nic,
             address: formValues.address,
-            hospitalLocation:  formValues.hospitalLocation,
-  
+            hospitalLocation: formValues.hospitalLocation,
+
             specialization: formValues.specialization,
             experience: formValues.yrsOfXp,
             medicalLicenceNumber: formValues.medLicense,
-            institute:formValues.institute,
-            specialNotes:formValues.comments,
+            institute: formValues.institute,
+            specialNotes: formValues.comments,
             type: "doctor",
           },
           {
@@ -161,14 +158,13 @@ const DoctorRegistration = ({
         setIsConfirmModalOpen(false);
         setIsLoading(false);
         console.log("Form submitted successfully:", res.data);
-        alert("Form submitted successfully:")
+        alert("Form submitted successfully:");
         setActiveHeading && setActiveHeading(1);
       } catch (err) {
         console.log("Submit error: ", err);
         alert("Error in submitting form");
       }
     }
-    
   };
 
   // const [formErrors, setFormErrors] = useState({
@@ -185,7 +181,7 @@ const DoctorRegistration = ({
   return (
     <div>
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
-      {!clickedRow ? "Register" : "Update"} a Doctor
+        {!clickedRow ? "Register" : "Update"} a Doctor
       </div>
 
       {/* Form */}
@@ -221,9 +217,9 @@ const DoctorRegistration = ({
               required={true}
               value={formValues.gender}
               onChange={(value) => handleInputChange("gender", value)}
-              options={genderOptions} 
-
-            />;
+              options={genderOptions}
+            />
+            ;
             <FormField
               label="Date of Birth"
               type="date"
@@ -328,9 +324,7 @@ const DoctorRegistration = ({
       {/* Confirm Modal */}
       <ModalConfirm
         title={
-          !clickedRow
-            ? "Confirm Doctor Registration"
-            : "Confirm Doctor Update"
+          !clickedRow ? "Confirm Doctor Registration" : "Confirm Doctor Update"
         }
         message={
           !clickedRow
@@ -338,11 +332,10 @@ const DoctorRegistration = ({
             : "Are you sure you want to update the selected doctor?"
         }
         confirmLabel={!clickedRow ? "Submit" : "Update"}
-
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleSubmitDoctor}
-        
+        isLoading={isLoading}
       />
     </div>
   );

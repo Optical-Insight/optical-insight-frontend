@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ListAllProps, TechniciansAllProps } from "@/utils/interfaces";
-
 // import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,15 +11,15 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePaginationActions from "@/app/components/common/table-pagination";
 import { TableHead } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
 import CommonRegisterBtn from "@/app/components/common/registerButton";
-import { GET_ALL_USERS_URL } from "@/constants/config";
+import { DELETE_USER_BY_ID_URL, GET_ALL_USERS_URL } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { Spin } from "antd";
 import ModalInfoLabTechnician from "@/app/components/lab-technician/modal-info-lab-technician";
 import SearchComponent from "@/app/components/common/search-component";
+import ModalConfirm from "@/app/components/common/modal-confirm";
+import toast, { Toaster } from "react-hot-toast";
 
 const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -36,6 +35,7 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredRows, setFilteredRows] = useState<TechniciansAllProps[]>([]);
   const [institute, setInstitute] = useState("");
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const fetchAllTechnicians = async () => {
     try {
@@ -94,6 +94,18 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
     setIsInfoModalOpen(true);
   };
 
+  const handleEdit = (row: TechniciansAllProps) => {
+    console.log("Edit clicked", row);
+    setIsInfoModalOpen(false);
+    setActiveHeading && setActiveHeading(2);
+  };
+
+  const handleDelete = (row: TechniciansAllProps) => {
+    console.log("Delete clicked", row);
+    setIsInfoModalOpen(false);
+    setIsConfirmModalOpen(true);
+  };
+
   const filterDoctors = (term: string, selectedInstitute: string) => {
     console.log("filterDoctors - selectedInstitute "), selectedInstitute;
     const lowerCaseTerm = term.toLowerCase();
@@ -129,8 +141,56 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
     filterDoctors(value, institute);
   };
 
+  const handleSubmitDelete = async () => {
+    setIsLoading(true);
+    await axios
+      .delete(`${DELETE_USER_BY_ID_URL}${clickedRow?.userId}`, {
+        headers: {
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
+        },
+      })
+      .then((res) => {
+        toast.success("Technician deleted successfully");
+        console.log("Technician deleted successfully", res);
+        setIsLoading(false);
+        fetchAllTechnicians();
+      })
+      .catch((err) => {
+        toast.error("Error in deleting technician. Please try again.");
+        console.error(
+          "Error in deleting technician",
+          err.response?.data || err
+        );
+        setIsLoading(false);
+      });
+    setIsConfirmModalOpen(false);
+  };
+
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       <div className="flex justify-between mb-[25px] items-center ">
         <div className="text-darkText font-bold text-4xl lg:text-[40px]">
           List of all Lab Technicians
@@ -198,8 +258,6 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
                 <TableCell className="font-bold">Lab Technician ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
                 <TableCell className="font-bold">Email</TableCell>
-                <TableCell className="font-bold">None</TableCell>
-                <TableCell className="font-bold">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -235,12 +293,6 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
                       </TableCell>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.email}</TableCell>
-                      <TableCell></TableCell>
-                      <TableCell>
-                        <div>
-                          <MoreVertIcon />
-                        </div>
-                      </TableCell>
                     </TableRow>
                   ))}
                   {emptyRows > 0 && (
@@ -293,8 +345,19 @@ const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
         isOpen={isInfoModalOpen}
         clickedRow={clickedRow}
         onClose={() => setIsInfoModalOpen(false)}
-        onEdit={() => console.log("Edit clicked")}
-        onDelete={() => console.log("Delete clicked")}
+        onEdit={() => clickedRow && handleEdit(clickedRow)}
+        onDelete={() => clickedRow && handleDelete(clickedRow)}
+      />
+
+      {/* Delete Confirm Modal */}
+      <ModalConfirm
+        title={`Confirm Delete Lab Technician - ${clickedRow?.userId}`}
+        message="Are you sure you want to delete this lab technician?"
+        confirmLabel="Delete"
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleSubmitDelete}
+        isLoading={isLoading}
       />
     </div>
   );

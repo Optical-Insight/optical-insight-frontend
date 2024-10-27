@@ -109,8 +109,8 @@ const PatientListAll = ({
   }, [storedAuthData.accessToken]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -299,7 +299,7 @@ const PatientListAll = ({
                       </TableCell>
                     </TableRow>
                   ))}
-                  {emptyRows > 0 && (
+                  {filteredRows.length === 0 && (
                     <TableRow className="h-[20vw]">
                       <TableCell
                         colSpan={7}
@@ -350,6 +350,7 @@ const PatientListAll = ({
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleSubmitDelete}
+        isLoading={isLoading}
       />
     </div>
   );

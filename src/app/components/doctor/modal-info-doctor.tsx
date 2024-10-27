@@ -15,6 +15,8 @@ const ModalInfoDoctor = ({
   isOpen,
   clickedRow,
   onClose,
+  onEdit,
+  onDelete,
 }: ModalInfoDoctorProps) => {
   console.log("ModalInfoProps", clickedRow);
 
@@ -67,17 +69,17 @@ const ModalInfoDoctor = ({
               <div>
                 <button
                   type="button"
-                  className="mt-3 inline-flex w-full justify-center rounded-md bg-red-800 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-900 sm:mt-0 sm:w-auto"
-                  onClick={onClose}
+                  className="inline-flex w-full justify-center rounded-md bg-buttonPrimary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-buttonPrimaryHover sm:ml-3 sm:w-auto"
+                  onClick={onEdit}
                 >
-                  {deleteLabel}
+                  {updateLabel}
                 </button>
                 <button
                   type="button"
-                  className="inline-flex w-full justify-center rounded-md bg-buttonPrimary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-buttonPrimaryHover sm:ml-3 sm:w-auto"
-                  onClick={onClose}
+                  className="mt-3 inline-flex w-full justify-center rounded-md bg-red-800 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-900 sm:mt-0 sm:ml-3  sm:w-auto"
+                  onClick={onDelete}
                 >
-                  {updateLabel}
+                  {deleteLabel}
                 </button>
               </div>
               <div>
