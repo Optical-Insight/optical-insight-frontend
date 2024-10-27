@@ -2,7 +2,7 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
-import { CREATE_TEST_REPORT } from "@/constants/config";
+import { GENERATE_REPORT_PDF } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import { StepProps } from "@/utils/interfaces";
 import { PatientRecordProps } from "@/utils/patient";
@@ -49,6 +49,7 @@ const PatientRecordNew = ({
   const [fileLeftEnter, setFileLeftEnter] = useState(false);
   const [fileRight, setFileRight] = useState<File | null>(null);
   const [fileRightEnter, setFileRightEnter] = useState(false);
+  const [comments, setComments] = useState("");
 
   const stepForward = () => {
     if (activeStep === 2) {
@@ -66,28 +67,28 @@ const PatientRecordNew = ({
   const handleSubmitTestRecord = async () => {
     const formData = new FormData();
 
-    // Assuming 'fileLeft' and 'fileRight' are your state variables holding File objects
     if (fileLeft) {
-      formData.append("image", fileLeft, fileLeft.name); // Append the left eye image
+      formData.append("image", fileLeft, fileLeft.name);
     }
     if (fileRight) {
-      formData.append("image", fileRight, fileRight.name); // Append the right eye image
+      formData.append("image", fileRight, fileRight.name);
     }
 
-    const randomNum = Math.floor(Math.random() * 100) + 1; // Generate a random number between 1 and 1000
-    const reportName = `Report ${randomNum}`; // Concatenate 'Report' with the random number
+    const randomNum = Math.floor(Math.random() * 100) + 1;
+    const reportName = `Report ${randomNum}`;
 
     // Add other form data
-    formData.append("name", reportName); // Replace with actual data or state variable
-    formData.append("createdBy", storedAuthData?.userId ?? ""); // Replace with actual data or state variable
-    formData.append("patientId", patientData?.userId ?? ""); // Replace with actual data or state variable
+    formData.append("name", reportName);
+    formData.append("createdBy", storedAuthData?.userId ?? "");
+    formData.append("patientId", patientData?.userId ?? "");
+    formData.append("comments", comments);
 
     // Post request to server
     try {
-      const response = await axios.post(CREATE_TEST_REPORT, formData, {
+      const response = await axios.post(GENERATE_REPORT_PDF, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${storedAuthData.accessToken}`, // Use actual token
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
         },
       });
       console.log("Form submitted successfully:", response.data);
@@ -152,40 +153,23 @@ const PatientRecordNew = ({
               placeholder={"colombo"}
               value={patientData?.address}
               onChange={() => {}}
+              readOnly
             />
             <FormField
               label="Contact Number"
               placeholder="071 234 5678"
               value={patientData?.phone}
               onChange={() => {}}
+              readOnly
             />
             <FormField
               label="E-mail"
+              type="email"
               placeholder="saman@optmail.ai"
               value={patientData?.email}
               onChange={() => {}}
+              readOnly
             />
-
-            {/* <FormField
-              label="Date of Test"
-              placeholder="05 / 03 / 2023"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Type of Test"
-              placeholder="Test I"
-              onChange={() => {}}
-            /> 
-            <FormField
-              label="Comments or Notes"
-              placeholder="Lorem Ipsum"
-              onChange={() => {}}
-            />
-             <FormField
-              label="Technician's Digital Signature"
-              placeholder="Attach a File"
-              onChange={() => {}}
-            /> */}
           </div>
         )}
 
@@ -415,35 +399,11 @@ const PatientRecordNew = ({
               onChange={() => {}}
             />
 
-            {/* <FormField
-              label="Image Quality Assessment"
-              placeholder="High quality images"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Previous Lab Test Results"
-              placeholder="blood tests for specific eye-related conditions"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Previous Lab Test Reports"
-              placeholder="Attach a File or Drag & drop here"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Patient Consent for Data Use and Analysis"
-              placeholder="LTVC0099"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Privacy Policy Acknowledgment"
-              placeholder="Equipment used, test settings"
-              onChange={() => {}}
-            /> */}
             <FormField
               label="Additional Comments"
               placeholder="Patient is suffering from eye pain"
-              onChange={() => {}}
+              value={comments}
+              onChange={(value) => setComments(value)}
             />
           </div>
         )}

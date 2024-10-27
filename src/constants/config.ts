@@ -15,6 +15,7 @@ export const CREATE_PATIENT_URL = `${API_BASE_URL}/users/`;
 export const CREATE_DOCTOR_URL = `${API_BASE_URL}/users/`;
 
 export const GET_ALL_REPORTS = `${API_BASE_URL}/reports/`;
-export const CREATE_TEST_REPORT = `${API_REPORT_URL}/reports/generatePdf/`;
+export const CREATE_TEST_REPORT = `${API_BASE_URL}/reports/`;
+export const GENERATE_REPORT_PDF = `${API_REPORT_URL}/reports/generatePdf/`;
 
 //export const GET_ALL_REPORTS = `${API_BASE_URL}/appointments/`;

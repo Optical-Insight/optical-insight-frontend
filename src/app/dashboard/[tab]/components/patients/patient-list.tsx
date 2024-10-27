@@ -35,6 +35,8 @@ const PatientListAll = ({
   const [isLoading, setIsLoading] = useState(false);
   const [modifyId, setModifyId] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredRows, setFilteredRows] = useState<PatientsAllProps[]>([]);
   // const [searchQuery, setSearchQuery] = useState("");
   // const [locationFilter, setLocationFilter] = useState("");
 
@@ -55,6 +57,7 @@ const PatientListAll = ({
 
       // Set the rows with filtered data
       setRows(filteredPatients);
+      setFilteredRows(filteredPatients);
       setIsLoading(false);
     } catch (err: any) {
       console.error(
@@ -157,6 +160,24 @@ const PatientListAll = ({
     return age;
   };
 
+  const filterPatients = (term: string) => {
+    const filtered = rows.filter((row) => {
+      const matchesSearchTerm =
+        row.userId.includes(term) ||
+        row.name.includes(term) ||
+        row.phone.includes(term);
+
+      return matchesSearchTerm;
+    });
+    setFilteredRows(filtered);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterPatients(value);
+  };
+
   return (
     <div>
       <div>
@@ -197,18 +218,20 @@ const PatientListAll = ({
       </div>
 
       {/* Filter */}
-      <SearchFilter
-        labelSearch="Search for a Patient"
-        labelSelectOne="Location"
-        placeholderSearch="Search by Patient ID, Name or Phone Number"
-        optionsSelectOne={[
-          { value: "colombo", label: "Colombo" },
-          { value: "kandy", label: "Kandy" },
-          { value: "gampaha", label: "Gampaha" },
-        ]}
-        // onSearch={handleSearchChange}
-        // onSelectTwoChange={handleLocationChange}
-      />
+      <div className="mt-6 flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
+        <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">
+            Search for a Patient
+          </label>
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search by PatientID, Name or Phone Number"
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          />
+        </div>
+      </div>
 
       {/* Table - MUI */}
       <div className="mb-[45px]">
@@ -242,11 +265,11 @@ const PatientListAll = ({
                 <>
                   {" "}
                   {(rowsPerPage > 0
-                    ? rows.slice(
+                    ? filteredRows.slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                    : rows
+                    : filteredRows
                   ).map((row) => (
                     <TableRow
                       key={row.userId}

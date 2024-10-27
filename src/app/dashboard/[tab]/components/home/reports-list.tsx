@@ -12,7 +12,7 @@ import TablePaginationActions from "@/app/components/common/table-pagination";
 import SearchFilter from "@/app/components/common/search-filter";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-import { CREATE_TEST_REPORT, GET_ALL_REPORTS } from "@/constants/config";
+import { GENERATE_REPORT_PDF, GET_ALL_REPORTS } from "@/constants/config";
 import { ReportListAllProps } from "@/utils/interfaces";
 import { Spin } from "antd";
 import CommonBtn from "@/app/components/common/button";
@@ -24,6 +24,8 @@ const ReportsList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGeneratingReport, setIsGeneratingReport] = useState<string[]>([]);
   const [filteredRows, setFilteredRows] = useState<ReportListAllProps[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [status, setStatus] = useState("");
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -110,6 +112,33 @@ const ReportsList = () => {
     }
   }, [storedAuthData.accessToken]);
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterReports(value, status);
+  };
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setStatus(value);
+    filterReports(searchTerm, value);
+  };
+
+  const filterReports = (term: string, statusFilter: string) => {
+    const filtered = rows.filter((row) => {
+      const matchesSearchTerm =
+        row.reportId.includes(term) ||
+        row.patientId.includes(term) ||
+        row.createdBy.includes(term);
+      const matchesStatus =
+        statusFilter === "All" || statusFilter === ""
+          ? true
+          : row.status.toLowerCase() === statusFilter.toLowerCase();
+      return matchesSearchTerm && matchesStatus;
+    });
+    setFilteredRows(filtered);
+  };
+
   // const handleSearch = (searchTerm: string, status: string) => {
   //   console.log("Search Term", searchTerm);
   //   const filtered = rows.filter((row) => {
@@ -117,7 +146,7 @@ const ReportsList = () => {
   //       row.reportId.includes(searchTerm) ||
   //       row.patientId.includes(searchTerm) ||
   //       row.createdBy.includes(searchTerm);
-  //     const matchesStatus = status ? row.status === status : true;
+  //     const matchesStatus = status ? row.status.toLowerCase() === status : true;
   //     return matchesSearchTerm && matchesStatus;
   //   });
   //   setFilteredRows(filtered);
@@ -141,7 +170,7 @@ const ReportsList = () => {
     try {
       const response = await fetch(
         // `http://localhost:5013/api/reports/generatePdf/${reportId}`,
-        `${CREATE_TEST_REPORT}${reportId}`,
+        `${GENERATE_REPORT_PDF}${reportId}`,
         {
           headers: {
             Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -162,20 +191,32 @@ const ReportsList = () => {
 
   return (
     <div>
-      {/* Cards */}
-      <div className="mt-5 h-auto grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row justify-between bg-lightBlueBg rounded-lg p-[1.563vh] gap-4 lg:gap-4">
-        {/* Filter */}
-        <SearchFilter
-          labelSearch="Search for a Report"
-          labelSelectOne="Status"
-          labelSelectTwo="Location"
-          placeholderSearch="Search by ReportID, PatientID, CreatedBy"
-          optionsSelectOne={[
-            { value: "pending", label: "Pending" },
-            { value: "complete", label: "Completed" },
-          ]}
-          // onSearch={handleSearch}
-        />
+      {/* Filter */}
+      <div className="mt-6 flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
+        <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">
+            Search for a Report
+          </label>
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search by ReportID, PatientID, CreatedBy"
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          />
+        </div>
+        <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">Status</label>
+          <select
+            value={status}
+            onChange={handleStatusChange}
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          >
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
       </div>
 
       <div className="mt-5 mb-[45px]">
