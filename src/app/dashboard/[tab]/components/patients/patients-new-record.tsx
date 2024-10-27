@@ -166,13 +166,7 @@ const PatientRecordNew = ({
               onChange={() => {}}
             />
 
-            <div className="h-[6.445vh]" />
-            <FormField
-              label="Technician ID"
-              placeholder="LTVC0099"
-              onChange={() => {}}
-            />
-            <FormField
+            {/* <FormField
               label="Date of Test"
               placeholder="05 / 03 / 2023"
               onChange={() => {}}
@@ -181,17 +175,17 @@ const PatientRecordNew = ({
               label="Type of Test"
               placeholder="Test I"
               onChange={() => {}}
-            />
+            /> 
             <FormField
               label="Comments or Notes"
               placeholder="Lorem Ipsum"
               onChange={() => {}}
             />
-            <FormField
+             <FormField
               label="Technician's Digital Signature"
               placeholder="Attach a File"
               onChange={() => {}}
-            />
+            /> */}
           </div>
         )}
 
@@ -412,7 +406,16 @@ const PatientRecordNew = ({
               </div>
             </div>
 
+            <div className="h-[6.445vh]" />
             <FormField
+              readOnly={true}
+              label="Technician ID"
+              placeholder="LTVC0099"
+              value={storedAuthData?.userId}
+              onChange={() => {}}
+            />
+
+            {/* <FormField
               label="Image Quality Assessment"
               placeholder="High quality images"
               onChange={() => {}}
@@ -436,10 +439,10 @@ const PatientRecordNew = ({
               label="Privacy Policy Acknowledgment"
               placeholder="Equipment used, test settings"
               onChange={() => {}}
-            />
+            /> */}
             <FormField
-              label="Comments or Notes"
-              placeholder="Additional information"
+              label="Additional Comments"
+              placeholder="Patient is suffering from eye pain"
               onChange={() => {}}
             />
           </div>
