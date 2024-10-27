@@ -4,10 +4,14 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Image from "next/image";
 import DoctorRegistration from "./doctors-reg";
 import DoctorListAll from "./doctors-list";
+import { DoctorsAllProps } from "@/utils/doctor";
 
 const DoctorHeadsPage = () => {
   const [activeHeading, setActiveHeading] = useState(1);
   const [activeStep, setActiveStep] = useState(1);
+  const [clickedRow, setClickedRow] = useState<DoctorsAllProps | null>(null);
+
+  console.log("DoctorHeadsPage", clickedRow);
 
   const handleBreadcrumbClick = (value: number) => {
     if (value === activeHeading) return;
@@ -70,7 +74,11 @@ const DoctorHeadsPage = () => {
 
       {/* All Doctors */}
       {activeHeading === 1 && (
-        <DoctorListAll setActiveHeading={setActiveHeading} />
+        <DoctorListAll
+          setActiveHeading={setActiveHeading}
+          clickedRow={clickedRow}
+          setClickedRow={setClickedRow}
+        />
       )}
 
       {/* Register an Doctor */}
@@ -78,6 +86,8 @@ const DoctorHeadsPage = () => {
         <DoctorRegistration
           activeStep={activeStep}
           setActiveStep={setActiveStep}
+          setActiveHeading={setActiveHeading}
+          clickedRow={clickedRow}
         />
       )}
     </div>

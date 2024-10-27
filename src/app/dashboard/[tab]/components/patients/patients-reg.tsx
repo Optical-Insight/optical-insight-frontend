@@ -44,8 +44,6 @@ const PatientsRegistration = ({
   setActiveHeading,
   clickedRow,
 }: PatientRegistrationProps) => {
-  console.log("clicked Patient Row: ", clickedRow);
-
   const { storedAuthData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);

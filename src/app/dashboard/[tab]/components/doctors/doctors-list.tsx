@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DoctorsAllProps, ListAllProps } from "@/utils/interfaces";
+import { DoctorsAllProps } from "@/utils/interfaces";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -20,14 +20,18 @@ import SearchComponent from "@/app/components/common/search-component";
 import { optionsDoctorStatus } from "@/constants/data";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import toast, { Toaster } from "react-hot-toast";
+import { ListAllInstituteProps } from "@/utils/institute";
 
-const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
+const DoctorListAll = ({
+  setActiveHeading,
+  clickedRow,
+  setClickedRow,
+}: ListAllInstituteProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<DoctorsAllProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [clickedRow, setClickedRow] = useState<DoctorsAllProps | null>(null);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredRows, setFilteredRows] = useState<DoctorsAllProps[]>([]);

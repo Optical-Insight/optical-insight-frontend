@@ -1,10 +1,17 @@
 import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
-import FormFieldTextArea from "@/app/components/common/form-textArea";
 import ModalConfirm from "@/app/components/common/modal-confirm";
-import { InstituteRegistrationProps, StepProps } from "@/utils/interfaces";
+import {
+  CREATE_TECHNICIAN_URL,
+  UPDATE_USER_BY_ID_URL,
+} from "@/constants/config";
+import { useAuth } from "@/context/AuthContext";
+import { StepProps } from "@/utils/interfaces";
+import { TechnicianRegistrationProps } from "@/utils/technician";
+import axios from "axios";
 import React, { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -35,21 +42,22 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
 const TechnicianRegistration = ({
   activeStep,
   setActiveStep,
-}: InstituteRegistrationProps) => {
+  setActiveHeading,
+  clickedRow,
+}: TechnicianRegistrationProps) => {
+  console.log("clickedRow", clickedRow);
+
+  const { storedAuthData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
-    name: "",
-    gender: "",
-    dob: "",
-    nic: "",
-    email: "",
-    phone: "",
-    yearsOfXp: "",
-    speciality: "",
-    familiarityWithLab: "",
-    skills: "",
-    refContact: "",
-    comments: "",
+    name: clickedRow ? clickedRow.name : "",
+    sex: clickedRow ? clickedRow.sex : "",
+    dateOfBirth: clickedRow ? clickedRow.dateOfBirth : "",
+    nic: clickedRow ? clickedRow.nic : "",
+    email: clickedRow ? clickedRow.email : "",
+    phone: clickedRow ? clickedRow.phone : "",
+    yrsOfXp: clickedRow ? clickedRow.yrsOfXp : "",
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -73,8 +81,110 @@ const TechnicianRegistration = ({
     setActiveStep(activeStep - 1);
   };
 
+  const handleSubmitTechnician = async () => {
+    setIsLoading(true);
+    console.log("Form values: ", formValues);
+
+    if (!clickedRow) {
+      try {
+        const res = await axios.post(
+          CREATE_TECHNICIAN_URL,
+          {
+            name: formValues.name,
+            email: formValues.email,
+            phone: formValues.phone,
+            sex: formValues.sex,
+            dateOfBirth: formValues.dateOfBirth,
+            type: "mlt",
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${storedAuthData.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setIsConfirmModalOpen(false);
+        setIsLoading(false);
+        toast.success("Login Successful");
+        console.log("Form submitted successfully:", res.data);
+        setActiveHeading && setActiveHeading(1);
+      } catch (err) {
+        console.log("Submit error: ", err);
+        setIsLoading(false);
+        toast.error("Something went wrong. Please try again.");
+      }
+    } else {
+      try {
+        const res = await axios.patch(
+          `${UPDATE_USER_BY_ID_URL}${clickedRow.userId}`,
+          {
+            name: formValues.name,
+            email: formValues.email,
+            phone: formValues.phone,
+            sex: formValues.sex,
+            dateOfBirth: formValues.dateOfBirth,
+
+            // address: formValues.address,
+            // occupation: formValues.occupation,
+            // emergencyPhone: formValues.emergencyPhone,
+            // generalMedicalHistory: formValues.generalMedicalHistory,
+            // familyHistoryOfEyeConditions:
+            //   formValues.familyHistoryOfEyeConditions,
+            // currentMedications: formValues.currentMedications,
+            // historyOfSmokingAndAlcoholConsumption:
+            //   formValues.historyOfSmokingAndAlcoholConsumption,
+            // visionProblems: formValues.visionProblems,
+            // pastEyeProblemsOrSurgeries: formValues.pastEyeProblemsOrSurgeries,
+            // eyeDiscomfort: formValues.eyeDiscomfort,
+            // glassesOrContactLenseUsage: formValues.glassesOrContactLenseUsage,
+            // height: formValues.height,
+            // weight: formValues.weight,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${storedAuthData.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setIsConfirmModalOpen(false);
+        setIsLoading(false);
+        toast.success("Technician Update Successfully");
+        console.log("Form submitted successfully:", res.data);
+        setActiveHeading && setActiveHeading(1);
+      } catch (err) {
+        console.log("Submit error: ", err);
+        setIsLoading(false);
+        toast.error("Something went wrong. Please try again.");
+      }
+    }
+  };
+
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
         Register an Technician
       </div>
@@ -111,7 +221,7 @@ const TechnicianRegistration = ({
               label="Gender"
               placeholder="Male"
               required={true}
-              value={formValues.gender}
+              value={formValues.sex}
               onChange={(value) => handleInputChange("gender", value)}
             />
             <FormField
@@ -119,7 +229,7 @@ const TechnicianRegistration = ({
               type="date"
               placeholder=""
               required={true}
-              value={formValues.dob}
+              value={formValues.dateOfBirth}
               onChange={(value) => handleInputChange("dob", value)}
             />
             <FormField
@@ -130,11 +240,12 @@ const TechnicianRegistration = ({
               onChange={(value) => handleInputChange("nic", value)}
             />
             <FormField
-              label="Email"
-              placeholder="visioncare@opthal.com"
-              required={true}
+              label="E-mail"
+              type="email"
+              placeholder="saman@optmail.ai"
               value={formValues.email}
               onChange={(value) => handleInputChange("email", value)}
+              required
             />
             <FormField
               label="Contact Number"
@@ -149,7 +260,7 @@ const TechnicianRegistration = ({
         {/* Step 02 */}
         {activeStep === 2 && (
           <div className="mt-[5.371vh] ml-[3.403vw] mr-[4.722vw]">
-            <FormField
+            {/* <FormField
               label="Years of Experience"
               placeholder="Vision Care Opticals"
               value={formValues.yearsOfXp}
@@ -188,7 +299,7 @@ const TechnicianRegistration = ({
               placeholder="Good with Glaucoma patients"
               value={formValues.comments}
               onChange={(value) => handleInputChange("comments", value)}
-            />
+            /> */}
           </div>
         )}
 
@@ -201,7 +312,9 @@ const TechnicianRegistration = ({
               )}
             </div>
             <CommonBtn
-              label={activeStep === 2 ? "Submit" : "Next"}
+              label={
+                activeStep === 2 ? (!clickedRow ? "Submit" : "Update") : "Next"
+              }
               onClick={stepForward}
             />
           </div>
@@ -210,12 +323,21 @@ const TechnicianRegistration = ({
 
       {/* Confirm Modal */}
       <ModalConfirm
-        title="Confirm Technician Registration"
-        message="Are you sure you want to submit the registration form?"
-        confirmLabel="Submit"
+        title={
+          !clickedRow
+            ? "Confirm Technician Registration"
+            : "Confirm Technician Update"
+        }
+        message={
+          !clickedRow
+            ? "Are you sure you want to submit the registration form?"
+            : "Are you sure you want to update the selected technician?"
+        }
+        confirmLabel={!clickedRow ? "Submit" : "Update"}
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={() => console.log("Submitted")}
+        onConfirm={handleSubmitTechnician}
+        isLoading={isLoading}
       />
     </div>
   );

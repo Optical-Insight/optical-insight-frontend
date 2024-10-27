@@ -243,9 +243,10 @@ const InstituteListAll = ({
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
                 <TableCell className="font-bold">Institute ID</TableCell>
                 <TableCell className="font-bold">Name</TableCell>
-                <TableCell className="font-bold">Location</TableCell>
-                <TableCell className="font-bold">Contact Number</TableCell>
+                {/* <TableCell className="font-bold">Location</TableCell>
+                <TableCell className="font-bold">Contact Number</TableCell> */}
                 <TableCell className="font-bold">Email</TableCell>
+                <TableCell className="font-bold">Website</TableCell>
                 {/* <TableCell className="font-bold">Action</TableCell> */}
               </TableRow>
             </TableHead>
@@ -282,9 +283,10 @@ const InstituteListAll = ({
                         {row.clinicId}
                       </TableCell>
                       <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.location}</TableCell>
-                      <TableCell>{row.phone}</TableCell>
+                      {/* <TableCell>{row.location}</TableCell>
+                      <TableCell>{row.phone}</TableCell> */}
                       <TableCell>{row.email}</TableCell>
+                      <TableCell>{row.website}</TableCell>
                     </TableRow>
                   ))}
                   {rows.length === 0 && (

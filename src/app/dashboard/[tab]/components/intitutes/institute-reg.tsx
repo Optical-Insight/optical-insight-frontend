@@ -2,15 +2,19 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
-import { CREATE_INSTITUTES_URL } from "@/constants/config";
+import {
+  CREATE_INSTITUTES_URL,
+  UPDATE_INSTITUTE_BY_ID_URL,
+} from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import { StepProps } from "@/utils/interfaces";
 import { InstituteRegistrationProps } from "@/utils/institute";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import FormFieldTextArea from "@/app/components/common/form-textArea";
 
-const Step = ({ number, title, active, lineActive }: StepProps) => {
+const Step = ({ number, title, active }: StepProps) => {
   return (
     <div
       className={`flex items-center space-x-4 ${
@@ -25,13 +29,6 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
         {number}
       </span>
       <h2 className="text-[16px] font-semibold">{title}</h2>
-      {number == 1 ? (
-        <div
-          className={`w-[4.444vw] h-[0.195vh] ${
-            lineActive ? "bg-blueText" : "bg-disabledText"
-          } ml-[0.556vw]`}
-        ></div>
-      ) : null}
     </div>
   );
 };
@@ -48,19 +45,12 @@ const InstituteRegistration = ({
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
-    clinicId: "",
-    instituteName: "",
-    address: "",
-    contactNo: "",
-    email: "",
-    website: "",
-    services: "",
-    certifications: "",
-    noOfTechnicians: "",
-    hrsOfOperation: "",
-    specialServices: "",
-    ehr: "",
-    comments: "",
+    instituteName: clickedRow ? clickedRow.instituteName : "",
+    email: clickedRow ? clickedRow.email : "",
+    website: clickedRow ? clickedRow.website : "",
+    services: clickedRow ? clickedRow.services : "",
+    certifications: clickedRow ? clickedRow.certifications : "",
+    comments: clickedRow ? clickedRow.comments : "",
   });
 
   useEffect(() => {
@@ -81,42 +71,29 @@ const InstituteRegistration = ({
   };
 
   const handleSubmitForm = async () => {
+    console.log("Form Values: ", formValues);
     setIsLoading(true);
 
-
-
-    if (clickedRow === null) {
+    if (!clickedRow) {
       axios
         .post(
           CREATE_INSTITUTES_URL,
           {
-            //name: formValues.instituteName,
-            //location: formValues.address,
-            //phone: formValues.contactNo,
-            //email: formValues.email,
-            //website: formValues.website,
-            //typeOfOpticalServicesProvided: formValues.services,
-            //certifications: formValues.certifications,
-            //numberOfPatients: formValues.noOfTechnicians,
-            //numberOfLabTechnicians: formValues.noOfTechnicians,
-            //hoursOfOperation: formValues.hrsOfOperation,
-            //specialServices: formValues.specialServices,
-            //isEHR: formValues.ehr === "Yes",
-            //comments: formValues.comments
+            name: formValues.instituteName,
+            email: formValues.email,
+            website: formValues.website,
+            typeOfOpticalServicesProvided: formValues.services,
+            certifications: formValues.certifications,
+            comments: formValues.comments,
 
-            name: "formValues4",
+            //REMOVE BELOW
             location: "formValues.address",
             phone: "formValues.contactNo",
-            email: "formValues2@gmail.com",
-            website: "formValues.website",
-            typeOfOpticalServicesProvided: "formValues.services",
-            certifications: "formValues.certifications",
-            numberOfPatients: 5,
-            numberOfLabTechnicians: 2,
+            numberOfPatients: 10,
+            numberOfLabTechnicians: 10,
             hoursOfOperation: 10,
             specialServices: "formValues.specialServices",
-            isEHR: formValues.ehr === "Yes",
-            comments: "formValues.comments"
+            isEHR: true,
           },
           {
             headers: {
@@ -140,23 +117,57 @@ const InstituteRegistration = ({
           toast.error("Form Submission Failed. Try again.");
         });
     } else {
-      console.log("Update Confirmed: ");
-      setIsConfirmModalOpen(false);
-      setIsLoading(false);
+      axios
+        .patch(
+          UPDATE_INSTITUTE_BY_ID_URL + clickedRow.clinicId,
+          {
+            name: formValues.instituteName,
+            email: formValues.email,
+            website: formValues.website,
+            typeOfOpticalServicesProvided: formValues.services,
+            certifications: formValues.certifications,
+            comments: formValues.comments,
+
+            //REMOVE BELOW
+            location: "formValues.address",
+            phone: "formValues.contactNo",
+            numberOfPatients: 10,
+            numberOfLabTechnicians: 10,
+            hoursOfOperation: 10,
+            specialServices: "formValues.specialServices",
+            isEHR: true,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${storedAuthData.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setIsLoading(false);
+          setIsConfirmModalOpen(false);
+          console.log("Form submitted successfully:", res.data);
+          toast.success("Update institute Successful");
+          setActiveHeading && setActiveHeading(1);
+          return res.data;
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setIsConfirmModalOpen(false);
+          console.error("Error:", err.message);
+          toast.error("Update institute Failed. Try again.");
+        });
     }
+
+    setIsLoading(false);
   };
 
   console.log("activeStep", activeStep);
 
   const stepForward = () => {
-    if (activeStep === 2) {
-      if (
-        formValues.instituteName === "" ||
-        formValues.address === "" ||
-        formValues.contactNo === "" ||
-        formValues.email === "" ||
-        formValues.website === ""
-      ) {
+    if (activeStep === 1) {
+      if (formValues.instituteName === "" || formValues.email === "") {
         toast.error("Please fill all the required fields.");
         return;
       }
@@ -206,12 +217,6 @@ const InstituteRegistration = ({
             active={activeStep >= 1}
             lineActive={activeStep >= 2}
           />
-          <Step
-            number={2}
-            title="Other Information"
-            active={activeStep >= 2}
-            lineActive={activeStep >= 3}
-          />
         </div>
 
         <div className="mt-8 ml-[3.403vw] mr-[4.722vw]">
@@ -225,7 +230,7 @@ const InstituteRegistration = ({
                 value={formValues.instituteName}
                 onChange={(value) => handleInputChange("instituteName", value)}
               />
-              <FormField
+              {/* <FormField
                 label="Address"
                 placeholder="1st Floor, 907 Peradeniya Rd, Kandy"
                 required={true}
@@ -238,12 +243,14 @@ const InstituteRegistration = ({
                 required={true}
                 value={formValues.contactNo}
                 onChange={(value) => handleInputChange("contactNo", value)}
-              />
+              /> */}
               <FormField
-                label="Email Address"
-                placeholder="info@visioncare.lk"
+                label="E-mail"
+                type="email"
+                placeholder="saman@optmail.ai"
                 value={formValues.email}
                 onChange={(value) => handleInputChange("email", value)}
+                required
               />
               <FormField
                 label="Website URL"
@@ -251,12 +258,9 @@ const InstituteRegistration = ({
                 value={formValues.website}
                 onChange={(value) => handleInputChange("website", value)}
               />
-            </>
-          )}
 
-          {/* Step 02 */}
-          {activeStep === 2 && (
-            <>
+              <div className="h-[6.445vh]" />
+
               <FormField
                 label="Type of Optical Services Provided"
                 placeholder="Eye Examine, Contact Lenses, Glasses, etc."
@@ -269,21 +273,10 @@ const InstituteRegistration = ({
                 value={formValues.certifications}
                 onChange={(value) => handleInputChange("certifications", value)}
               />
-              {/*<FormField
-                label="Special Services"
-                placeholder="Home Visits, Emergency Services, etc."
-                value={formValues.specialServices}
-                onChange={(value) =>
-                  handleInputChange("specialServices", value)
-                }
-              />*/}
-              <FormField
-                label="Electronic Health Record (EHR) System Used"
-                placeholder="Yes"
-                value={formValues.ehr}
-                onChange={(value) => handleInputChange("ehr", value)}
-              />
-              <FormField
+
+              <div className="h-[6.445vh]" />
+
+              <FormFieldTextArea
                 label="Comments or Notes"
                 placeholder="Lorem Ipsum"
                 value={formValues.comments}
@@ -305,7 +298,7 @@ const InstituteRegistration = ({
             <div className="w-full">
               <CommonBtn
                 label={
-                  activeStep === 2
+                  activeStep === 1
                     ? clickedRow === null
                       ? "Submit"
                       : "Update"
