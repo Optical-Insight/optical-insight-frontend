@@ -20,7 +20,7 @@ import { TableHead } from "@mui/material";
 import { Spin } from "antd";
 import { PatientRecordAllRowProps, ListAllPatientProps } from "@/utils/patient";
 import axios from "axios";
-import { CREATE_TEST_REPORT, GET_ALL_REPORTS } from "@/constants/config";
+import { GENERATE_REPORT_PDF, GET_ALL_REPORTS } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 
 const PatientProfile = ({
@@ -142,7 +142,7 @@ const PatientProfile = ({
   const generateReport = async (reportId: string) => {
     setIsGeneratingReport((prev) => [...prev, reportId]);
     try {
-      const response = await fetch(`${CREATE_TEST_REPORT}${reportId}`, {
+      const response = await fetch(`${GENERATE_REPORT_PDF}${reportId}`, {
         headers: {
           Authorization: `Bearer ${storedAuthData.accessToken}`,
           "Content-Type": "application/json",
