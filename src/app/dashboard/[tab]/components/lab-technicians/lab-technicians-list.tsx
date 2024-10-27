@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ListAllProps, TechniciansAllProps } from "@/utils/interfaces";
+import { TechniciansAllProps } from "@/utils/interfaces";
 // import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -20,17 +20,20 @@ import ModalInfoLabTechnician from "@/app/components/lab-technician/modal-info-l
 import SearchComponent from "@/app/components/common/search-component";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import toast, { Toaster } from "react-hot-toast";
+import { ListAllInstituteProps } from "@/utils/institute";
 
-const TechnicianListAll = ({ setActiveHeading }: ListAllProps) => {
+const TechnicianListAll = ({
+  setActiveHeading,
+  clickedRow,
+  setClickedRow,
+}: ListAllInstituteProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<TechniciansAllProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [clickedRow, setClickedRow] = useState<TechniciansAllProps | null>(
-    null
-  );
+
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredRows, setFilteredRows] = useState<TechniciansAllProps[]>([]);

@@ -16,3 +16,11 @@ export interface ModalInfoLabTechnicianProps {
   onEdit: () => void;
   onDelete: () => void;
 }
+
+export interface TechnicianRegistrationProps {
+  activeStep: number;
+  setActiveStep: (value: number) => void;
+  setActiveHeading?: (value: number) => void;
+  clickedRow?: any;
+  setClickedRow?: (value: any) => void;
+}

@@ -10,6 +10,7 @@ import { DoctorRegistrationProps } from "@/utils/doctor";
 import axios from "axios";
 import React, { useState } from "react";
 import FormFieldTextArea from "@/app/components/common/form-textArea";
+import toast, { Toaster } from "react-hot-toast";
 
 const genderOptions = [
   { value: "Male", label: "Male" },
@@ -121,11 +122,13 @@ const DoctorRegistration = ({
         setIsConfirmModalOpen(false);
         setIsLoading(false);
         console.log("Form submitted successfully:", res.data);
-        alert("Form submitted successfully:");
+        // alert("Form submitted successfully");
+        toast.success("Form submitted successfully");
         setActiveHeading && setActiveHeading(1);
       } catch (err) {
         console.log("Submit error: ", err);
-        alert("Error in submitting form");
+        // alert("Error in submitting form");
+        toast.error("Error in submitting form. Please try again");
       }
     } else {
       try {
@@ -158,11 +161,11 @@ const DoctorRegistration = ({
         setIsConfirmModalOpen(false);
         setIsLoading(false);
         console.log("Form submitted successfully:", res.data);
-        alert("Form submitted successfully:");
+        toast.success("Form submitted successfully");
         setActiveHeading && setActiveHeading(1);
       } catch (err) {
         console.log("Submit error: ", err);
-        alert("Error in submitting form");
+        toast.error("Error in submitting form. Please try again");
       }
     }
   };
@@ -180,6 +183,29 @@ const DoctorRegistration = ({
 
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
         {!clickedRow ? "Register" : "Update"} a Doctor
       </div>

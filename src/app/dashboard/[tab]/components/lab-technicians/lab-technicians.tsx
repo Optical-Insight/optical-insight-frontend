@@ -4,10 +4,12 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Image from "next/image";
 import TechnicianRegistration from "./lab-technicians-reg";
 import TechnicianListAll from "./lab-technicians-list";
+import { PatientsAllProps } from "@/utils/patient";
 
 const TechnicianHeadsPage = () => {
   const [activeHeading, setActiveHeading] = useState(1);
   const [activeStep, setActiveStep] = useState(1);
+  const [clickedRow, setClickedRow] = useState<PatientsAllProps | null>(null);
 
   const handleBreadcrumbClick = (value: number) => {
     if (value === activeHeading) return;
@@ -70,7 +72,11 @@ const TechnicianHeadsPage = () => {
 
       {/* All Technicians */}
       {activeHeading === 1 && (
-        <TechnicianListAll setActiveHeading={setActiveHeading} />
+        <TechnicianListAll
+          setActiveHeading={setActiveHeading}
+          clickedRow={clickedRow}
+          setClickedRow={setClickedRow}
+        />
       )}
 
       {/* Register an Technician */}
@@ -78,6 +84,9 @@ const TechnicianHeadsPage = () => {
         <TechnicianRegistration
           activeStep={activeStep}
           setActiveStep={setActiveStep}
+          setActiveHeading={setActiveHeading}
+          clickedRow={clickedRow}
+          setClickedRow={setClickedRow}
         />
       )}
     </div>
