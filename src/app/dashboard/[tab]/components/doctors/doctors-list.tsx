@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePaginationActions from "@/app/components/common/table-pagination";
 import { TableHead } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { useAuth } from "@/context/AuthContext";
 import { GET_ALL_USERS_URL } from "@/constants/config";
@@ -113,6 +113,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
 
   const handleUpdateDoctor = async (doctor: DoctorsAllProps) => {
     console.log("Update patient with id: ", doctor);
+    console.log(modifyId)
     setActiveHeading && setActiveHeading(2);
   };
 
