@@ -17,12 +17,8 @@ import { GET_ALL_USERS_URL } from "@/constants/config";
 import axios from "axios";
 import { Spin } from "antd";
 import ModalInfoDoctor from "@/app/components/doctor/modal-info-doctor";
-
-import ModifyBtn from "@/app/components/common/button-modify";
-
 import SearchComponent from "@/app/components/common/search-component";
 import { optionsDoctorStatus } from "@/constants/data";
-
 
 const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -32,26 +28,9 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [clickedRow, setClickedRow] = useState<DoctorsAllProps | null>(null);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-
-  const [modifyId, setModifyId] = useState("");
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const createDoctorData = (
-    id: string,
-    name: string,
-    email: string,
-    userId: string,
-    type: string,
-    rating: string,
-    specialization: string
-  ): DoctorsAllProps => {
-    return { id, name, email, userId, type, rating, specialization };
-  };
-
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredRows, setFilteredRows] = useState<DoctorsAllProps[]>([]);
   const [specialization, setSpecialization] = useState("");
-
 
   const fetchAllDoctors = async () => {
     try {
@@ -109,17 +88,6 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     setIsInfoModalOpen(true);
   };
 
-
-  const handleUpdateDoctor = async (doctor: DoctorsAllProps) => {
-    console.log("Update patient with id: ", doctor);
-    setActiveHeading && setActiveHeading(2);
-  };
-
-  const handleDeleteDoctor = async (patientId: string) => {
-    setModifyId(patientId);
-    console.log("Delete patient with id: ", patientId);
-    setShowDeleteModal(true);
-
   const filterDoctors = (term: string, selectedSpecialization: string) => {
     const lowerCaseTerm = term.toLowerCase();
 
@@ -152,7 +120,6 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     const value = e.target.value;
     setSearchTerm(value);
     filterDoctors(value, specialization);
-
   };
 
   return (
@@ -247,31 +214,8 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
                           : "N/A"}
                       </TableCell>
                       <TableCell>
-                      <div className="inline-flex gap-2">
-                          <div className="h-9 xl:h-11 w-9 xl:w-11">
-                            <ModifyBtn
-                              label="Update"
-                              onClick={(
-                                e: React.MouseEvent<HTMLButtonElement>
-                              ) => {
-                                e.stopPropagation();
-                                setClickedRow && setClickedRow(row);
-                                handleUpdateDoctor(row);
-                              }}
-                            />
-                          </div>
-                          <div className="h-9 xl:h-11 w-9 xl:w-11">
-                            <ModifyBtn
-                              label="Delete"
-                              onClick={(
-                                e: React.MouseEvent<HTMLButtonElement>
-                              ) => {
-                                e.stopPropagation();
-                                setClickedRow && setClickedRow(row);
-                                handleDeleteDoctor(row.userId);
-                              }}
-                            />
-                          </div>
+                        <div>
+                          <MoreVertIcon />
                         </div>
                       </TableCell>
                     </TableRow>
