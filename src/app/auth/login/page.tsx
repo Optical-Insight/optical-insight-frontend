@@ -132,10 +132,10 @@ function AdminLogin() {
           email,
           password,
         })
-        .then((response) => {
+        .then(async (response) => {
+          await login(response.data);
+          router.push("/dashboard/home");
           toast.success("Login Successful");
-          setIsLoading(false);
-          login(response.data);
         })
         .catch((error) => {
           console.error("Error in Login:", error);

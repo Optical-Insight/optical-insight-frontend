@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ListAllPatientProps, PatientsAllProps } from "@/utils/patient";
-import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -22,6 +21,7 @@ import { Spin } from "antd";
 import ModifyBtn from "@/app/components/common/button-modify";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import toast, { Toaster } from "react-hot-toast";
+import SearchComponent from "@/app/components/common/search-component";
 
 const PatientListAll = ({
   setActiveHeading,
@@ -35,8 +35,8 @@ const PatientListAll = ({
   const [isLoading, setIsLoading] = useState(false);
   const [modifyId, setModifyId] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [locationFilter, setLocationFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredRows, setFilteredRows] = useState<PatientsAllProps[]>([]);
 
   const fetchAllPatients = async () => {
     try {
@@ -55,6 +55,7 @@ const PatientListAll = ({
 
       // Set the rows with filtered data
       setRows(filteredPatients);
+      setFilteredRows(filteredPatients);
       setIsLoading(false);
     } catch (err: any) {
       console.error(
@@ -99,10 +100,6 @@ const PatientListAll = ({
     setShowDeleteModal(false);
   };
 
-  // // Handle search and filters update
-  // const handleSearchChange = (value: string) => setSearchQuery(value);
-  // const handleLocationChange = (value: string) => setLocationFilter(value);
-
   useEffect(() => {
     if (isAuthenticated && storedAuthData) {
       fetchAllPatients();
@@ -110,18 +107,6 @@ const PatientListAll = ({
       console.error("No authentication data found.");
     }
   }, [storedAuthData.accessToken]);
-
-  // // Filtered rows based on search and filter states
-  // const filteredRows = rows.filter((row) => {
-  //   const matchesSearchQuery =
-  //     row.userId.includes(searchQuery) ||
-  //     row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //     row.phone.includes(searchQuery);
-
-  //   const matchesLocation = !locationFilter || row.address === locationFilter;
-
-  //   return matchesSearchQuery && matchesLocation;
-  // });
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -155,6 +140,29 @@ const PatientListAll = ({
     }
 
     return age;
+  };
+
+  const filterPatients = (term: string) => {
+    console.log("rows", rows);
+    const lowerCaseTerm = term.toLowerCase();
+    const filtered = rows.filter((row) => {
+      const matchesSearchTerm =
+        row.userId.toLowerCase().includes(lowerCaseTerm) ||
+        row.name.toLowerCase().includes(lowerCaseTerm) ||
+        row.phone.includes(lowerCaseTerm);
+
+      console.log("matchesSearchTerm", row.name);
+      console.log("matchesSearchTerm", term);
+
+      return matchesSearchTerm;
+    });
+    setFilteredRows(filtered);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterPatients(value);
   };
 
   return (
@@ -197,18 +205,14 @@ const PatientListAll = ({
       </div>
 
       {/* Filter */}
-      <SearchFilter
-        labelSearch="Search for a Patient"
-        labelSelectOne="Location"
-        placeholderSearch="Search by Patient ID, Name or Phone Number"
-        optionsSelectOne={[
-          { value: "colombo", label: "Colombo" },
-          { value: "kandy", label: "Kandy" },
-          { value: "gampaha", label: "Gampaha" },
-        ]}
-        // onSearch={handleSearchChange}
-        // onSelectTwoChange={handleLocationChange}
-      />
+      <div className="mt-6 flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
+        <SearchComponent
+          label="Search Patients"
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          placeholder="Search by PatientID, Name, or Phone Number"
+        />
+      </div>
 
       {/* Table - MUI */}
       <div className="mb-[45px]">
@@ -242,11 +246,11 @@ const PatientListAll = ({
                 <>
                   {" "}
                   {(rowsPerPage > 0
-                    ? rows.slice(
+                    ? filteredRows.slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                    : rows
+                    : filteredRows
                   ).map((row) => (
                     <TableRow
                       key={row.userId}

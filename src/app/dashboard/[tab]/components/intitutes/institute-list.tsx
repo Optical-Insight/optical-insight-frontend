@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { InstituteAllRowProps } from "@/utils/interfaces";
 import { ListAllInstituteProps } from "@/utils/institute";
-// import rows from "./table-data";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,8 +11,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePaginationActions from "@/app/components/common/table-pagination";
 import { TableHead } from "@mui/material";
-// import MoreVertIcon from "@mui/icons-material/MoreVert";
-import SearchFilter from "@/app/components/common/search-filter";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
@@ -21,6 +18,8 @@ import { GET_ALL_INSTITUTES_URL } from "@/constants/config";
 import ModalInfo from "@/app/components/institute/modal-info-institute";
 import { Spin } from "antd";
 import ModalConfirm from "@/app/components/common/modal-confirm";
+import SearchComponent from "@/app/components/common/search-component";
+import { optionsInstituteLocations } from "@/constants/data";
 
 const InstituteListAll = ({
   setActiveHeading,
@@ -32,21 +31,12 @@ const InstituteListAll = ({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState<InstituteAllRowProps[]>([]);
+  const [originalRows, setOriginalRows] = useState<InstituteAllRowProps[]>([]);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-
-  const createData = (
-    id: string,
-    clinicId: string,
-    name: string,
-    location: string,
-    phone?: string,
-    email?: string,
-    action?: string
-  ): InstituteAllRowProps => {
-    return { id, clinicId, name, location, phone, email, action };
-  };
+  const [searchTerm, setSearchTerm] = useState("");
+  const [location, setLocation] = useState("");
 
   const fetchAllInstitutes = async () => {
     setIsLoading(true);
@@ -58,26 +48,8 @@ const InstituteListAll = ({
         },
       })
       .then((response) => {
-        const row = response.data.map(
-          (institute: {
-            _id: string; // Ensure this is the correct key for the ID
-            clinicId: string;
-            name: string;
-            location: string;
-            phone: string;
-            email: string;
-          }) =>
-            createData(
-              institute._id, // Ensure that institute.id exists in the API response
-              institute.clinicId,
-              institute.name,
-              institute.location,
-              institute.phone,
-              institute.email
-            )
-        );
-
-        setRows(row);
+        setRows(response.data);
+        setOriginalRows(response.data);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -137,6 +109,42 @@ const InstituteListAll = ({
     setIsConfirmModalOpen(false);
   };
 
+  const filterInstiutes = (term: string, selectedLocation: string) => {
+    const lowerCaseTerm = term.toLowerCase();
+
+    // If search term is cleared, reset rows to original data
+    const filtered =
+      term || selectedLocation
+        ? originalRows.filter((row) => {
+            const matchesSearchTerm =
+              row.clinicId.toLowerCase().includes(lowerCaseTerm) ||
+              row.name.toLowerCase().includes(lowerCaseTerm);
+
+            const matchesLocation =
+              selectedLocation === "" ||
+              row.location
+                .toLowerCase()
+                .includes(selectedLocation.toLowerCase());
+
+            return matchesSearchTerm && matchesLocation;
+          })
+        : originalRows;
+
+    setRows(filtered);
+  };
+
+  const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setLocation(value);
+    filterInstiutes(searchTerm, value);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterInstiutes(value, location);
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
@@ -152,23 +160,31 @@ const InstituteListAll = ({
       </div>
 
       {/* Filter */}
-      <SearchFilter
-        labelSearch="Search for an Institute"
-        labelSelectOne="Status"
-        labelSelectTwo="Location"
-        placeholderSearch="Search Institute by name"
-        optionsSelectOne={[
-          { value: "active", label: "Active" },
-          { value: "inactive", label: "Inactive" },
-          { value: "pending", label: "Pending" },
-        ]}
-        optionsSelectTwo={[
-          { value: "colombo", label: "Colombo" },
-          { value: "kandy", label: "Kandy" },
-          { value: "gampaha", label: "Gampaha" },
-        ]}
-        onSearch={() => {}}
-      />
+      <div className="flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
+        <SearchComponent
+          label="Search Institutes"
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          placeholder="Search by Institue ID, Name"
+        />
+
+        <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">
+            {"Filter by Location"}
+          </label>
+          <select
+            value={location}
+            onChange={handleLocationChange}
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          >
+            {optionsInstituteLocations.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       {/* Table - MUI */}
       <div className="mb-[45px]">

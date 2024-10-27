@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { DoctorsAllProps, ListAllProps } from "@/utils/interfaces";
-import SearchFilter from "@/app/components/common/search-filter";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -18,7 +17,12 @@ import { GET_ALL_USERS_URL } from "@/constants/config";
 import axios from "axios";
 import { Spin } from "antd";
 import ModalInfoDoctor from "@/app/components/doctor/modal-info-doctor";
+
 import ModifyBtn from "@/app/components/common/button-modify";
+
+import SearchComponent from "@/app/components/common/search-component";
+import { optionsDoctorStatus } from "@/constants/data";
+
 
 const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const { isAuthenticated, storedAuthData } = useAuth();
@@ -28,6 +32,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [clickedRow, setClickedRow] = useState<DoctorsAllProps | null>(null);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+
   const [modifyId, setModifyId] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -43,6 +48,11 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     return { id, name, email, userId, type, rating, specialization };
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredRows, setFilteredRows] = useState<DoctorsAllProps[]>([]);
+  const [specialization, setSpecialization] = useState("");
+
+
   const fetchAllDoctors = async () => {
     try {
       setIsLoading(true);
@@ -53,25 +63,13 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
         },
       });
 
-      const filteredPatients = response.data.filter(
+      const filteredDoctors = response.data.filter(
         (doctor: DoctorsAllProps) => doctor.type === "doctor"
       );
 
-      // Map the filtered doctors to the desired format
-      const row = filteredPatients.map((doctor: DoctorsAllProps) =>
-        createDoctorData(
-          doctor.id,
-          doctor.name,
-          doctor.email,
-          doctor.userId,
-          doctor.type,
-          doctor.rating,
-          doctor.specialization
-        )
-      );
-
       // Set the rows with filtered data
-      setRows(row);
+      setRows(filteredDoctors);
+      setFilteredRows(filteredDoctors);
       setIsLoading(false);
     } catch (err: any) {
       console.error(
@@ -111,6 +109,7 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     setIsInfoModalOpen(true);
   };
 
+
   const handleUpdateDoctor = async (doctor: DoctorsAllProps) => {
     console.log("Update patient with id: ", doctor);
     setActiveHeading && setActiveHeading(2);
@@ -120,6 +119,40 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
     setModifyId(patientId);
     console.log("Delete patient with id: ", patientId);
     setShowDeleteModal(true);
+
+  const filterDoctors = (term: string, selectedSpecialization: string) => {
+    const lowerCaseTerm = term.toLowerCase();
+
+    const filtered = rows.filter((row) => {
+      const matchesSearchTerm =
+        row.userId.toLowerCase().includes(lowerCaseTerm) ||
+        row.name.toLowerCase().includes(lowerCaseTerm);
+
+      const matchesSpecialization =
+        selectedSpecialization === "" ||
+        row.specialization
+          .toLowerCase()
+          .includes(selectedSpecialization.toLowerCase());
+
+      return matchesSearchTerm && matchesSpecialization;
+    });
+
+    setFilteredRows(filtered);
+  };
+
+  const handleSpecializationChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const value = e.target.value;
+    setSpecialization(value);
+    filterDoctors(searchTerm, value);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterDoctors(value, specialization);
+
   };
 
   return (
@@ -137,23 +170,31 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
       </div>
 
       {/* Filter */}
-      <SearchFilter
-        labelSearch="Search for a Doctor"
-        labelSelectOne="Status"
-        labelSelectTwo="Location"
-        placeholderSearch="Search by Name"
-        optionsSelectOne={[
-          { value: "active", label: "Active" },
-          { value: "inactive", label: "Inactive" },
-          { value: "pending", label: "Pending" },
-        ]}
-        optionsSelectTwo={[
-          { value: "colombo", label: "Colombo" },
-          { value: "kandy", label: "Kandy" },
-          { value: "gampaha", label: "Gampaha" },
-        ]}
-        onSearch={() => {}}
-      />
+      <div className="flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
+        <SearchComponent
+          label="Search Doctors"
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          placeholder="Search by PatientID, Name, or Phone Number"
+        />
+
+        <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">
+            {"Filter by Status"}
+          </label>
+          <select
+            value={specialization}
+            onChange={handleSpecializationChange}
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          >
+            {optionsDoctorStatus.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       {/* Table - MUI */}
       <div className="mb-[45px]">
@@ -184,11 +225,11 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
                 <>
                   {" "}
                   {(rowsPerPage > 0
-                    ? rows.slice(
+                    ? filteredRows.slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                    : rows
+                    : filteredRows
                   ).map((row) => (
                     <TableRow
                       key={row.id}
@@ -201,7 +242,9 @@ const DoctorListAll = ({ setActiveHeading }: ListAllProps) => {
                       </TableCell>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>
-                        {row.specialization.replace("Eye Specialist - ", "")}
+                        {row.specialization
+                          ? row.specialization.replace("Eye Specialist - ", "")
+                          : "N/A"}
                       </TableCell>
                       <TableCell>
                       <div className="inline-flex gap-2">

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { ListAllProps } from "@/utils/interfaces";
-
-import SearchFilter from "@/app/components/common/search-filter";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import { TableHead } from "@mui/material";
@@ -16,11 +14,15 @@ import TablePagination from "@mui/material/TablePagination";
 import TablePaginationActions from "@/app/components/common/table-pagination";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import { Spin } from "antd";
+// import SearchComponent from "@/app/components/common/search-component";
+import SearchFilter from "@/app/components/common/search-filter";
 
 const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isLoading, setIsLoading] = useState(false);
+  // const [searchTerm, setSearchTerm] = useState("");
+  // const [filteredRows, setFilteredRows] = useState<InstituteHeadsAllProps[]>([]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -39,6 +41,40 @@ const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
     setPage(0);
   };
 
+  // const filterDoctors = (term: string, selectedSpecialization: string) => {
+  //   const lowerCaseTerm = term.toLowerCase();
+
+  //   const filtered = rows.filter((row) => {
+  //     const matchesSearchTerm =
+  //       row.userId.toLowerCase().includes(lowerCaseTerm) ||
+  //       row.name.toLowerCase().includes(lowerCaseTerm);
+
+  //     const matchesSpecialization =
+  //       selectedSpecialization === "" ||
+  //       row.specialization
+  //         .toLowerCase()
+  //         .includes(selectedSpecialization.toLowerCase());
+
+  //     return matchesSearchTerm && matchesSpecialization;
+  //   });
+
+  //   setFilteredRows(filtered);
+  // };
+
+  // const handleSpecializationChange = (
+  //   e: React.ChangeEvent<HTMLSelectElement>
+  // ) => {
+  //   const value = e.target.value;
+  //   setSpecialization(value);
+  //   filterDoctors(searchTerm, value);
+  // };
+
+  // const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value;
+  //   setSearchTerm(value);
+  //   filterDoctors(value, specialization);
+  // };
+
   return (
     <div>
       <div className="flex justify-between mb-[25px] items-center ">
@@ -55,14 +91,14 @@ const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
 
       {/* Filter */}
       <SearchFilter
-        labelSearch="Search for an Institute Head"
-        labelSelectOne="Employment Status"
+        labelSearch="Search for a Lab Technician"
+        labelSelectOne="Status"
         labelSelectTwo="Location"
         placeholderSearch="Search by Name"
         optionsSelectOne={[
-          { value: "fullTime", label: "Full-Time" },
-          { value: "partTime", label: "Part-Time" },
+          { value: "active", label: "Active" },
           { value: "inactive", label: "Inactive" },
+          { value: "pending", label: "Pending" },
         ]}
         optionsSelectTwo={[
           { value: "colombo", label: "Colombo" },
@@ -71,6 +107,33 @@ const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
         ]}
         onSearch={() => {}}
       />
+
+      {/* Filter */}
+      {/* <div className="flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
+        <SearchComponent
+          label="Search Branches"
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          placeholder="Search by Institue ID, Name"
+        />
+
+        <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">
+            {"Filter by Location"}
+          </label>
+          <select
+            value={location}
+            onChange={handleLocationChange}
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          >
+            {optionsInstituteLocations.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div> */}
 
       <div className="mb-[45px]">
         <TableContainer component={Paper} className="rounded-lg">
