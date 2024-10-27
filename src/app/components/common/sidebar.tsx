@@ -170,7 +170,7 @@ const AppSidebar = ({
                   <Image
                     className="cursor-pointer mr-[15px]"
                     alt={"Optical Insight Logo"}
-                    src="/assets/images/profile-photo-sample.png"
+                    src="/assets/images/empty-profile.png"
                     width={42.17}
                     height={42.17}
                   />

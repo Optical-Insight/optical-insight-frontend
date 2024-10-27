@@ -9,6 +9,7 @@ import { PatientRecordProps } from "@/utils/patient";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -49,6 +50,8 @@ const PatientRecordNew = ({
   const [fileLeftEnter, setFileLeftEnter] = useState(false);
   const [fileRight, setFileRight] = useState<File | null>(null);
   const [fileRightEnter, setFileRightEnter] = useState(false);
+  const [comments, setComments] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const stepForward = () => {
     if (activeStep === 2) {
@@ -64,43 +67,69 @@ const PatientRecordNew = ({
   };
 
   const handleSubmitTestRecord = async () => {
+    setIsLoading(true);
     const formData = new FormData();
 
-    // Assuming 'fileLeft' and 'fileRight' are your state variables holding File objects
     if (fileLeft) {
-      formData.append("image", fileLeft, fileLeft.name); // Append the left eye image
+      formData.append("image", fileLeft, fileLeft.name);
     }
     if (fileRight) {
-      formData.append("image", fileRight, fileRight.name); // Append the right eye image
+      formData.append("image", fileRight, fileRight.name);
     }
 
-    const randomNum = Math.floor(Math.random() * 100) + 1; // Generate a random number between 1 and 1000
-    const reportName = `Report ${randomNum}`; // Concatenate 'Report' with the random number
+    const randomNum = Math.floor(Math.random() * 100) + 1;
+    const reportName = `Report ${randomNum}`;
 
     // Add other form data
-    formData.append("name", reportName); // Replace with actual data or state variable
-    formData.append("createdBy", storedAuthData?.userId ?? ""); // Replace with actual data or state variable
-    formData.append("patientId", patientData?.userId ?? ""); // Replace with actual data or state variable
+    formData.append("name", reportName);
+    formData.append("createdBy", storedAuthData?.userId ?? "");
+    formData.append("patientId", patientData?.userId ?? "");
+    formData.append("comments", comments);
 
     // Post request to server
     try {
       const response = await axios.post(CREATE_TEST_REPORT, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${storedAuthData.accessToken}`, // Use actual token
+          Authorization: `Bearer ${storedAuthData.accessToken}`,
         },
       });
       console.log("Form submitted successfully:", response.data);
-      alert("Test record submitted successfully");
+      setIsLoading(false);
+      toast.success("Test record submitted successfully");
       router.replace("/dashboard/home");
     } catch (error: any) {
       console.error("Submit error:", error);
-      alert("Error in submitting form");
+      setIsLoading(false);
+      toast.error("Error in submitting form");
     }
   };
 
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
+
       <div className="text-darkText font-bold text-[40.17px] mb-[2.765vh]">
         Add New Test Data
       </div>
@@ -152,45 +181,22 @@ const PatientRecordNew = ({
               placeholder={"colombo"}
               value={patientData?.address}
               onChange={() => {}}
+              readOnly
             />
             <FormField
               label="Contact Number"
               placeholder="071 234 5678"
               value={patientData?.phone}
               onChange={() => {}}
+              readOnly
             />
             <FormField
               label="E-mail"
+              type="email"
               placeholder="saman@optmail.ai"
               value={patientData?.email}
               onChange={() => {}}
-            />
-
-            <div className="h-[6.445vh]" />
-            <FormField
-              label="Technician ID"
-              placeholder="LTVC0099"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Date of Test"
-              placeholder="05 / 03 / 2023"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Type of Test"
-              placeholder="Test I"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Comments or Notes"
-              placeholder="Lorem Ipsum"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Technician's Digital Signature"
-              placeholder="Attach a File"
-              onChange={() => {}}
+              readOnly
             />
           </div>
         )}
@@ -412,35 +418,20 @@ const PatientRecordNew = ({
               </div>
             </div>
 
+            <div className="h-[6.445vh]" />
             <FormField
-              label="Image Quality Assessment"
-              placeholder="High quality images"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Previous Lab Test Results"
-              placeholder="blood tests for specific eye-related conditions"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Previous Lab Test Reports"
-              placeholder="Attach a File or Drag & drop here"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Patient Consent for Data Use and Analysis"
+              readOnly={true}
+              label="Technician ID"
               placeholder="LTVC0099"
+              value={storedAuthData?.userId}
               onChange={() => {}}
             />
+
             <FormField
-              label="Privacy Policy Acknowledgment"
-              placeholder="Equipment used, test settings"
-              onChange={() => {}}
-            />
-            <FormField
-              label="Comments or Notes"
-              placeholder="Additional information"
-              onChange={() => {}}
+              label="Additional Comments"
+              placeholder="Patient is suffering from eye pain"
+              value={comments}
+              onChange={(value) => setComments(value)}
             />
           </div>
         )}
@@ -465,6 +456,7 @@ const PatientRecordNew = ({
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={handleSubmitTestRecord}
+        isLoading={isLoading}
       />
     </div>
   );
