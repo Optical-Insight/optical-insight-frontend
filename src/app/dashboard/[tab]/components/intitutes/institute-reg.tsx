@@ -39,6 +39,10 @@ const InstituteRegistration = ({
   setActiveHeading,
   clickedRow,
 }: InstituteRegistrationProps) => {
+  useEffect(() => {
+    setActiveStep(1);
+  }, []);
+
   console.log("clickedRow: ", clickedRow);
 
   const { storedAuthData } = useAuth();

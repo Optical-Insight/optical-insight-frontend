@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { StepProps } from "@/utils/interfaces";
 import { DoctorRegistrationProps } from "@/utils/doctor";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormFieldTextArea from "@/app/components/common/form-textArea";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -49,27 +49,30 @@ const DoctorRegistration = ({
   setActiveHeading,
   clickedRow,
 }: DoctorRegistrationProps) => {
+  useEffect(() => {
+    setActiveStep(1);
+  }, []);
+
   const { storedAuthData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     name: clickedRow ? clickedRow.name : "",
-    gender: clickedRow ? clickedRow.gender : "",
-
-    dob: clickedRow ? clickedRow.dob : "",
-    nic: clickedRow ? clickedRow.nic : "",
     email: clickedRow ? clickedRow.email : "",
+    password: clickedRow ? clickedRow.password : "",
     phone: clickedRow ? clickedRow.phone : "",
+    sex: clickedRow ? clickedRow.sex : "",
+    dateOfBirth: clickedRow ? clickedRow.dateOfBirth : "",
+    nic: clickedRow ? clickedRow.nic : "",
     address: clickedRow ? clickedRow.address : "",
     hospitalLocation: clickedRow ? clickedRow.hospitalLocation : "",
-    medLicense: clickedRow ? clickedRow.medLicense : "",
-    institute: clickedRow ? clickedRow.institute : "",
-
     specialization: clickedRow ? clickedRow.specialization : "",
-    yrsOfXp: clickedRow ? clickedRow.yrsOfXp : "",
-
-    comments: clickedRow ? clickedRow.comments : "",
+    experience: clickedRow ? clickedRow.experience : "",
+    medicalLicenceNumber: clickedRow ? clickedRow.medicalLicenceNumber : "",
+    institute: clickedRow ? clickedRow.institute : "",
+    specialNotes: clickedRow ? clickedRow.specialNotes : "",
+    type: "doctor",
   });
 
   const stepForward = () => {
@@ -90,6 +93,7 @@ const DoctorRegistration = ({
   };
 
   const handleSubmitDoctor = async () => {
+    console.log("Form values", formValues);
     setIsLoading(true);
     if (!clickedRow) {
       try {
@@ -99,17 +103,16 @@ const DoctorRegistration = ({
             name: formValues.name,
             email: formValues.email,
             phone: formValues.phone,
-            sex: formValues.gender,
-            dateOfBirth: formValues.dob,
+            sex: formValues.sex,
+            dateOfBirth: formValues.dateOfBirth,
             nic: formValues.nic,
             address: formValues.address,
             hospitalLocation: formValues.hospitalLocation,
-
             specialization: formValues.specialization,
-            experience: formValues.yrsOfXp,
-            medicalLicenceNumber: formValues.medLicense,
-            institute: formValues.institute,
-            specialNotes: formValues.comments,
+            experience: formValues.experience,
+            medicalLicenceNumber: formValues.medicalLicenceNumber,
+            institute: "CLI397137",
+            specialNotes: formValues.specialNotes,
             type: "doctor",
           },
           {
@@ -138,17 +141,16 @@ const DoctorRegistration = ({
             name: formValues.name,
             email: formValues.email,
             phone: formValues.phone,
-            sex: formValues.gender,
-            dateOfBirth: formValues.dob,
+            sex: formValues.sex,
+            dateOfBirth: formValues.dateOfBirth,
             nic: formValues.nic,
             address: formValues.address,
             hospitalLocation: formValues.hospitalLocation,
-
             specialization: formValues.specialization,
-            experience: formValues.yrsOfXp,
-            medicalLicenceNumber: formValues.medLicense,
+            experience: formValues.experience,
+            medicalLicenceNumber: formValues.medicalLicenceNumber,
             institute: formValues.institute,
-            specialNotes: formValues.comments,
+            specialNotes: formValues.specialNotes,
             type: "doctor",
           },
           {
@@ -169,17 +171,6 @@ const DoctorRegistration = ({
       }
     }
   };
-
-  // const [formErrors, setFormErrors] = useState({
-  //   name: false,
-  //   email: false,
-  //   phone: false,
-  //   sex: false,
-  //   address: false,
-  //   // age: false,
-  //   // specialization: false,
-  //   // experience: false,
-  // });
 
   return (
     <div>
@@ -241,18 +232,18 @@ const DoctorRegistration = ({
             <SelectField
               label="Gender"
               required={true}
-              value={formValues.gender}
-              onChange={(value) => handleInputChange("gender", value)}
+              value={formValues.sex}
+              onChange={(value) => handleInputChange("sex", value)}
               options={genderOptions}
             />
-            ;
+
             <FormField
               label="Date of Birth"
               type="date"
               placeholder=""
               required={true}
-              value={formValues.dob}
-              onChange={(value) => handleInputChange("dob", value)}
+              value={formValues.dateOfBirth}
+              onChange={(value) => handleInputChange("dateOfBirth", value)}
             />
             <FormField
               label="NIC"
@@ -262,13 +253,7 @@ const DoctorRegistration = ({
               onChange={(value) => handleInputChange("nic", value)}
             />
             <FormField
-              label="Email"
-              required={true}
-              placeholder={"saman@gmail.com"}
-              value={formValues.email}
-              onChange={(value) => handleInputChange("email", value)}
-            />
-            <FormField
+              type="phone"
               label="Phone Number"
               required={true}
               placeholder={"0765689254"}
@@ -277,17 +262,26 @@ const DoctorRegistration = ({
             />
             <FormFieldTextArea
               label="Address"
-              required={true}
               placeholder={"No. 123, Galle Road, Colombo 03"}
               value={formValues.address}
               onChange={(value) => handleInputChange("address", value)}
             />
-            <FormFieldTextArea
-              label="Hospital Location"
+
+            <div className="h-[6.445vh]" />
+            <FormField
+              label="Email"
               required={true}
-              placeholder={"Kiribathgoda"}
-              value={formValues.hospitalLocation}
-              onChange={(value) => handleInputChange("hospitalLocation", value)}
+              placeholder={"saman@gmail.com"}
+              value={formValues.email}
+              onChange={(value) => handleInputChange("email", value)}
+            />
+            <FormField
+              type="password"
+              label="Password"
+              required={true}
+              placeholder={"**********"}
+              value={formValues.password}
+              onChange={(value) => handleInputChange("password", value)}
             />
           </div>
         )}
@@ -298,8 +292,10 @@ const DoctorRegistration = ({
             <FormField
               label="Medical License Number"
               placeholder={"123456"}
-              value={formValues.medLicense}
-              onChange={(value) => handleInputChange("medLicense", value)}
+              value={formValues.medicalLicenceNumber}
+              onChange={(value) =>
+                handleInputChange("medicalLicenceNumber", value)
+              }
             />
             <FormField
               label="Specialization"
@@ -308,23 +304,32 @@ const DoctorRegistration = ({
               value={formValues.specialization}
               onChange={(value) => handleInputChange("specialization", value)}
             />
-            <FormField
+            {/* <FormField
               label="Institute"
               placeholder={"Vision Care Opticals"}
               value={formValues.institute}
               onChange={(value) => handleInputChange("institute", value)}
-            />
+            /> */}
             <FormField
               label="Years of Experience"
               placeholder={"3 Years"}
-              value={formValues.yrsOfXp}
+              value={formValues.experience}
               onChange={(value) => handleInputChange("experience", value)}
             />
+            <FormField
+              label="District (Working Hospital)"
+              required={true}
+              placeholder={"Kiribathgoda"}
+              value={formValues.hospitalLocation}
+              onChange={(value) => handleInputChange("hospitalLocation", value)}
+            />
+
+            <div className="h-[6.445vh]" />
             <FormFieldTextArea
               label="Special Notes"
               placeholder={"Good with children"}
-              value={formValues.comments}
-              onChange={(value) => handleInputChange("comments", value)}
+              value={formValues.specialNotes}
+              onChange={(value) => handleInputChange("specialNotes", value)}
             />
           </div>
         )}
