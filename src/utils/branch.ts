@@ -8,13 +8,30 @@ export interface BranchRegistrationProps {
 export interface BranchAllRowProps {
   id: string;
   clinicId: string;
+  branchId: string;
+  numberOfLabTechnicians: number;
+  numberOfPatients: number;
+  specialServices: string;
+  comments: string;
   name: string;
   location: string;
-  status?: string;
-  phone?: string;
-  email?: string;
-  website?: string;
-  action?: string;
+  phone: string;
+}
+
+export interface BranchProps {
+  branchID: string;
+  location: string;
+  phone: string;
+  numberOfPatients: number;
+  numberOfLabTechnicians: number;
+  specialServices: string;
+  comments: string;
+}
+
+export interface BranchInstitute {
+  clinicID: string;
+  name: string;
+  branches: BranchProps[];
 }
 
 export interface ModalInfoBranchProps {

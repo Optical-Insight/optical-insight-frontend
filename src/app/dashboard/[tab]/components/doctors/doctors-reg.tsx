@@ -53,7 +53,7 @@ const DoctorRegistration = ({
     setActiveStep(1);
   }, []);
 
-  const { storedAuthData } = useAuth();
+  const { storedAuthData, userData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -72,6 +72,7 @@ const DoctorRegistration = ({
     medicalLicenceNumber: clickedRow ? clickedRow.medicalLicenceNumber : "",
     institute: clickedRow ? clickedRow.institute : "",
     specialNotes: clickedRow ? clickedRow.specialNotes : "",
+    branchId: userData?.branchId ?? "",
     type: "doctor",
   });
 
@@ -114,6 +115,7 @@ const DoctorRegistration = ({
             institute: "CLI397137",
             specialNotes: formValues.specialNotes,
             type: "doctor",
+            branchId: userData?.branchId,
           },
           {
             headers: {
@@ -125,12 +127,11 @@ const DoctorRegistration = ({
         setIsConfirmModalOpen(false);
         setIsLoading(false);
         console.log("Form submitted successfully:", res.data);
-        // alert("Form submitted successfully");
         toast.success("Form submitted successfully");
         setActiveHeading && setActiveHeading(1);
       } catch (err) {
         console.log("Submit error: ", err);
-        // alert("Error in submitting form");
+        setIsLoading(false);
         toast.error("Error in submitting form. Please try again");
       }
     } else {

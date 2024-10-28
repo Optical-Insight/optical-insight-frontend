@@ -50,18 +50,26 @@ const ModalInfoBranch = ({
             <div className="px-4 py-4 sm:px-6 sm:py-4 bg-white">
               <div className="flex text-sm bg-white">
                 <div className=" text-gray-500 flex flex-col space-y-2">
+                  <p>Insitute ID:</p>
                   <p>Branch ID:</p>
-                  <p>Name:</p>
-                  <p>Address:</p>
+                  <p>Location:</p>
                   <p>Telephone No:</p>
-                  <p>Email:</p>
+                  <p>No. of Patients</p>
+                  <p>No. of Technicians</p>
+                  <br />
+                  <p>Special Services:</p>
+                  <p>Comments:</p>
                 </div>
                 <div className="ml-10 font-bold text-gray-700 flex flex-col space-y-2">
                   <p>{clickedRow?.clinicId}</p>
-                  <p>{clickedRow?.name}</p>
+                  <p>{clickedRow?.branchId}</p>
                   <p>{clickedRow?.location}</p>
                   <p>{clickedRow?.phone}</p>
-                  <p>{clickedRow?.email}</p>
+                  <p>{clickedRow?.numberOfPatients}</p>
+                  <p>{clickedRow?.numberOfLabTechnicians}</p>
+                  <br />
+                  <p>{clickedRow?.specialServices}</p>
+                  <p>{clickedRow?.comments}</p>
                 </div>
               </div>
             </div>

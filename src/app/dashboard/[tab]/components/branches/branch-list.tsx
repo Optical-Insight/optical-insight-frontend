@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BranchAllRowProps } from "@/utils/branch";
 import { ListAllBranchProps } from "@/utils/branch";
+
 // import rows from "./table-data";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,16 +13,19 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePaginationActions from "@/app/components/common/table-pagination";
 import { TableHead } from "@mui/material";
-// import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommonRegisterBtn from "@/app/components/common/registerButton";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
-import { GET_ALL_INSTITUTES_URL } from "@/constants/config";
+import {
+  DELETE_INSTITUTE_BY_ID_URL,
+  GET_ALL_INSTITUTES_URL,
+} from "@/constants/config";
 import ModalInfo from "@/app/components/branch/modal-info-branch";
 import { Spin } from "antd";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import SearchComponent from "@/app/components/common/search-component";
 import { optionsInstituteLocations } from "@/constants/data";
+import toast, { Toaster } from "react-hot-toast";
 
 const BranchListAll = ({
   setActiveHeading,
@@ -42,21 +46,41 @@ const BranchListAll = ({
 
   const fetchAllBranches = async () => {
     setIsLoading(true);
-    await axios
-      .get(GET_ALL_INSTITUTES_URL, {
+    try {
+      const response = await axios.get(GET_ALL_INSTITUTES_URL, {
         headers: {
           Authorization: `Bearer ${storedAuthData.accessToken}`,
           "Content-Type": "application/json",
         },
-      })
-      .then((response) => {
-        setRows(response.data);
-        setOriginalRows(response.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error in retrieving data", err.response.data);
       });
+
+      // Extract branches from the response
+      const institutes = response.data;
+      const allBranches = institutes.flatMap((institute: any) =>
+        institute.branches.map((branch: any) => ({
+          branchId: branch.branchId,
+          clinicId: institute.clinicId,
+          location: branch.location,
+          phone: branch.phone,
+          numberOfPatients: branch.numberOfPatients,
+          numberOfLabTechnicians: branch.numberOfLabTechnicians,
+          specialServices: branch.specialServices,
+          comments: branch.comments,
+        }))
+      );
+
+      console.log("All branches", allBranches);
+      // Set the flattened branches to the state
+      setRows(allBranches);
+      setOriginalRows(allBranches);
+    } catch (err: any) {
+      console.error(
+        "Error in retrieving data",
+        err.response?.data || err.message
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -107,8 +131,33 @@ const BranchListAll = ({
   };
 
   const handleDeleteInstiute = async () => {
+    setIsLoading(true);
     console.log("Delete confirmed");
-    setIsConfirmModalOpen(false);
+
+    await axios
+      .delete(
+        `${DELETE_INSTITUTE_BY_ID_URL}${clickedRow.clinicId}/branches/${clickedRow.branchId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${storedAuthData.accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        toast.success("Institue Deleted successfully");
+        console.log("Institue Deleted successfully", res);
+        setIsLoading(false);
+        fetchAllBranches();
+      })
+      .catch((err) => {
+        toast.error("Error in Institue patient. Please try again.");
+        console.error("Error in Institue patient", err.response?.data || err);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setIsConfirmModalOpen(false);
+      });
   };
 
   const filterInstiutes = (term: string, selectedLocation: string) => {
@@ -120,7 +169,7 @@ const BranchListAll = ({
         ? originalRows.filter((row) => {
             const matchesSearchTerm =
               row.clinicId.toLowerCase().includes(lowerCaseTerm) ||
-              row.name.toLowerCase().includes(lowerCaseTerm);
+              row.branchId.toLowerCase().includes(lowerCaseTerm);
 
             const matchesLocation =
               selectedLocation === "" ||
@@ -149,6 +198,28 @@ const BranchListAll = ({
 
   return (
     <div>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+            error: {
+              style: {
+                marginRight: "20%",
+                marginTop: "20px",
+                background: "rgb(219, 234, 254)",
+              },
+            },
+          }}
+        />
+      </div>
       <div className="flex justify-between mb-[25px] items-center ">
         <div className="text-darkText font-bold text-4xl lg:text-[40px] ">
           List of all Branches
@@ -194,12 +265,11 @@ const BranchListAll = ({
           <Table aria-label="custom pagination table">
             <TableHead>
               <TableRow className="bg-lightBlueBg font-bold h-[4.016vh]">
+                <TableCell className="font-bold">Institute ID</TableCell>
                 <TableCell className="font-bold">Branch ID</TableCell>
-                <TableCell className="font-bold">Name</TableCell>
                 <TableCell className="font-bold">Location</TableCell>
                 <TableCell className="font-bold">Contact Number</TableCell>
-                <TableCell className="font-bold">Email</TableCell>
-                {/* <TableCell className="font-bold">Action</TableCell> */}
+                <TableCell className="font-bold">Lab Tech. Count</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -234,15 +304,10 @@ const BranchListAll = ({
                       <TableCell component="th" scope="row">
                         {row.clinicId}
                       </TableCell>
-                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.branchId}</TableCell>
                       <TableCell>{row.location}</TableCell>
                       <TableCell>{row.phone}</TableCell>
-                      <TableCell>{row.email}</TableCell>
-                      {/* <TableCell>
-                        <div>
-                          <MoreVertIcon />
-                        </div>
-                      </TableCell> */}
+                      <TableCell>{row.numberOfLabTechnicians}</TableCell>
                     </TableRow>
                   ))}
                   {emptyRows > 0 && (

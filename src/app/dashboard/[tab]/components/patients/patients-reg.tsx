@@ -44,7 +44,7 @@ const PatientsRegistration = ({
   setActiveHeading,
   clickedRow,
 }: PatientRegistrationProps) => {
-  const { storedAuthData } = useAuth();
+  const { storedAuthData, userData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -169,6 +169,7 @@ const PatientsRegistration = ({
   const handleSubmitPatientForm = async () => {
     setIsLoading(true);
     console.log("Form values: ", formValues);
+    console.log("userData?.branchId: ", userData?.branchId);
 
     if (!clickedRow) {
       try {
@@ -195,6 +196,7 @@ const PatientsRegistration = ({
             glassesOrContactLenseUsage: formValues.glassesOrContactLenseUsage,
             height: formValues.height,
             weight: formValues.weight,
+            branchId: userData?.branchId,
             type: "patient",
           },
           {

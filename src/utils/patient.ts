@@ -8,6 +8,7 @@ export interface PatientsAllProps {
   phone: string;
   email: string;
   userId: string;
+  branchId?: string;
   type: string;
   height?: string;
   weight?: string;

@@ -21,7 +21,6 @@ import {
 import { Spin } from "antd";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import SearchComponent from "@/app/components/common/search-component";
-import { optionsInstituteLocations } from "@/constants/data";
 import toast, { Toaster } from "react-hot-toast";
 import ModalInfoInstitute from "@/app/components/institute/modal-info-institute";
 
@@ -40,7 +39,6 @@ const InstituteListAll = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [location, setLocation] = useState("");
 
   const fetchAllInstitutes = async () => {
     setIsLoading(true);
@@ -119,14 +117,14 @@ const InstituteListAll = ({
         },
       })
       .then((res) => {
-        toast.success("Institue Deleted successfully");
-        console.log("Institue Deleted successfully", res);
+        toast.success("Branch Deleted successfully");
+        console.log("Branch Deleted successfully", res);
         setIsLoading(false);
         fetchAllInstitutes();
       })
       .catch((err) => {
-        toast.error("Error in Institue patient. Please try again.");
-        console.error("Error in Institue patient", err.response?.data || err);
+        toast.error("Error in Branch patient. Please try again.");
+        console.error("Error in Branch patient", err.response?.data || err);
         setIsLoading(false);
       })
       .finally(() => {
@@ -135,40 +133,27 @@ const InstituteListAll = ({
       });
   };
 
-  const filterInstiutes = (term: string, selectedLocation: string) => {
+  const filterInstiutes = (term: string) => {
     const lowerCaseTerm = term.toLowerCase();
 
     // If search term is cleared, reset rows to original data
-    const filtered =
-      term || selectedLocation
-        ? originalRows.filter((row) => {
-            const matchesSearchTerm =
-              row.clinicId.toLowerCase().includes(lowerCaseTerm) ||
-              row.name.toLowerCase().includes(lowerCaseTerm);
+    const filtered = term
+      ? originalRows.filter((row) => {
+          const matchesSearchTerm =
+            row.clinicId.toLowerCase().includes(lowerCaseTerm) ||
+            row.name.toLowerCase().includes(lowerCaseTerm);
 
-            const matchesLocation =
-              selectedLocation === "" ||
-              row.location
-                .toLowerCase()
-                .includes(selectedLocation.toLowerCase());
-
-            return matchesSearchTerm && matchesLocation;
-          })
-        : originalRows;
+          return matchesSearchTerm;
+        })
+      : originalRows;
 
     setRows(filtered);
-  };
-
-  const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    setLocation(value);
-    filterInstiutes(searchTerm, value);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    filterInstiutes(value, location);
+    filterInstiutes(value);
   };
 
   return (
@@ -216,23 +201,6 @@ const InstituteListAll = ({
           onSearchChange={handleSearchChange}
           placeholder="Search by Institue ID, Name"
         />
-
-        <div className="flex flex-col flex-grow">
-          <label className="text-labelText text-[16px] mb-[6px]">
-            {"Filter by Location"}
-          </label>
-          <select
-            value={location}
-            onChange={handleLocationChange}
-            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
-          >
-            {optionsInstituteLocations.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
 
       {/* Table - MUI */}

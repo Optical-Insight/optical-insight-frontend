@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import PageContent from "./page-content";
 import AppSidebar from "@/app/components/common/sidebar";
 import { useAuth } from "@/context/AuthContext";
@@ -18,7 +18,7 @@ function PageLayout({
     | "doctors"
     | "patients";
 }) {
-  const { userData } = useAuth();
+  const { isAuthenticated, userData } = useAuth();
   const router = useRouter();
 
   const isAuthorized = (tabSelected: keyof typeof accessControl) => {
@@ -36,15 +36,13 @@ function PageLayout({
     return accessControl[tabSelected];
   };
 
-  // if (!isAuthenticated) {
-  //   router.push("/login"); // Redirect if not authenticated
-  //   return null;
-  // }
-
-  if (!isAuthorized(tab)) {
-    router.push("/unauthorized"); // Redirect to unauthorized page if no access
-    return null;
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (!isAuthorized(tab)) {
+        router.push("/unauthorized");
+      }
+    }
+  }, [isAuthenticated]);
 
   return (
     <>

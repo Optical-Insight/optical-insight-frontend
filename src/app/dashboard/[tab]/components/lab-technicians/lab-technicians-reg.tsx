@@ -51,7 +51,7 @@ const TechnicianRegistration = ({
     setActiveStep(1);
   }, []);
 
-  const { storedAuthData } = useAuth();
+  const { storedAuthData, userData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -100,6 +100,8 @@ const TechnicianRegistration = ({
             phone: formValues.phone,
             sex: formValues.sex,
             dateOfBirth: formValues.dateOfBirth,
+            password: formValues.password,
+            branchId: userData?.branchId,
             type: "mlt",
           },
           {
