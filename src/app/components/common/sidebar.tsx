@@ -94,7 +94,6 @@ const AppSidebar = ({
 
   const [sidebarItems, setSidebarItems] = useState(initialSidebarItems);
 
-  // Additional items for admin only
   const adminSidebarItems = [
     {
       iconSrc: "/assets/icons/institute-sidebar.svg",
@@ -107,8 +106,8 @@ const AppSidebar = ({
       label: "Branches",
     },
     {
-      iconSrc: "/assets/icons/institute-heads.svg",
-      iconSrcActive: "/assets/icons/institute-heads-active.svg",
+      iconSrc: "/assets/icons/branch-heads.svg",
+      iconSrcActive: "/assets/icons/branch-heads-active.svg",
       label: "Branch Heads",
     },
     {
@@ -157,7 +156,7 @@ const AppSidebar = ({
   useEffect(() => {
     if (userData && userData.type === "admin") {
       setSidebarItems([...initialSidebarItems, ...adminSidebarItems]);
-    } else if (userData && userData.type === "sDirector") {
+    } else if (userData && userData.type === "sdirector") {
       setSidebarItems([...initialSidebarItems, ...sDirectorItems]);
     } else if (userData && userData.type === "director") {
       setSidebarItems([...initialSidebarItems, ...directorItems]);

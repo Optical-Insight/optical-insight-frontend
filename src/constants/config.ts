@@ -22,4 +22,4 @@ export const GET_ALL_REPORTS = `${API_BASE_URL}/reports/`;
 export const CREATE_TEST_REPORT = `${API_REPORT_URL}/reports/`;
 export const GENERATE_REPORT_PDF = `${API_REPORT_URL}/reports/generatePdf/`;
 
-//export const GET_ALL_REPORTS = `${API_BASE_URL}/appointments/`;
+export const GET_CLINIC_BY_BRANCH_URL = `${API_BASE_URL}/api/clinics/branch/`;

@@ -1,7 +1,7 @@
 export const optionsHeadType = [
   { value: "", label: "All Heads" },
   { value: "director", label: "Branch Head" },
-  { value: "sDirector", label: "Institute Head" },
+  { value: "sdirector", label: "Institute Head" },
 ];
 
 export const optionsDoctorStatus = [

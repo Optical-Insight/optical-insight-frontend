@@ -76,7 +76,7 @@ const InstituteHeadListAll = ({
       });
 
       const filteredHeads = response.data.filter(
-        (head: any) => head.type === "director" || head.type === "sDirector"
+        (head: any) => head.type === "director" || head.type === "sdirector"
       );
 
       console.log("filteredHeads", filteredHeads);

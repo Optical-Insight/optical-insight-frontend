@@ -72,7 +72,7 @@ const TechnicianRegistration = ({
   console.log("activeStep", activeStep);
 
   const stepForward = () => {
-    if (activeStep === 2) {
+    if (activeStep === 1) {
       // Submit the form
       setIsConfirmModalOpen(true);
 
@@ -224,13 +224,28 @@ const TechnicianRegistration = ({
               value={formValues.name}
               onChange={(value) => handleInputChange("name", value)}
             />
-            <FormField
-              label="Gender"
-              placeholder="Male"
-              required={true}
-              value={formValues.sex}
-              onChange={(value) => handleInputChange("gender", value)}
-            />
+            <div className="flex items-center justify-between w-full mb-2">
+              <label
+                htmlFor="Gender"
+                className="block text-[16px] text-darkText font-semibold"
+              >
+                {"Gender"} {true && <span className="text-red-500">*</span>}
+              </label>
+
+              <select
+                required={true}
+                name={"Gender"}
+                id={"Gender"}
+                className={`pl-2 text-[14.76px] w-[35.556vw] h-10 bg-inputBg rounded-lg text-black border border-inputBorder`}
+                value={formValues.sex}
+                onChange={(e) => handleInputChange("sex", e.target.value)}
+              >
+                <option value="text-">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="rather_not_say">Rather not say</option>
+              </select>
+            </div>
             <FormField
               label="Date of Birth"
               type="date"
@@ -328,7 +343,7 @@ const TechnicianRegistration = ({
             </div>
             <CommonBtn
               label={
-                activeStep === 2 ? (!clickedRow ? "Submit" : "Update") : "Next"
+                activeStep === 1 ? (!clickedRow ? "Submit" : "Update") : "Next"
               }
               onClick={stepForward}
             />

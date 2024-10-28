@@ -5,7 +5,7 @@ export function generateStaticParams() {
   return [
     { tab: "home" },
     { tab: "institutes" },
-    { tab: "institute-heads" },
+    { tab: "branch-heads" },
     { tab: "lab-technicians" },
     { tab: "doctors" },
     { tab: "patients" },
@@ -16,7 +16,7 @@ export function generateStaticParams() {
 
 type TabType =
   | "home"
-  | "institute-heads"
+  | "branch-heads"
   | "lab-technicians"
   | "doctors"
   | "patients"
@@ -35,7 +35,7 @@ export default Dashboard;
 //   return [
 //     { tab: "home" },
 //     { tab: "institutes" },
-//     { tab: "institute-heads" },
+//     { tab: "branch-heads" },
 //     { tab: "lab-technicians" },
 //     { tab: "doctors" },
 //     { tab: "patients" },

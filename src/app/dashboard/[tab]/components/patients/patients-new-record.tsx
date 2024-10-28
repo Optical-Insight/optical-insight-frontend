@@ -8,7 +8,7 @@ import { StepProps } from "@/utils/interfaces";
 import { PatientRecordProps } from "@/utils/patient";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -42,6 +42,10 @@ const PatientRecordNew = ({
   setActiveStep,
   patientData,
 }: PatientRecordProps) => {
+  useEffect(() => {
+    setActiveStep(1);
+  }, []);
+
   const { storedAuthData } = useAuth();
   const router = useRouter();
 
@@ -184,6 +188,7 @@ const PatientRecordNew = ({
               readOnly
             />
             <FormField
+              type="phone"
               label="Contact Number"
               placeholder="071 234 5678"
               value={patientData?.phone}
