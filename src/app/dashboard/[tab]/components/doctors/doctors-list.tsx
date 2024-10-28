@@ -194,7 +194,10 @@ const DoctorListAll = ({
         <div className="flex h-[42px]">
           <CommonRegisterBtn
             label="Register new Doctor"
-            onClick={() => setActiveHeading && setActiveHeading(2)}
+            onClick={() => {
+              setClickedRow && setClickedRow(null);
+              setActiveHeading && setActiveHeading(2);
+            }}
           />
         </div>
       </div>
