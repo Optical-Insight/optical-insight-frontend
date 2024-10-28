@@ -28,7 +28,7 @@ const PatientListAll = ({
   setIsInfoModalOpen,
   setClickedRow,
 }: ListAllPatientProps) => {
-  const { isAuthenticated, storedAuthData } = useAuth();
+  const { isAuthenticated, storedAuthData, userData } = useAuth();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState<PatientsAllProps[]>([]);
@@ -39,29 +39,60 @@ const PatientListAll = ({
   const [filteredRows, setFilteredRows] = useState<PatientsAllProps[]>([]);
 
   const fetchAllPatients = async () => {
-    try {
-      setIsLoading(true);
-      const response = await axios.get(GET_ALL_USERS_BY_TYPE_URL, {
-        headers: {
-          Authorization: `Bearer ${storedAuthData.accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+    if (storedAuthData.userType !== "admin") {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(GET_ALL_USERS_BY_TYPE_URL, {
+          headers: {
+            Authorization: `Bearer ${storedAuthData.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
 
-      // Filter patients based on their type
-      const filteredPatients = response.data.filter(
-        (patient: PatientsAllProps) => patient.type === "patient"
-      );
+        // Filter patients based on their type and branchId
+        const filteredPatients = response.data.filter(
+          (patient: PatientsAllProps) =>
+            patient.type === "patient" &&
+            userData &&
+            patient.branchId &&
+            patient.branchId === userData.branchId
+        );
 
-      // Set the rows with filtered data
-      setRows(filteredPatients);
-      setFilteredRows(filteredPatients);
-      setIsLoading(false);
-    } catch (err: any) {
-      console.error(
-        "Error in retrieving data",
-        err.response?.data || err.message
-      );
+        // Set the rows with filtered data
+        setRows(filteredPatients);
+        setFilteredRows(filteredPatients);
+        setIsLoading(false);
+      } catch (err: any) {
+        console.error(
+          "Error in retrieving data",
+          err.response?.data || err.message
+        );
+      }
+    } else {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(GET_ALL_USERS_BY_TYPE_URL, {
+          headers: {
+            Authorization: `Bearer ${storedAuthData.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        // Filter patients based on their type
+        const filteredPatients = response.data.filter(
+          (patient: PatientsAllProps) => patient.type === "patient"
+        );
+
+        // Set the rows with filtered data
+        setRows(filteredPatients);
+        setFilteredRows(filteredPatients);
+        setIsLoading(false);
+      } catch (err: any) {
+        console.error(
+          "Error in retrieving data",
+          err.response?.data || err.message
+        );
+      }
     }
   };
 

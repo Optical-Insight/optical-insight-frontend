@@ -11,6 +11,7 @@ const defaultAuthData: AuthData = {
   refreshToken: "",
   userType: "",
   userId: "",
+  branchId: "",
 };
 
 // Create the context with default values

@@ -13,6 +13,7 @@ export interface UserDataProps {
   password: string;
   type: string;
   userId: string;
+  branchId: string;
 }
 
 export interface AuthData {
@@ -20,6 +21,7 @@ export interface AuthData {
   refreshToken: string;
   userType: string;
   userId: string;
+  branchId?: string;
 }
 
 export interface CommonBtnProps {
