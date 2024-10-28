@@ -18,12 +18,12 @@ import {
   DELETE_INSTITUTE_BY_ID_URL,
   GET_ALL_INSTITUTES_URL,
 } from "@/constants/config";
-import ModalInfo from "@/app/components/institute/modal-info-institute";
 import { Spin } from "antd";
 import ModalConfirm from "@/app/components/common/modal-confirm";
 import SearchComponent from "@/app/components/common/search-component";
 import { optionsInstituteLocations } from "@/constants/data";
 import toast, { Toaster } from "react-hot-toast";
+import ModalInfoInstitute from "@/app/components/institute/modal-info-institute";
 
 const InstituteListAll = ({
   setActiveHeading,
@@ -333,7 +333,7 @@ const InstituteListAll = ({
       </div>
 
       {/* Info Modal */}
-      <ModalInfo
+      <ModalInfoInstitute
         updateLabel="Update"
         deleteLabel="Delete"
         isOpen={isInfoModalOpen}

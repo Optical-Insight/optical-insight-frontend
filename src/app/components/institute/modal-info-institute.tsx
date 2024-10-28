@@ -52,16 +52,22 @@ const ModalInfoInstitute = ({
                 <div className=" text-gray-500 flex flex-col space-y-2">
                   <p>Institute ID:</p>
                   <p>Name:</p>
-                  <p>Address:</p>
-                  <p>Telephone No:</p>
                   <p>Email:</p>
+                  <p>Website URL:</p>
+                  <p>Is Electronic system using:</p>
+                  <br />
+                  <p>Type of Optical Services Provided:</p>
+                  <p>Certifications:</p>
                 </div>
                 <div className="ml-10 font-bold text-gray-700 flex flex-col space-y-2">
                   <p>{clickedRow?.clinicId}</p>
                   <p>{clickedRow?.name}</p>
-                  <p>{clickedRow?.location}</p>
-                  <p>{clickedRow?.phone}</p>
                   <p>{clickedRow?.email}</p>
+                  <p>{clickedRow?.website}</p>
+                  <p>{clickedRow?.isEHR ? "Yes" : "No"}</p>
+                  <br />
+                  <p>{clickedRow?.typeOfOpticalServicesProvided}</p>
+                  <p>{clickedRow?.certifications}</p>
                 </div>
               </div>
             </div>

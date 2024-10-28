@@ -126,7 +126,7 @@ export interface FormFieldProps {
   label: string;
   placeholder?: string;
   required?: boolean;
-  value?: string;
+  value?: any;
   readOnly?: boolean;
   onChange: (value: string) => void;
   type?: string;

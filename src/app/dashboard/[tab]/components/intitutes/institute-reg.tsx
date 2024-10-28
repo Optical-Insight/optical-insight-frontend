@@ -45,12 +45,15 @@ const InstituteRegistration = ({
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
-    instituteName: clickedRow ? clickedRow.instituteName : "",
+    name: clickedRow ? clickedRow.name : "",
     email: clickedRow ? clickedRow.email : "",
     website: clickedRow ? clickedRow.website : "",
-    services: clickedRow ? clickedRow.services : "",
+    typeOfOpticalServicesProvided: clickedRow ? clickedRow.services : "",
     certifications: clickedRow ? clickedRow.certifications : "",
-    comments: clickedRow ? clickedRow.comments : "",
+    hoursOfOperation: 10,
+    // comments: clickedRow ? clickedRow.comments : "",
+    isEHR: clickedRow ? clickedRow.isEHR : "",
+    branches: [],
   });
 
   useEffect(() => {
@@ -58,7 +61,7 @@ const InstituteRegistration = ({
       setFormValues((prev) => ({
         ...prev,
         clinicId: clickedRow.clinicId,
-        instituteName: clickedRow.name,
+        name: clickedRow.name,
         address: clickedRow.location,
         contactNo: clickedRow.phone,
         email: clickedRow.email,
@@ -79,21 +82,16 @@ const InstituteRegistration = ({
         .post(
           CREATE_INSTITUTES_URL,
           {
-            name: formValues.instituteName,
+            name: formValues.name,
             email: formValues.email,
             website: formValues.website,
-            typeOfOpticalServicesProvided: formValues.services,
+            typeOfOpticalServicesProvided:
+              formValues.typeOfOpticalServicesProvided,
             certifications: formValues.certifications,
-            comments: formValues.comments,
-
-            //REMOVE BELOW
-            location: "formValues.address",
-            phone: "formValues.contactNo",
-            numberOfPatients: 10,
-            numberOfLabTechnicians: 10,
+            // comments: formValues.comments,
             hoursOfOperation: 10,
-            specialServices: "formValues.specialServices",
-            isEHR: true,
+            isEHR: formValues.isEHR === "true" ? true : false,
+            branches: [],
           },
           {
             headers: {
@@ -121,21 +119,16 @@ const InstituteRegistration = ({
         .patch(
           UPDATE_INSTITUTE_BY_ID_URL + clickedRow.clinicId,
           {
-            name: formValues.instituteName,
+            name: formValues.name,
             email: formValues.email,
             website: formValues.website,
-            typeOfOpticalServicesProvided: formValues.services,
+            typeOfOpticalServicesProvided:
+              formValues.typeOfOpticalServicesProvided,
             certifications: formValues.certifications,
-            comments: formValues.comments,
-
-            //REMOVE BELOW
-            location: "formValues.address",
-            phone: "formValues.contactNo",
-            numberOfPatients: 10,
-            numberOfLabTechnicians: 10,
+            // comments: formValues.comments,
             hoursOfOperation: 10,
-            specialServices: "formValues.specialServices",
-            isEHR: true,
+            isEHR: formValues.isEHR === "true" ? true : false,
+            branches: [],
           },
           {
             headers: {
@@ -167,8 +160,12 @@ const InstituteRegistration = ({
 
   const stepForward = () => {
     if (activeStep === 1) {
-      if (formValues.instituteName === "" || formValues.email === "") {
-        toast.error("Please fill all the required fields.");
+      if (
+        formValues.name === "" ||
+        formValues.email === "" ||
+        formValues.isEHR === ""
+      ) {
+        toast.error("Please fill all required fields");
         return;
       }
       setIsConfirmModalOpen(true);
@@ -224,11 +221,11 @@ const InstituteRegistration = ({
           {activeStep === 1 && (
             <>
               <FormField
-                label="Name of the Institute / Venue"
+                label="Name of the Institute"
                 placeholder="Vision Care Opticals"
                 required={true}
-                value={formValues.instituteName}
-                onChange={(value) => handleInputChange("instituteName", value)}
+                value={formValues.name}
+                onChange={(value) => handleInputChange("name", value)}
               />
               {/* <FormField
                 label="Address"
@@ -258,30 +255,58 @@ const InstituteRegistration = ({
                 value={formValues.website}
                 onChange={(value) => handleInputChange("website", value)}
               />
+              <div className="flex items-center justify-between w-full mb-2">
+                <label
+                  htmlFor="isEHR"
+                  className="block text-[16px] text-darkText font-semibold"
+                >
+                  {"Electronic System is used"}{" "}
+                  {true && <span className="text-red-500">*</span>}
+                </label>
+
+                <select
+                  name={"isEHR"}
+                  id={"isEHR"}
+                  className={`pl-2 text-[14.76px] w-[35.556vw] h-10 bg-inputBg rounded-lg text-black border border-inputBorder`}
+                  value={formValues.isEHR}
+                  onChange={(e) => handleInputChange("isEHR", e.target.value)}
+                >
+                  <option value="">Select an Option</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
 
               <div className="h-[6.445vh]" />
 
-              <FormField
+              {/* <FormFieldTextArea
                 label="Type of Optical Services Provided"
                 placeholder="Eye Examine, Contact Lenses, Glasses, etc."
-                value={formValues.services}
-                onChange={(value) => handleInputChange("services", value)}
+                value={formValues.typeOfOpticalServicesProvided}
+                onChange={(value) =>
+                  handleInputChange("typeOfOpticalServicesProvided", value)
+                }
+              /> */}
+              <FormFieldTextArea
+                label="Type of Optical Services Provided"
+                placeholder="Eye Examine, Contact Lenses, Glasses, etc."
+                value={formValues.typeOfOpticalServicesProvided}
+                onChange={(value) =>
+                  handleInputChange("typeOfOpticalServicesProvided", value)
+                }
               />
-              <FormField
+              <FormFieldTextArea
                 label="Certifications"
                 placeholder="Accreditation from relevant organizations"
                 value={formValues.certifications}
                 onChange={(value) => handleInputChange("certifications", value)}
               />
-
-              <div className="h-[6.445vh]" />
-
-              <FormFieldTextArea
+              {/* <FormFieldTextArea
                 label="Comments or Notes"
                 placeholder="Lorem Ipsum"
                 value={formValues.comments}
                 onChange={(value) => handleInputChange("comments", value)}
-              />
+              /> */}
             </>
           )}
         </div>

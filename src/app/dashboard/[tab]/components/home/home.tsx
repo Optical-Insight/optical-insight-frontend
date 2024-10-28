@@ -42,19 +42,19 @@ const HomePage = () => {
           />
           <HomeCard
             iconSrc="/assets/icons/dashboard_02.svg"
-            title="Total Appoinments"
+            title="Total Doctors"
             count={156}
             percentage={14}
           />
           <HomeCard
             iconSrc="/assets/icons/dashboard_03.svg"
-            title="Total Tests"
+            title="Total Institutes"
             count={465}
             percentage={21}
           />
           <HomeCard
             iconSrc="/assets/icons/dashboard_04.svg"
-            title="Total Requests"
+            title="Total Tests"
             count={172}
             percentage={2}
           />
