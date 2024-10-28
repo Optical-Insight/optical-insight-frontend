@@ -72,6 +72,8 @@ const BranchRegistration = ({
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Fetch clinic from branch
+
   const handleSubmitForm = async () => {
     setIsLoading(true);
     console.log("Form values", formValues);
@@ -80,7 +82,7 @@ const BranchRegistration = ({
     if (clickedRow === null) {
       axios
         .post(
-          UPDATE_INSTITUTE_BY_ID_URL + clickedRow.clinicId,
+          UPDATE_INSTITUTE_BY_ID_URL + "CLI397137" + "/branch",
           {
             location: formValues.location,
             phone: formValues.phone,
@@ -116,7 +118,7 @@ const BranchRegistration = ({
       console.log("Update Confirmed: ");
       axios
         .patch(
-          UPDATE_INSTITUTE_BY_ID_URL + clickedRow.clinicId,
+          UPDATE_INSTITUTE_BY_ID_URL + "CLI397137" + "/branch",
           {
             location: formValues.location,
             phone: formValues.phone,

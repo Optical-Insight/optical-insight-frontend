@@ -328,7 +328,7 @@ const InstituteHeadRegistration = ({
               >
                 <option value="text-">Select Type</option>
                 <option value="director">Branch Head</option>
-                <option value="sDirector">Super Branch Head</option>
+                <option value="sdirector">Super Branch Head</option>
               </select>
             </div>
             <div className="h-[4px]" />

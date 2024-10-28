@@ -5,7 +5,6 @@ import {
   PatientProfileIconTextProps,
 } from "@/utils/interfaces";
 import Image from "next/image";
-import SearchFilterReport from "@/app/components/common/search-filter-report";
 import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -38,6 +37,11 @@ const PatientProfile = ({
   const [isLoading, setIsLoading] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState<PatientRecordAllRowProps[]>([]);
+  const [filteredRows, setFilteredRows] = useState<PatientRecordAllRowProps[]>(
+    []
+  );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [status, setStatus] = useState("");
 
   const handleChangeRowsPerPage = (event: any) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -180,6 +184,31 @@ const PatientProfile = ({
     );
   };
 
+  const filterReports = (term: string, statusFilter: string) => {
+    const filtered = rows.filter((row) => {
+      const matchesSearchTerm =
+        row.reportId.includes(term) || row.createdBy.includes(term);
+      const matchesStatus =
+        statusFilter === "All" || statusFilter === ""
+          ? true
+          : row.status.toLowerCase() === statusFilter.toLowerCase();
+      return matchesSearchTerm && matchesStatus;
+    });
+    setFilteredRows(filtered);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterReports(value, status);
+  };
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setStatus(value);
+    filterReports(searchTerm, value);
+  };
+
   const PatientProfileIconCard = ({
     src,
     alt,
@@ -318,17 +347,32 @@ const PatientProfile = ({
       </div>
 
       {/* Filter */}
-      <SearchFilterReport
-        labelSearch="Search for an Institute"
-        labelSelectOne="Status"
-        placeholderSearch="Search Institute by name"
-        optionsSelectOne={[
-          { value: "active", label: "Active" },
-          { value: "inactive", label: "Inactive" },
-          { value: "pending", label: "Pending" },
-        ]}
-        onSearch={() => {}}
-      />
+      <div className="mt-6 flex bg-lightBlueBg w-full rounded-xl py-[16px] px-[20px] mb-[25px] justify-between gap-[20px] xl:gap-[50px]">
+        <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">
+            Search for a Report
+          </label>
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search by ReportID, CreatedBy"
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          />
+        </div>
+        <div className="flex flex-col flex-grow">
+          <label className="text-labelText text-[16px] mb-[6px]">Status</label>
+          <select
+            value={status}
+            onChange={handleStatusChange}
+            className="px-2 h-[40px] bg-white rounded-lg text-darkText text-[16.99px] w-full"
+          >
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+      </div>
 
       {/* Test Records */}
       <div className="mb-[45px]">

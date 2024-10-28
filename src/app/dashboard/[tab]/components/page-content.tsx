@@ -19,7 +19,7 @@ function PageContent({ tab }: { tab: string }) {
     case "branches":
       return <BranchesPage />;
 
-    case "institute-heads":
+    case "branch-heads":
       return <InstituteHeadsPage />;
 
     case "lab-technicians":

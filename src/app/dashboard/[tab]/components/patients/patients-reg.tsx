@@ -53,31 +53,6 @@ const PatientsRegistration = ({
     setActiveStep(1);
   }, []);
 
-  // const [formValues, setFormValues] = useState({
-  //   patientId: "",
-  //   name: "",
-  //   dateOfBirth: "",
-  //   sex: "",
-  //   occupation: "",
-  //   address: "",
-  //   email: "",
-  //   phone: "",
-  //   emergencyPhone: "",
-  //   generalMedicalHistory: "",
-  //   familyHistoryOfEyeConditions: "",
-  //   currentMedications: "",
-  //   historyOfSmokingAndAlcoholConsumption: "",
-  //   visionProblems: "",
-  //   pastEyeProblemsOrSurgeries: "",
-  //   eyeDiscomfort: "",
-  //   glassesOrContactLenseUsage: "",
-  //   height: "",
-  //   weight: "",
-  //   // labTechnitianId: "",
-  //   // labTechnitianName: "",
-  //   // date: "",
-  // });
-
   const [formValues, setFormValues] = useState({
     name: clickedRow ? clickedRow.name : "",
     email: clickedRow ? clickedRow.email : "",
@@ -118,53 +93,6 @@ const PatientsRegistration = ({
     sex: false,
     address: false,
   });
-
-  // const handleSubmitPatientForm = async () => {
-  //   setIsLoading(true);
-  //   console.log("Form values: ", formValues);
-  //   try {
-  //     const res = await axios.post(
-  //       CREATE_PATIENT_URL,
-  //       {
-  //         name: formValues.name,
-  //         email: formValues.email,
-  //         phone: formValues.phone,
-  //         address: formValues.address,
-  //         sex: formValues.sex,
-  //         dateOfBirth: formValues.dateOfBirth,
-  //         occupation: formValues.occupation,
-  //         emergencyPhone: formValues.emergencyPhone,
-  //         generalMedicalHistory: formValues.generalMedicalHistory,
-  //         familyHistoryOfEyeConditions: formValues.familyHistoryOfEyeConditions,
-  //         currentMedications: formValues.currentMedications,
-  //         historyOfSmokingAndAlcoholConsumption:
-  //           formValues.historyOfSmokingAndAlcoholConsumption,
-  //         visionProblems: formValues.visionProblems,
-  //         pastEyeProblemsOrSurgeries: formValues.pastEyeProblemsOrSurgeries,
-  //         eyeDiscomfort: formValues.eyeDiscomfort,
-  //         glassesOrContactLenseUsage: formValues.glassesOrContactLenseUsage,
-  //         height: formValues.height,
-  //         weight: formValues.weight,
-  //         type: "patient",
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${storedAuthData.accessToken}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     setIsConfirmModalOpen(false);
-  //     setIsLoading(false);
-  //     toast.success("Login Successful");
-  //     console.log("Form submitted successfully:", res.data);
-  //     setActiveHeading && setActiveHeading(1);
-  //   } catch (err) {
-  //     console.log("Submit error: ", err);
-  //     setIsLoading(false);
-  //     toast.error("Something went wrong. Please try again.");
-  //   }
-  // };
 
   const handleSubmitPatientForm = async () => {
     setIsLoading(true);
@@ -364,14 +292,6 @@ const PatientsRegistration = ({
               }}
             />
 
-            {/* <FormField
-              label="Gender"
-              placeholder={"Male"}
-              value={formValues.sex}
-              onChange={(value) => handleInputChange("sex", value)}
-              required
-              hasError={formErrors.sex}
-            /> */}
             <div className="flex items-center justify-between w-full mb-2">
               <label
                 htmlFor="Gender"
@@ -448,6 +368,7 @@ const PatientsRegistration = ({
               hasError={formErrors.phone}
             />
             <FormField
+              type="phone"
               label="Emergency contact information"
               placeholder="077 785 2856"
               value={formValues.emergencyPhone}
@@ -549,7 +470,7 @@ const PatientsRegistration = ({
             </div>
             <CommonBtn
               label={
-                activeStep === 2 ? (!clickedRow ? "Submit" : "Update") : "Next"
+                activeStep === 3 ? (!clickedRow ? "Submit" : "Update") : "Next"
               }
               onClick={stepForward}
             />

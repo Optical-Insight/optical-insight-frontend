@@ -14,6 +14,7 @@ export interface UserDataProps {
   type: string;
   userId: string;
   branchId: string;
+  clinicId: string;
 }
 
 export interface AuthData {
