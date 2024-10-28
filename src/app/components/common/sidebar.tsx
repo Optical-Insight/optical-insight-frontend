@@ -78,12 +78,24 @@ const AppSidebar = ({
     if (isAuthenticated) logout();
   };
 
-  const sidebarItems = [
+  const initialSidebarItems = [
     {
       iconSrc: "/assets/icons/home-sidebar.svg",
       iconSrcActive: "/assets/icons/home-sidebar-active.svg",
       label: "Home",
     },
+
+    {
+      iconSrc: "/assets/icons/patient-sidebar.svg",
+      iconSrcActive: "/assets/icons/patient-sidebar-active.svg",
+      label: "Patients",
+    },
+  ];
+
+  const [sidebarItems, setSidebarItems] = useState(initialSidebarItems);
+
+  // Additional items for admin only
+  const adminSidebarItems = [
     {
       iconSrc: "/assets/icons/institute-sidebar.svg",
       iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
@@ -109,22 +121,15 @@ const AppSidebar = ({
       iconSrcActive: "/assets/icons/doc-sidebar-active.svg",
       label: "Doctors",
     },
-    {
-      iconSrc: "/assets/icons/patient-sidebar.svg",
-      iconSrcActive: "/assets/icons/patient-sidebar-active.svg",
-      label: "Patients",
-    },
-    // {
-    //   iconSrc: "/assets/icons/notification-sidebar.svg",
-    //   iconSrcActive: "/assets/icons/notification-sidebar-active.svg",
-    //   label: "Notification",
-    // },
-    // {
-    //   iconSrc: "/assets/icons/settings-sidebar.svg",
-    //   iconSrcActive: "/assets/icons/settings-sidebar-active.svg",
-    //   label: "Settings",
-    // },
   ];
+
+  useEffect(() => {
+    if (userData && userData.type === "admin") {
+      setSidebarItems([...initialSidebarItems, ...adminSidebarItems]);
+    } else {
+      setSidebarItems(initialSidebarItems);
+    }
+  }, [userData]);
 
   return (
     <div className="flex flex-row bg-lightBg h-screen overflow-hidden w-full">
