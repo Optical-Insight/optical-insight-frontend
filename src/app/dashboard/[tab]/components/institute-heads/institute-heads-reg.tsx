@@ -162,6 +162,7 @@ const InstituteHeadRegistration = ({
               onChange={(value) => handleInputChange("email", value)}
             />
             <FormField
+              type="phone"
               label="Contact Number"
               placeholder="0761245852"
               required={true}

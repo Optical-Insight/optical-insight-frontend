@@ -38,6 +38,10 @@ const BranchRegistration = ({
 }: BranchRegistrationProps) => {
   console.log("clickedRow: ", clickedRow);
 
+  useEffect(() => {
+    setActiveStep(1);
+  }, []);
+
   const { storedAuthData } = useAuth();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -214,6 +218,7 @@ const BranchRegistration = ({
               />
 
               <FormField
+                type="phone"
                 label="Contact Number"
                 placeholder="081 208 5004"
                 required={true}

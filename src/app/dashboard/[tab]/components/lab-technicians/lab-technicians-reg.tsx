@@ -10,7 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 import { StepProps } from "@/utils/interfaces";
 import { TechnicianRegistrationProps } from "@/utils/technician";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
@@ -47,6 +47,10 @@ const TechnicianRegistration = ({
 }: TechnicianRegistrationProps) => {
   console.log("clickedRow", clickedRow);
 
+  useEffect(() => {
+    setActiveStep(1);
+  }, []);
+
   const { storedAuthData } = useAuth();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +60,7 @@ const TechnicianRegistration = ({
     dateOfBirth: clickedRow ? clickedRow.dateOfBirth : "",
     nic: clickedRow ? clickedRow.nic : "",
     email: clickedRow ? clickedRow.email : "",
+    password: clickedRow ? clickedRow.password : "",
     phone: clickedRow ? clickedRow.phone : "",
     yrsOfXp: clickedRow ? clickedRow.yrsOfXp : "",
   });
@@ -246,6 +251,14 @@ const TechnicianRegistration = ({
               value={formValues.email}
               onChange={(value) => handleInputChange("email", value)}
               required
+            />
+            <FormField
+              type="password"
+              label="Password"
+              required={true}
+              placeholder={"**********"}
+              value={formValues.password}
+              onChange={(value) => handleInputChange("password", value)}
             />
             <FormField
               label="Contact Number"

@@ -437,6 +437,7 @@ const PatientsRegistration = ({
               hasError={formErrors.email}
             />
             <FormField
+              type="phone"
               label="Contact Number"
               placeholder="071 234 5678"
               value={formValues.phone}

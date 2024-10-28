@@ -36,14 +36,7 @@ function AdminLogin() {
     }
   }, [isAuthenticated, router]);
 
-  // useEffect(() => {
-  //   if(email === "" || password === ""){
-  //     setIsLoading(false);
-  //   }
-  // }, [email, password]);
-
   const validateEmail = (emailInput: string) => {
-    // Basic email regex pattern
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(emailInput);
   };
