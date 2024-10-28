@@ -8,6 +8,9 @@ import InstituteListAll from "./institute-heads-list";
 const InstituteHeadsPage = () => {
   const [activeHeading, setActiveHeading] = useState(1);
   const [activeStep, setActiveStep] = useState(1);
+  const [clickedRow, setClickedRow] = useState<any | null>(null);
+
+  console.log("DoctorHeadsPage", clickedRow);
 
   const handleBreadcrumbClick = (value: number) => {
     if (value === activeHeading) return;
@@ -70,7 +73,11 @@ const InstituteHeadsPage = () => {
 
       {/* All Institutes */}
       {activeHeading === 1 && (
-        <InstituteListAll setActiveHeading={setActiveHeading} />
+        <InstituteListAll
+          setActiveHeading={setActiveHeading}
+          clickedRow={clickedRow}
+          setClickedRow={setClickedRow}
+        />
       )}
 
       {/* Register an Institute */}
@@ -78,6 +85,8 @@ const InstituteHeadsPage = () => {
         <InstituteRegistration
           activeStep={activeStep}
           setActiveStep={setActiveStep}
+          setActiveHeading={setActiveHeading}
+          clickedRow={clickedRow}
         />
       )}
     </div>

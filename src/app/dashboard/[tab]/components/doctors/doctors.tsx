@@ -4,12 +4,11 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Image from "next/image";
 import DoctorRegistration from "./doctors-reg";
 import DoctorListAll from "./doctors-list";
-import { DoctorsAllProps } from "@/utils/doctor";
 
 const DoctorHeadsPage = () => {
   const [activeHeading, setActiveHeading] = useState(1);
   const [activeStep, setActiveStep] = useState(1);
-  const [clickedRow, setClickedRow] = useState<DoctorsAllProps | null>(null);
+  const [clickedRow, setClickedRow] = useState<any | null>(null);
 
   console.log("DoctorHeadsPage", clickedRow);
 

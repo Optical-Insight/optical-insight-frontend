@@ -549,7 +549,7 @@ const PatientsRegistration = ({
             </div>
             <CommonBtn
               label={
-                activeStep === 3 ? (!clickedRow ? "Submit" : "Update") : "Next"
+                activeStep === 2 ? (!clickedRow ? "Submit" : "Update") : "Next"
               }
               onClick={stepForward}
             />

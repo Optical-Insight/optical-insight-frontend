@@ -109,8 +109,39 @@ const AppSidebar = ({
     {
       iconSrc: "/assets/icons/institute-heads.svg",
       iconSrcActive: "/assets/icons/institute-heads-active.svg",
-      label: "Institute Heads",
+      label: "Branch Heads",
     },
+    {
+      iconSrc: "/assets/icons/labtech-sidebar.svg",
+      iconSrcActive: "/assets/icons/labtech-sidebar-active.svg",
+      label: "Lab Technicians",
+    },
+    {
+      iconSrc: "/assets/icons/doc-sidebar.svg",
+      iconSrcActive: "/assets/icons/doc-sidebar-active.svg",
+      label: "Doctors",
+    },
+  ];
+
+  const sDirectorItems = [
+    {
+      iconSrc: "/assets/icons/institute-sidebar.svg",
+      iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
+      label: "Branches",
+    },
+    {
+      iconSrc: "/assets/icons/labtech-sidebar.svg",
+      iconSrcActive: "/assets/icons/labtech-sidebar-active.svg",
+      label: "Lab Technicians",
+    },
+    {
+      iconSrc: "/assets/icons/doc-sidebar.svg",
+      iconSrcActive: "/assets/icons/doc-sidebar-active.svg",
+      label: "Doctors",
+    },
+  ];
+
+  const directorItems = [
     {
       iconSrc: "/assets/icons/labtech-sidebar.svg",
       iconSrcActive: "/assets/icons/labtech-sidebar-active.svg",
@@ -126,10 +157,22 @@ const AppSidebar = ({
   useEffect(() => {
     if (userData && userData.type === "admin") {
       setSidebarItems([...initialSidebarItems, ...adminSidebarItems]);
+    } else if (userData && userData.type === "sDirector") {
+      setSidebarItems([...initialSidebarItems, ...sDirectorItems]);
+    } else if (userData && userData.type === "director") {
+      setSidebarItems([...initialSidebarItems, ...directorItems]);
     } else {
       setSidebarItems(initialSidebarItems);
     }
   }, [userData]);
+
+  // useEffect(() => {
+  //   if (userData && userData.type === "admin") {
+  //     setSidebarItems([...initialSidebarItems, ...adminSidebarItems]);
+  //   } else {
+  //     setSidebarItems(initialSidebarItems);
+  //   }
+  // }, [userData]);
 
   return (
     <div className="flex flex-row bg-lightBg h-screen overflow-hidden w-full">

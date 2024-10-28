@@ -15,6 +15,8 @@ const ModalInfoInstituteHead = ({
   isOpen,
   clickedRow,
   onClose,
+  onEdit,
+  onDelete,
 }: ModalInfoInstituteHeadProps) => {
   console.log("ModalInfoProps", clickedRow);
 
@@ -38,7 +40,7 @@ const ModalInfoInstituteHead = ({
                     as="h3"
                     className="text-base font-semibold leading-6 text-gray-900 "
                   >
-                    {`${clickedRow?.clinicId} - ${clickedRow?.name}`}
+                    {`${clickedRow?.userId} - ${clickedRow?.name}`}
                   </DialogTitle>
                 </div>
               </div>
@@ -48,18 +50,24 @@ const ModalInfoInstituteHead = ({
             <div className="px-4 py-4 sm:px-6 sm:py-4 bg-white">
               <div className="flex text-sm bg-white">
                 <div className=" text-gray-500 flex flex-col space-y-2">
-                  <p>Institute ID:</p>
+                  <p>User ID:</p>
                   <p>Name:</p>
-                  <p>Address:</p>
+                  <p>Date of Birth:</p>
+                  <p>Gender:</p>
                   <p>Telephone No:</p>
                   <p>Email:</p>
+                  <br />
+                  <p>Branch ID:</p>
                 </div>
                 <div className="ml-10 font-bold text-gray-700 flex flex-col space-y-2">
-                  <p>{clickedRow?.clinicId}</p>
+                  <p>{clickedRow?.userId}</p>
                   <p>{clickedRow?.name}</p>
-                  <p>{clickedRow?.location}</p>
+                  <p>{clickedRow?.dateOfBirth}</p>
+                  <p>{clickedRow?.sex}</p>
                   <p>{clickedRow?.phone}</p>
                   <p>{clickedRow?.email}</p>
+                  <br />
+                  <p>{clickedRow?.branchId}</p>
                 </div>
               </div>
             </div>
@@ -69,14 +77,14 @@ const ModalInfoInstituteHead = ({
                 <button
                   type="button"
                   className="mt-3 inline-flex w-full justify-center rounded-md bg-red-800 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-900 sm:mt-0 sm:w-auto"
-                  onClick={onClose}
+                  onClick={onDelete}
                 >
                   {deleteLabel}
                 </button>
                 <button
                   type="button"
                   className="inline-flex w-full justify-center rounded-md bg-buttonPrimary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-buttonPrimaryHover sm:ml-3 sm:w-auto"
-                  onClick={onClose}
+                  onClick={onEdit}
                 >
                   {updateLabel}
                 </button>

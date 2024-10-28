@@ -4,6 +4,7 @@ import PageContent from "./page-content";
 import AppSidebar from "@/app/components/common/sidebar";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { Flex, Spin } from "antd";
 
 function PageLayout({
   tab,
@@ -12,7 +13,6 @@ function PageLayout({
     | "home"
     | "institutes"
     | "branches"
-    | "institutes"
     | "institute-heads"
     | "lab-technicians"
     | "doctors"
@@ -22,27 +22,43 @@ function PageLayout({
   const router = useRouter();
 
   const isAuthorized = (tabSelected: keyof typeof accessControl) => {
-    // Define roles or conditions required for each tab
     const accessControl = {
       home: true, // Accessible to all authenticated users
       institutes: userData?.type === "admin",
-      branches: userData?.type === "admin",
+      branches: userData?.type === "admin" || userData?.type === "sDirector",
       "institute-heads": userData?.type === "admin",
-      "lab-technicians": userData?.type === "admin",
-      doctors: userData?.type === "admin" || userData?.type === "doctor",
-      patients: userData?.type === "admin" || userData?.type === "staff",
+      "lab-technicians":
+        userData?.type === "admin" ||
+        userData?.type === "sDirector" ||
+        userData?.type === "director",
+      doctors:
+        userData?.type === "admin" ||
+        userData?.type === "sDirector" ||
+        userData?.type === "director",
+      patients: true, // Accessible to all authenticated users
     };
 
     return accessControl[tabSelected];
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && userData) {
       if (!isAuthorized(tab)) {
         router.push("/unauthorized");
       }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, userData, tab]);
+
+  // Show a loading message or spinner until userData is available
+  if (isAuthenticated && !userData) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-lightBg">
+        <Flex align="center" gap="middle">
+          <Spin />
+        </Flex>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -54,22 +70,3 @@ function PageLayout({
 }
 
 export default PageLayout;
-
-// "use client";
-// import React from "react";
-// import PageContent from "./page-content";
-// import AppSidebar from "@/app/components/common/sidebar";
-
-// // import PageHeader from "./page-header";
-
-// function PageLayout({ tab }: { tab: string }) {
-//   return (
-//     <>
-//       <AppSidebar tab={tab}>
-//         <PageContent tab={tab} />
-//       </AppSidebar>{" "}
-//     </>
-//   );
-// }
-
-// export default PageLayout;
