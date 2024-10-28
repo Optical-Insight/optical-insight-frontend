@@ -201,7 +201,10 @@ const TechnicianListAll = ({
         <div className="flex h-[42px]">
           <CommonRegisterBtn
             label="Register new Lab Technician"
-            onClick={() => setActiveHeading && setActiveHeading(2)}
+            onClick={() => {
+              setClickedRow && setClickedRow(null);
+              setActiveHeading && setActiveHeading(2);
+            }}
           />
         </div>
       </div>

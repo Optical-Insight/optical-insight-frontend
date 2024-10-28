@@ -84,7 +84,9 @@ const InstituteHeadListAll = ({ setActiveHeading }: ListAllProps) => {
         <div className="flex h-[42px]">
           <CommonRegisterBtn
             label="Register new Institute Head"
-            onClick={() => setActiveHeading && setActiveHeading(2)}
+            onClick={() => {
+              setActiveHeading && setActiveHeading(2);
+            }}
           />
         </div>
       </div>

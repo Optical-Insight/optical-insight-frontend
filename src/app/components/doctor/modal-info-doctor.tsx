@@ -51,16 +51,22 @@ const ModalInfoDoctor = ({
                 <div className=" text-gray-500 flex flex-col space-y-2">
                   <p>Doctor ID:</p>
                   <p>Name:</p>
-                  <p>Specialization:</p>
-                  {/* <p>Telephone No:</p> */}
+                  <p>Telephone No:</p>
                   <p>Email:</p>
+                  <br />
+                  <p>Specialization:</p>
+                  <p>Experience:</p>
+                  <p>Fee per appointment:</p>
                 </div>
                 <div className="ml-10 font-bold text-gray-700 flex flex-col space-y-2">
                   <p>{clickedRow?.userId}</p>
-                  <p>{clickedRow?.name}</p>
-                  <p>{clickedRow?.specialization}</p>
-                  {/* <p>{clickedRow?.phone}</p> */}
+                  <p>Dr. {clickedRow?.name}</p>
+                  <p>{clickedRow?.phone}</p>
                   <p>{clickedRow?.email}</p>
+                  <br />
+                  <p>{clickedRow?.specialization}</p>
+                  <p>{clickedRow?.experience} years</p>
+                  <p>LKR {clickedRow?.fees}.00</p>
                 </div>
               </div>
             </div>
