@@ -16,6 +16,7 @@ export const DELETE_USER_BY_ID_URL = `${API_BASE_URL}/users/`;
 export const CREATE_PATIENT_URL = `${API_BASE_URL}/users/`;
 export const CREATE_DOCTOR_URL = `${API_BASE_URL}/users/`;
 export const CREATE_TECHNICIAN_URL = `${API_BASE_URL}/users/`;
+export const CREATE_BRANCH_HEAD_URL = `${API_BASE_URL}/users/`;
 
 export const GET_ALL_REPORTS = `${API_BASE_URL}/reports/`;
 export const CREATE_TEST_REPORT = `${API_REPORT_URL}/reports/`;
