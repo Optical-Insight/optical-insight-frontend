@@ -2,15 +2,16 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
-import { CREATE_INSTITUTES_URL } from "@/constants/config";
+import { UPDATE_INSTITUTE_BY_ID_URL } from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import { StepProps } from "@/utils/interfaces";
 import { BranchRegistrationProps } from "@/utils/branch";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import FormFieldTextArea from "@/app/components/common/form-textArea";
 
-const Step = ({ number, title, active, lineActive }: StepProps) => {
+const Step = ({ number, title, active }: StepProps) => {
   return (
     <div
       className={`flex items-center space-x-4 ${
@@ -25,13 +26,6 @@ const Step = ({ number, title, active, lineActive }: StepProps) => {
         {number}
       </span>
       <h2 className="text-[16px] font-semibold">{title}</h2>
-      {number == 1 ? (
-        <div
-          className={`w-[4.444vw] h-[0.195vh] ${
-            lineActive ? "bg-blueText" : "bg-disabledText"
-          } ml-[0.556vw]`}
-        ></div>
-      ) : null}
     </div>
   );
 };
@@ -49,33 +43,11 @@ const BranchRegistration = ({
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState({
-    clinicId: "",
-    branchName: "",
-    address: "",
-    contactNo: "",
-    email: "",
-    website: "",
-    services: "",
-    specialty: "",
-    insurances: "",
-    certifications: "",
-    regNo: "",
-    taxNo: "",
-    pin: "",
-    license: "",
-    optometrists: "",
-    opticians: "",
-    supportStaff: "",
-    qualifications: "",
-    staffContact: "",
-    equipment: "",
-    facilities: "",
-    hours: "",
+    location: "",
+    phone: "",
+    numberOfPatients: "",
+    numberOfLabTechnicians: "",
     specialServices: "",
-    ehr: "",
-    compatibility: "",
-    security: "",
-    otherInfo: "",
     comments: "",
   });
 
@@ -86,30 +58,32 @@ const BranchRegistration = ({
         clinicId: clickedRow.clinicId,
         branchName: clickedRow.name,
         address: clickedRow.location,
-        contactNo: clickedRow.phone,
+        phone: clickedRow.phone,
         email: clickedRow.email,
       }));
     }
   }, [clickedRow]);
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: any) => {
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmitForm = async () => {
     setIsLoading(true);
+    console.log("Form values", formValues);
 
     // Create Branch
     if (clickedRow === null) {
       axios
         .post(
-          CREATE_INSTITUTES_URL,
+          UPDATE_INSTITUTE_BY_ID_URL + clickedRow.clinicId,
           {
-            name: formValues.branchName,
-            location: formValues.address,
-            phone: formValues.contactNo,
-            email: formValues.email,
-            website: formValues.website,
+            location: formValues.location,
+            phone: formValues.phone,
+            numberOfPatients: formValues.numberOfPatients,
+            numberOfLabTechnicians: formValues.numberOfLabTechnicians,
+            specialServices: formValues.specialServices,
+            comments: formValues.comments,
           },
           {
             headers: {
@@ -136,22 +110,46 @@ const BranchRegistration = ({
       // Update Branch
     } else {
       console.log("Update Confirmed: ");
-      setIsConfirmModalOpen(false);
-      setIsLoading(false);
+      axios
+        .patch(
+          UPDATE_INSTITUTE_BY_ID_URL + clickedRow.clinicId,
+          {
+            location: formValues.location,
+            phone: formValues.phone,
+            numberOfPatients: formValues.numberOfPatients,
+            numberOfLabTechnicians: formValues.numberOfLabTechnicians,
+            specialServices: formValues.specialServices,
+            comments: formValues.comments,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${storedAuthData.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setIsLoading(false);
+          setIsConfirmModalOpen(false);
+          console.log("Form submitted successfully:", res.data);
+          toast.success("Form Submission Successful");
+          setActiveHeading && setActiveHeading(1);
+          return res.data;
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          setIsConfirmModalOpen(false);
+          console.error("Error:", err.message);
+          toast.error("Form Submission Failed. Try again.");
+        });
     }
   };
 
   console.log("activeStep", activeStep);
 
   const stepForward = () => {
-    if (activeStep === 2) {
-      if (
-        formValues.branchName === "" ||
-        formValues.address === "" ||
-        formValues.contactNo === "" ||
-        formValues.email === "" ||
-        formValues.website === ""
-      ) {
+    if (activeStep === 1) {
+      if (formValues.location === "" || formValues.phone === "") {
         toast.error("Please fill all the required fields.");
         return;
       }
@@ -201,12 +199,6 @@ const BranchRegistration = ({
             active={activeStep >= 1}
             lineActive={activeStep >= 2}
           />
-          <Step
-            number={2}
-            title="Other Information"
-            active={activeStep >= 2}
-            lineActive={activeStep >= 3}
-          />
         </div>
 
         <div className="mt-8 ml-[3.403vw] mr-[4.722vw]">
@@ -214,73 +206,50 @@ const BranchRegistration = ({
           {activeStep === 1 && (
             <>
               <FormField
-                label="Name of the Branch"
-                placeholder="Vision Care Opticals"
+                label="Location of the Branch"
+                placeholder="Colombo"
                 required={true}
-                value={formValues.branchName}
-                onChange={(value) => handleInputChange("branchName", value)}
+                value={formValues.location}
+                onChange={(value) => handleInputChange("location", value)}
               />
-              <FormField
-                label="Address"
-                placeholder="1st Floor, 907 Peradeniya Rd, Kandy"
-                required={true}
-                value={formValues.address}
-                onChange={(value) => handleInputChange("address", value)}
-              />
+
               <FormField
                 label="Contact Number"
                 placeholder="081 208 5004"
                 required={true}
-                value={formValues.contactNo}
-                onChange={(value) => handleInputChange("contactNo", value)}
+                value={formValues.phone}
+                onChange={(value) => handleInputChange("phone", value)}
               />
               <FormField
-                label="Email Address"
-                placeholder="info@visioncare.lk"
-                value={formValues.email}
-                onChange={(value) => handleInputChange("email", value)}
+                type="number"
+                label="Number of Patients"
+                placeholder="50"
+                value={formValues.numberOfPatients}
+                onChange={(value) =>
+                  handleInputChange("numberOfPatients", Number(value))
+                }
               />
               <FormField
-                label="Website URL"
-                placeholder="visioncare.lk"
-                value={formValues.website}
-                onChange={(value) => handleInputChange("website", value)}
+                label="Number of Lab Technicians"
+                placeholder="15"
+                value={formValues.numberOfLabTechnicians}
+                onChange={(value) =>
+                  handleInputChange("numberOfLabTechnicians", Number(value))
+                }
               />
-            </>
-          )}
 
-          {/* Step 02 */}
-          {activeStep === 2 && (
-            <>
-              <FormField
-                label="Type of Optical Services Provided"
-                placeholder="Eye Examine, Contact Lenses, Glasses, etc."
-                value={formValues.services}
-                onChange={(value) => handleInputChange("services", value)}
-              />
-              <FormField
-                label="Certifications"
-                placeholder="Accreditation from relevant organizations"
-                value={formValues.certifications}
-                onChange={(value) => handleInputChange("certifications", value)}
-              />
-              <FormField
-                label="Special Services"
-                placeholder="Home Visits, Emergency Services, etc."
+              <div className="h-[6.445vh]" />
+              <FormFieldTextArea
+                label="Special Services Provided"
+                placeholder="Personalized Sunglasses"
                 value={formValues.specialServices}
                 onChange={(value) =>
                   handleInputChange("specialServices", value)
                 }
               />
-              <FormField
-                label="Electronic Health Record (EHR) System Used"
-                placeholder="Yes"
-                value={formValues.ehr}
-                onChange={(value) => handleInputChange("ehr", value)}
-              />
-              <FormField
-                label="Comments or Notes"
-                placeholder="Lorem Ipsum"
+              <FormFieldTextArea
+                label="Comments"
+                placeholder="Comments or Notes"
                 value={formValues.comments}
                 onChange={(value) => handleInputChange("comments", value)}
               />
@@ -300,7 +269,7 @@ const BranchRegistration = ({
             <div className="w-full">
               <CommonBtn
                 label={
-                  activeStep === 2
+                  activeStep === 1
                     ? clickedRow === null
                       ? "Submit"
                       : "Update"
