@@ -16,7 +16,7 @@ import { PatientsAllProps } from "@/utils/patient";
 const HomePage = () => {
   const router = useRouter();
   const { storedAuthData, userData } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [patientCount, setPatientCount] = useState(0);
   const [doctorsCount, setDoctorsCount] = useState(0);
   const [institueCount, setInstituteCount] = useState(0);
@@ -29,7 +29,7 @@ const HomePage = () => {
   const fetchAllPatients = async () => {
     if (storedAuthData.userType !== "admin") {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const response = await axios.get(GET_ALL_USERS_BY_TYPE_URL, {
           headers: {
             Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -50,7 +50,7 @@ const HomePage = () => {
         const totalPatients = filteredPatients.length;
         setPatientCount(totalPatients);
 
-        setIsLoading(false);
+        // setIsLoading(false);
       } catch (err: any) {
         console.error(
           "Error in retrieving data",
@@ -59,7 +59,7 @@ const HomePage = () => {
       }
     } else {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const response = await axios.get(GET_ALL_USERS_BY_TYPE_URL, {
           headers: {
             Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -76,7 +76,7 @@ const HomePage = () => {
         const totalPatients = filteredPatients.length;
         setPatientCount(totalPatients);
 
-        setIsLoading(false);
+        // setIsLoading(false);
       } catch (err: any) {
         console.error(
           "Error in retrieving data",
@@ -89,7 +89,7 @@ const HomePage = () => {
   const fetchAllDoctors = async () => {
     if (storedAuthData.userType !== "admin") {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const response = await axios.get(GET_ALL_USERS_BY_TYPE_URL, {
           headers: {
             Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -110,7 +110,7 @@ const HomePage = () => {
         const totalPatients = filteredPatients.length;
         setDoctorsCount(totalPatients);
 
-        setIsLoading(false);
+        // setIsLoading(false);
       } catch (err: any) {
         console.error(
           "Error in retrieving data",
@@ -119,7 +119,7 @@ const HomePage = () => {
       }
     } else {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const response = await axios.get(GET_ALL_USERS_BY_TYPE_URL, {
           headers: {
             Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -136,7 +136,7 @@ const HomePage = () => {
         const totalPatients = filteredPatients.length;
         setDoctorsCount(totalPatients);
 
-        setIsLoading(false);
+        // setIsLoading(false);
       } catch (err: any) {
         console.error(
           "Error in retrieving data",
@@ -147,7 +147,7 @@ const HomePage = () => {
   };
 
   const fetchAllInstitutes = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     await axios
       .get(GET_ALL_INSTITUTES_URL, {
         headers: {
@@ -159,7 +159,7 @@ const HomePage = () => {
         //Get total institutes count
         const totalInstitutes = response.data.length;
         setInstituteCount(totalInstitutes);
-        setIsLoading(false);
+        // setIsLoading(false);
       })
       .catch((err) => {
         console.error("Error in retrieving data", err.response.data);
@@ -168,7 +168,7 @@ const HomePage = () => {
 
   const fetchAllReports = async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       await axios
         .get(GET_ALL_REPORTS, {
           headers: {
@@ -180,7 +180,7 @@ const HomePage = () => {
           //Get total tests count
           const totalTestsLength = res.data.length;
           setTotalTests(totalTestsLength);
-          setIsLoading(false);
+          // setIsLoading(false);
         })
         .catch((err) => console.log(err));
     } catch (err: any) {

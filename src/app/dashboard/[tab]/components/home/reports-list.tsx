@@ -167,6 +167,7 @@ const ReportsList = () => {
   const generateReport = async (reportId: string) => {
     setIsGeneratingReport((prev) => [...prev, reportId]);
     try {
+      console.log("Generating report-------------", storedAuthData.accessToken);
       const response = await fetch(
         // `http://localhost:5013/api/reports/generatePdf/${reportId}`,
         `${GENERATE_REPORT_PDF}${reportId}`,

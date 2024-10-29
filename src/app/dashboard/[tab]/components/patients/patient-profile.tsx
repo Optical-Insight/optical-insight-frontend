@@ -64,11 +64,11 @@ const PatientProfile = ({
   const createData = (
     reportId: string,
     createdBy: string,
-    status: string,
+    patientStatus: string,
     createdAt: string,
     updatedAt: string
   ): PatientRecordAllRowProps => {
-    return { reportId, createdBy, status, createdAt, updatedAt };
+    return { reportId, createdBy, patientStatus, createdAt, updatedAt };
   };
 
   // Fetch all patient records -- This should be by the clicked user --
@@ -99,6 +99,7 @@ const PatientProfile = ({
             )
         );
         setRows(row);
+        setFilteredRows(row);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -146,6 +147,7 @@ const PatientProfile = ({
   const generateReport = async (reportId: string) => {
     setIsGeneratingReport((prev) => [...prev, reportId]);
     try {
+      console.log("Generating report-------------", storedAuthData.accessToken);
       const response = await fetch(`${GENERATE_REPORT_PDF}${reportId}`, {
         headers: {
           Authorization: `Bearer ${storedAuthData.accessToken}`,
@@ -191,7 +193,7 @@ const PatientProfile = ({
       const matchesStatus =
         statusFilter === "All" || statusFilter === ""
           ? true
-          : row.status.toLowerCase() === statusFilter.toLowerCase();
+          : row.patientStatus.toLowerCase() === statusFilter.toLowerCase();
       return matchesSearchTerm && matchesStatus;
     });
     setFilteredRows(filtered);
@@ -404,11 +406,11 @@ const PatientProfile = ({
                 <>
                   {" "}
                   {(rowsPerPage > 0
-                    ? rows.slice(
+                    ? filteredRows.slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                    : rows
+                    : filteredRows
                   ).map((row) => (
                     <TableRow
                       key={row.reportId}
@@ -423,16 +425,16 @@ const PatientProfile = ({
                       <TableCell>
                         <span
                           className={`${
-                            row.status === "completed" ||
-                            row.status === "complete"
+                            row.patientStatus === "completed" ||
+                            row.patientStatus === "complete"
                               ? "text-green-500"
-                              : row.status === "pending"
+                              : row.patientStatus === "pending"
                               ? "text-yellow-600"
                               : ""
                           } font-semibold`}
                         >
-                          {row.status.charAt(0).toUpperCase() +
-                            row.status.slice(1)}
+                          {row.patientStatus.charAt(0).toUpperCase() +
+                            row.patientStatus.slice(1)}
                         </span>
                       </TableCell>
                       <TableCell>
@@ -446,7 +448,7 @@ const PatientProfile = ({
                             isLoading={isGeneratingReport.includes(
                               row.reportId
                             )}
-                            isBtnDisabled={row.status === "pending"}
+                            isBtnDisabled={row.patientStatus === "pending"}
                           />
                         </div>
                       </TableCell>

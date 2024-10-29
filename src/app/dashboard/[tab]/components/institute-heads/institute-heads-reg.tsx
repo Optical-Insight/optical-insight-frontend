@@ -13,7 +13,6 @@ import {
   UPDATE_USER_BY_ID_URL,
 } from "@/constants/config";
 import axios from "axios";
-import { Password } from "@mui/icons-material";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
