@@ -2,7 +2,10 @@ import CommonBtn from "@/app/components/common/button";
 import CommomBackBtn from "@/app/components/common/buttonBack";
 import FormField from "@/app/components/common/form-common";
 import ModalConfirm from "@/app/components/common/modal-confirm";
-import { UPDATE_INSTITUTE_BY_ID_URL } from "@/constants/config";
+import {
+  GET_CLINIC_BY_BRANCH_URL,
+  UPDATE_INSTITUTE_BY_ID_URL,
+} from "@/constants/config";
 import { useAuth } from "@/context/AuthContext";
 import { StepProps } from "@/utils/interfaces";
 import { BranchRegistrationProps } from "@/utils/branch";
@@ -42,7 +45,7 @@ const BranchRegistration = ({
     setActiveStep(1);
   }, []);
 
-  const { storedAuthData } = useAuth();
+  const { storedAuthData, userData } = useAuth();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -72,17 +75,25 @@ const BranchRegistration = ({
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Fetch clinic from branch
-
   const handleSubmitForm = async () => {
     setIsLoading(true);
     console.log("Form values", formValues);
 
     // Create Branch
     if (clickedRow === null) {
-      axios
+      const clinicData = await axios.get(
+        `${GET_CLINIC_BY_BRANCH_URL}${userData?.branchId ?? ""}`,
+        {
+          headers: {
+            Authorization: `Bearer ${storedAuthData.accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      await axios
         .post(
-          UPDATE_INSTITUTE_BY_ID_URL + "CLI397137" + "/branch",
+          UPDATE_INSTITUTE_BY_ID_URL + clinicData.data.clinicId + "/branch",
           {
             location: formValues.location,
             phone: formValues.phone,

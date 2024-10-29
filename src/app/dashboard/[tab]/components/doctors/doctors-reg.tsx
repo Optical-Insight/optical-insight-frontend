@@ -60,7 +60,6 @@ const DoctorRegistration = ({
   const [formValues, setFormValues] = useState({
     name: clickedRow ? clickedRow.name : "",
     email: clickedRow ? clickedRow.email : "",
-    password: clickedRow ? clickedRow.password : "",
     phone: clickedRow ? clickedRow.phone : "",
     sex: clickedRow ? clickedRow.sex : "",
     dateOfBirth: clickedRow ? clickedRow.dateOfBirth : "",
@@ -275,14 +274,6 @@ const DoctorRegistration = ({
               placeholder={"saman@gmail.com"}
               value={formValues.email}
               onChange={(value) => handleInputChange("email", value)}
-            />
-            <FormField
-              type="password"
-              label="Password"
-              required={true}
-              placeholder={"**********"}
-              value={formValues.password}
-              onChange={(value) => handleInputChange("password", value)}
             />
           </div>
         )}

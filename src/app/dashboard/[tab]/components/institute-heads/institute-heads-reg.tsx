@@ -13,6 +13,7 @@ import {
   UPDATE_USER_BY_ID_URL,
 } from "@/constants/config";
 import axios from "axios";
+import { Password } from "@mui/icons-material";
 
 const Step = ({ number, title, active, lineActive }: StepProps) => {
   return (
@@ -65,6 +66,7 @@ const InstituteHeadRegistration = ({
     refContact: clickedRow ? clickedRow.refContact : "",
     comSkills: clickedRow ? clickedRow.comSkills : "",
     type: clickedRow ? clickedRow.type : "",
+    password: clickedRow ? clickedRow.Password : "",
   });
 
   console.log("activeStep", activeStep);
@@ -115,6 +117,7 @@ const InstituteHeadRegistration = ({
             branchId: userData?.branchId,
             // comments: formValues.comments,
             type: formValues.type,
+            password: formValues.password,
           },
           {
             headers: {
@@ -270,6 +273,12 @@ const InstituteHeadRegistration = ({
               placeholder="0761245852"
               value={formValues.phone}
               onChange={(value) => handleInputChange("phone", value)}
+            />
+            <FormField
+              type="password"
+              label="Password"
+              value={formValues.password}
+              onChange={(value) => handleInputChange("password", value)}
             />
           </div>
         )}
