@@ -106,8 +106,8 @@ const AppSidebar = ({
       label: "Branches",
     },
     {
-      iconSrc: "/assets/icons/branch-heads.svg",
-      iconSrcActive: "/assets/icons/branch-heads-active.svg",
+      iconSrc: "/assets/icons/institute-sidebar.svg",
+      iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
       label: "Branch Heads",
     },
     {

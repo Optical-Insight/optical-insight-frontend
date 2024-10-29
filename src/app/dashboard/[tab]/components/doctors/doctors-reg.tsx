@@ -60,7 +60,6 @@ const DoctorRegistration = ({
   const [formValues, setFormValues] = useState({
     name: clickedRow ? clickedRow.name : "",
     email: clickedRow ? clickedRow.email : "",
-    password: clickedRow ? clickedRow.password : "",
     phone: clickedRow ? clickedRow.phone : "",
     sex: clickedRow ? clickedRow.sex : "",
     dateOfBirth: clickedRow ? clickedRow.dateOfBirth : "",
@@ -74,6 +73,7 @@ const DoctorRegistration = ({
     specialNotes: clickedRow ? clickedRow.specialNotes : "",
     branchId: userData?.branchId ?? "",
     type: "doctor",
+    fees: clickedRow ? clickedRow.fees : "",
   });
 
   const stepForward = () => {
@@ -115,6 +115,7 @@ const DoctorRegistration = ({
             institute: "CLI397137",
             specialNotes: formValues.specialNotes,
             type: "doctor",
+            fees: formValues.fees,
             branchId: userData?.branchId,
           },
           {
@@ -152,6 +153,7 @@ const DoctorRegistration = ({
             // medicalLicenceNumber: formValues.medicalLicenceNumber,
             institute: formValues.institute,
             specialNotes: formValues.specialNotes,
+            fees: formValues.fees,
             type: "doctor",
           },
           {
@@ -276,14 +278,6 @@ const DoctorRegistration = ({
               value={formValues.email}
               onChange={(value) => handleInputChange("email", value)}
             />
-            <FormField
-              type="password"
-              label="Password"
-              required={true}
-              placeholder={"**********"}
-              value={formValues.password}
-              onChange={(value) => handleInputChange("password", value)}
-            />
           </div>
         )}
 
@@ -317,6 +311,14 @@ const DoctorRegistration = ({
               value={formValues.experience}
               onChange={(value) => handleInputChange("experience", value)}
             />
+            <FormField
+              label="Fee per appointment"
+              required={true}
+              placeholder={"2000.00"}
+              value={formValues.fees}
+              onChange={(value) => handleInputChange("fees", value)}
+            />
+
             <FormField
               label="District (Working Hospital)"
               required={true}

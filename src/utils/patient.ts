@@ -68,7 +68,7 @@ export interface ModalInfoPatientProps {
 export interface PatientRecordAllRowProps {
   reportId: string;
   createdBy: string;
-  status: string;
+  patientStatus: string;
   createdAt: string;
   updatedAt: string;
 }
