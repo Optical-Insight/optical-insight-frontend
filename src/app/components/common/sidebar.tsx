@@ -106,13 +106,13 @@ const AppSidebar = ({
       label: "Branches",
     },
     {
-      iconSrc: "/assets/icons/institute-sidebar.svg",
-      iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
+      iconSrc: "/assets/icons/branch-heads.svg",
+      iconSrcActive: "/assets/icons/branch-heads-active.svg",
       label: "Branch Heads",
     },
     {
-      iconSrc: "/assets/icons/labtech-sidebar.svg",
-      iconSrcActive: "/assets/icons/labtech-sidebar-active.svg",
+      iconSrc: "/assets/icons/institute-sidebar.svg",
+      iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
       label: "Lab Technicians",
     },
     {
@@ -129,8 +129,8 @@ const AppSidebar = ({
       label: "Branches",
     },
     {
-      iconSrc: "/assets/icons/labtech-sidebar.svg",
-      iconSrcActive: "/assets/icons/labtech-sidebar-active.svg",
+      iconSrc: "/assets/icons/institute-sidebar.svg",
+      iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
       label: "Lab Technicians",
     },
     {
@@ -142,8 +142,8 @@ const AppSidebar = ({
 
   const directorItems = [
     {
-      iconSrc: "/assets/icons/labtech-sidebar.svg",
-      iconSrcActive: "/assets/icons/labtech-sidebar-active.svg",
+      iconSrc: "/assets/icons/institute-sidebar.svg",
+      iconSrcActive: "/assets/icons/institute-sidebar-active.svg",
       label: "Lab Technicians",
     },
     {
